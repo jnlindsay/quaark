@@ -7,12 +7,14 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		19E2CC612949FEE700DFE7F9 /* CoreMIDIInterface in Frameworks */ = {isa = PBXBuildFile; productRef = 19E2CC602949FEE700DFE7F9 /* CoreMIDIInterface */; };
 		19E456C929494ABF0037DF4B /* Chord_AnalyserApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 19E456C829494ABF0037DF4B /* Chord_AnalyserApp.swift */; };
 		19E456CB29494ABF0037DF4B /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 19E456CA29494ABF0037DF4B /* ContentView.swift */; };
 		19E456CD29494AC00037DF4B /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 19E456CC29494AC00037DF4B /* Assets.xcassets */; };
 		19E456D029494AC00037DF4B /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 19E456CF29494AC00037DF4B /* Preview Assets.xcassets */; };
 		19E456D229494AC00037DF4B /* Persistence.swift in Sources */ = {isa = PBXBuildFile; fileRef = 19E456D129494AC00037DF4B /* Persistence.swift */; };
 		19E456D529494AC00037DF4B /* Chord_Analyser.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 19E456D329494AC00037DF4B /* Chord_Analyser.xcdatamodeld */; };
+		19E457052949E75F0037DF4B /* Logger in Frameworks */ = {isa = PBXBuildFile; productRef = 19E457042949E75F0037DF4B /* Logger */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -24,10 +26,22 @@
 		19E456D129494AC00037DF4B /* Persistence.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Persistence.swift; sourceTree = "<group>"; };
 		19E456D429494AC00037DF4B /* Chord_Analyser.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = Chord_Analyser.xcdatamodel; sourceTree = "<group>"; };
 		19E456D629494AC00037DF4B /* Chord_Analyser.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = Chord_Analyser.entitlements; sourceTree = "<group>"; };
+		19E456E129494C140037DF4B /* CoreMIDIInterface.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = CoreMIDIInterface.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		19E457092949E8690037DF4B /* Logger */ = {isa = PBXFileReference; lastKnownFileType = wrapper; name = Logger; path = ../Logger; sourceTree = "<group>"; };
+		19E4570B2949EAA80037DF4B /* CoreMIDIInterface */ = {isa = PBXFileReference; lastKnownFileType = wrapper; name = CoreMIDIInterface; path = ../CoreMIDIInterface; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
 		19E456C229494ABF0037DF4B /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				19E2CC612949FEE700DFE7F9 /* CoreMIDIInterface in Frameworks */,
+				19E457052949E75F0037DF4B /* Logger in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		19E456DE29494C140037DF4B /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -42,6 +56,7 @@
 			children = (
 				19E456C729494ABF0037DF4B /* Chord Analyser */,
 				19E456C629494ABF0037DF4B /* Products */,
+				19E456FC294952270037DF4B /* Frameworks */,
 			);
 			sourceTree = "<group>";
 		};
@@ -49,6 +64,7 @@
 			isa = PBXGroup;
 			children = (
 				19E456C529494ABF0037DF4B /* Chord Analyser.app */,
+				19E456E129494C140037DF4B /* CoreMIDIInterface.app */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -75,6 +91,15 @@
 			path = "Preview Content";
 			sourceTree = "<group>";
 		};
+		19E456FC294952270037DF4B /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				19E4570B2949EAA80037DF4B /* CoreMIDIInterface */,
+				19E457092949E8690037DF4B /* Logger */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -91,8 +116,29 @@
 			dependencies = (
 			);
 			name = "Chord Analyser";
+			packageProductDependencies = (
+				19E457042949E75F0037DF4B /* Logger */,
+				19E2CC602949FEE700DFE7F9 /* CoreMIDIInterface */,
+			);
 			productName = "Chord Analyser";
 			productReference = 19E456C529494ABF0037DF4B /* Chord Analyser.app */;
+			productType = "com.apple.product-type.application";
+		};
+		19E456E029494C140037DF4B /* CoreMIDIInterface */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 19E456F229494C160037DF4B /* Build configuration list for PBXNativeTarget "CoreMIDIInterface" */;
+			buildPhases = (
+				19E456DD29494C140037DF4B /* Sources */,
+				19E456DE29494C140037DF4B /* Frameworks */,
+				19E456DF29494C140037DF4B /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = CoreMIDIInterface;
+			productName = CoreMIDIInterface;
+			productReference = 19E456E129494C140037DF4B /* CoreMIDIInterface.app */;
 			productType = "com.apple.product-type.application";
 		};
 /* End PBXNativeTarget section */
@@ -106,6 +152,9 @@
 				LastUpgradeCheck = 1410;
 				TargetAttributes = {
 					19E456C429494ABF0037DF4B = {
+						CreatedOnToolsVersion = 14.1;
+					};
+					19E456E029494C140037DF4B = {
 						CreatedOnToolsVersion = 14.1;
 					};
 				};
@@ -124,6 +173,7 @@
 			projectRoot = "";
 			targets = (
 				19E456C429494ABF0037DF4B /* Chord Analyser */,
+				19E456E029494C140037DF4B /* CoreMIDIInterface */,
 			);
 		};
 /* End PBXProject section */
@@ -138,6 +188,13 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		19E456DF29494C140037DF4B /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
@@ -149,6 +206,13 @@
 				19E456D529494AC00037DF4B /* Chord_Analyser.xcdatamodeld in Sources */,
 				19E456CB29494ABF0037DF4B /* ContentView.swift in Sources */,
 				19E456C929494ABF0037DF4B /* Chord_AnalyserApp.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		19E456DD29494C140037DF4B /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -287,6 +351,7 @@
 					"$(inherited)",
 					"@executable_path/../Frameworks",
 				);
+				MACOSX_DEPLOYMENT_TARGET = 13.0;
 				MARKETING_VERSION = 1.0;
 				PRODUCT_BUNDLE_IDENTIFIER = "jeremylindsay.Chord-Analyser";
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -314,8 +379,63 @@
 					"$(inherited)",
 					"@executable_path/../Frameworks",
 				);
+				MACOSX_DEPLOYMENT_TARGET = 13.0;
 				MARKETING_VERSION = 1.0;
 				PRODUCT_BUNDLE_IDENTIFIER = "jeremylindsay.Chord-Analyser";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_VERSION = 5.0;
+			};
+			name = Release;
+		};
+		19E456F329494C160037DF4B /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_ENTITLEMENTS = CoreMIDIInterface/CoreMIDIInterface.entitlements;
+				CODE_SIGN_STYLE = Automatic;
+				COMBINE_HIDPI_IMAGES = YES;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_ASSET_PATHS = "\"CoreMIDIInterface/Preview Content\"";
+				DEVELOPMENT_TEAM = J2N768J9TX;
+				ENABLE_HARDENED_RUNTIME = YES;
+				ENABLE_PREVIEWS = YES;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_KEY_NSHumanReadableCopyright = "";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/../Frameworks",
+				);
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = jeremylindsay.CoreMIDIInterface;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_VERSION = 5.0;
+			};
+			name = Debug;
+		};
+		19E456F429494C160037DF4B /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_ENTITLEMENTS = CoreMIDIInterface/CoreMIDIInterface.entitlements;
+				CODE_SIGN_STYLE = Automatic;
+				COMBINE_HIDPI_IMAGES = YES;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_ASSET_PATHS = "\"CoreMIDIInterface/Preview Content\"";
+				DEVELOPMENT_TEAM = J2N768J9TX;
+				ENABLE_HARDENED_RUNTIME = YES;
+				ENABLE_PREVIEWS = YES;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_KEY_NSHumanReadableCopyright = "";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/../Frameworks",
+				);
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = jeremylindsay.CoreMIDIInterface;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 5.0;
@@ -343,7 +463,27 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
+		19E456F229494C160037DF4B /* Build configuration list for PBXNativeTarget "CoreMIDIInterface" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				19E456F329494C160037DF4B /* Debug */,
+				19E456F429494C160037DF4B /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
 /* End XCConfigurationList section */
+
+/* Begin XCSwiftPackageProductDependency section */
+		19E2CC602949FEE700DFE7F9 /* CoreMIDIInterface */ = {
+			isa = XCSwiftPackageProductDependency;
+			productName = CoreMIDIInterface;
+		};
+		19E457042949E75F0037DF4B /* Logger */ = {
+			isa = XCSwiftPackageProductDependency;
+			productName = Logger;
+		};
+/* End XCSwiftPackageProductDependency section */
 
 /* Begin XCVersionGroup section */
 		19E456D329494AC00037DF4B /* Chord_Analyser.xcdatamodeld */ = {
