@@ -17,18 +17,18 @@ struct ContentView: View {
         
         VStack {
             Spacer()
-//            HStack {
-//                Text("Status:")
-//                Text(String(describing: midiConnection.eventStatus))
-//            }
-//            HStack {
-//                Text("Note:")
-//                Text(toPClass(midiConnection.eventNote).name)
-//            }
-//            HStack {
-//                Text("Notes on:")
-//                Text(String(describing: midiConnection.notesOn))
-//            }
+            HStack {
+                Text("Status:")
+                Text(midiConnection.packetStatus?.description ?? "N/A")
+            }
+            HStack {
+                Text("Packet note:")
+                Text(toPClass(midiConnection.packetNote).name)
+            }
+            HStack {
+                Text("Notes on:")
+                Text(String(describing: midiConnection.notesOn))
+            }
 //            HStack {
 //                Text("Toggle:")
 //                Text(midiConnection.noteToggle ? "EVEN" : "ODD")
@@ -43,6 +43,7 @@ struct ContentView: View {
 //                eventNote: $midiConnection.eventNote
 //            )
             Text("Hello again")
+            Spacer()
         }
 //        .onAppear {
 //            appState.receiverManager.startLogTimer()

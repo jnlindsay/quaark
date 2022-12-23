@@ -58,7 +58,9 @@ public class CoreMIDIConnection : ObservableObject {
 //    public var eventNote: UInt32? = nil
     
     // Keep track of on/off notes
-    public var notesOn = Set<UInt32>()
+    @Published public var packetNote: UInt32?
+    @Published public var packetStatus: MIDICVStatus?
+    @Published public var notesOn = Set<UInt32>()
     
     // Asynchronous queue to process incoming MIDI events
 //    public var readQueue = DispatchQueue.main
@@ -257,10 +259,8 @@ public class CoreMIDIConnection : ObservableObject {
     //   into a queue to be dealt with below.
     func startLogTimer() {
         log(.coreMIDIInterface, "Log timer started")
-        timer = Timer.scheduledTimer(withTimeInterval: 0.01, repeats: true) { [weak self] timer in
+        timer = Timer.scheduledTimer(withTimeInterval: 0.1, repeats: true) { [weak self] timer in
             guard let self = self else { return }
-            
-//            print("0.2")
             
             self.midiAdapter.popDestinationMessages { packet in
                 log(.coreMIDIInterface, "-------------------------------")
@@ -268,9 +268,20 @@ public class CoreMIDIConnection : ObservableObject {
                 log(.coreMIDIInterface, "Packet: " + String(describing: MIDIMessageTypeForUPWord(packet.words.0)))
                 log(.coreMIDIInterface, "Packet data (hex): 0x\(packet.hexString)")
                 log(.coreMIDIInterface, "Packet data (bin): " + uInt32Raw(packet.words.0, true))
+                if let status = packet.status {
+                    log(.coreMIDIInterface, "Packet status: \(status.description)")
+                    self.packetStatus = status
+                } else {
+                    log(.coreMIDIInterface, "Packet status: N/A")
+                }
                 if let note = packet.note {
                     log(.coreMIDIInterface, "Packet note: \(note)")
-                    self.notesOn.insert(note)
+                    self.packetNote = note
+                    
+                    // keep track of notesOn
+                    if packet.status == .noteOn { self.notesOn.insert(note) }
+                    else if packet.status == .noteOff { self.notesOn.remove(note) }
+                    
                 } else {
                     log(.coreMIDIInterface, "Packet note: N/A")
                 }
