@@ -46,17 +46,13 @@ typedef SingleProducerSingleConsumerQueue<MIDIEventPacket> MIDIMessageFIFO;
 
 -(OSStatus)createMIDIInputPort:(MIDIClientRef)client named:(CFStringRef)name protocol:(MIDIProtocolID)protocol dest:(MIDIPortRef *)outPort {
     
-    printf("MIDIADAPTER: Trying\n");
-    
     // Create queue
     __block MIDIMessageFIFO *msgQueue = messageQueue.get();
-    
-    printf("MIDIADAPTER: Queue created\n");
     
     // Create input port
     const auto status = MIDIInputPortCreateWithProtocol(client, name, protocol, outPort, ^(const MIDIEventList *evtlist, void * __nullable srcConnRefCon) {
         
-        printf("HELLO");
+        printf("MIDIAdapter: HELLO");
         
         if (evtlist->numPackets > 0 && msgQueue) {
             auto pkt = &evtlist->packet[0];

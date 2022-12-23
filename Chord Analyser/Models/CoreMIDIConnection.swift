@@ -58,7 +58,7 @@ public class CoreMIDIConnection : ObservableObject {
 //    public var eventNote: UInt32? = nil
     
     // Keep track of on/off notes
-//    public var notesOn = Set<UInt32>()
+    public var notesOn = Set<UInt32>()
     
     // Asynchronous queue to process incoming MIDI events
 //    public var readQueue = DispatchQueue.main
@@ -251,21 +251,33 @@ public class CoreMIDIConnection : ObservableObject {
             }
 //        }
     }
- 
+    
+    // This function calls the MIDIAdapter Objective-C++ files, which deal with realtime MIDI input.
+    // MIDIAdapter.mm has functionatliy that unwraps an `evtlist` into packets, which are stuffed
+    //   into a queue to be dealt with below.
     func startLogTimer() {
         log(.coreMIDIInterface, "Log timer started")
-        timer = Timer.scheduledTimer(withTimeInterval: 0.2, repeats: true) { [weak self] timer in
+        timer = Timer.scheduledTimer(withTimeInterval: 0.01, repeats: true) { [weak self] timer in
             guard let self = self else { return }
             
 //            print("0.2")
             
             self.midiAdapter.popDestinationMessages { packet in
-                /*self.logModel.*/print("------------------------------------")
-                /*self.logModel.*/print("Universal MIDI Packet \(packet.wordCount * 32)")
-                /*self.logModel.*/print("Data: 0x\(packet.hexString)")
-                /*self.logModel.*/print(packet.description)
-                /*self.logModel.*/print("")
+                log(.coreMIDIInterface, "-------------------------------")
+                log(.coreMIDIInterface, "Universal MIDI Packet \(packet.wordCount * 32) received.")
+                log(.coreMIDIInterface, "Packet: " + String(describing: MIDIMessageTypeForUPWord(packet.words.0)))
+                log(.coreMIDIInterface, "Packet data (hex): 0x\(packet.hexString)")
+                log(.coreMIDIInterface, "Packet data (bin): " + uInt32Raw(packet.words.0, true))
+                if let note = packet.note {
+                    log(.coreMIDIInterface, "Packet note: \(note)")
+                    self.notesOn.insert(note)
+                } else {
+                    log(.coreMIDIInterface, "Packet note: N/A")
+                }
+                log(.coreMIDIInterface, "-------------------------------")
             }
+            
+            
         }
     }
     
