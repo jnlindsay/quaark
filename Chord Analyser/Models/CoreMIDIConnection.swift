@@ -54,27 +54,10 @@ public class CoreMIDIConnection : ObservableObject {
     private var client = MIDIClientRef()
     private var outPort: MIDIPortRef = 0
     
-//    @Published public var eventStatus: EventStatus = .other
-//    public var eventNote: UInt32? = nil
-    
     // Keep track of on/off notes
     @Published public var packetNote: UInt32?
     @Published public var packetStatus: MIDICVStatus?
     @Published public var notesOn = Set<UInt32>()
-    
-    // Asynchronous queue to process incoming MIDI events
-//    public var readQueue = DispatchQueue.main
-    
-//    @Published public var noteToggle: Bool = true
-    
-    // Dodgy implementation of a circular bool buffer
-//    @Published public var pubBoolBuffer: [Bool] = Array(repeating: false, count: 16)
-//    private var boolBuffer: [Bool] = Array(repeating: false, count: 16)
-//    private var boolBufferWrite: Int = 0
-//    private var boolBufferRead: Int = 0
-    
-    // MIDIAdapter (courtesy Apple)
-//    let midiAdapter = MIDIAdapter(logging = true)
     
     public init() {
         
@@ -115,10 +98,6 @@ public class CoreMIDIConnection : ObservableObject {
             log(.coreMIDIInterface, "Name of source \(i): \(sourceName?.takeRetainedValue() as String?)")
         }
         
-        // Create default client port
-//        var clientOutPort: MIDIPortRef = 0
-//        self.destination = 0
-        
         setupModel()
         
         // Connect to source 0 (hopefully iRig keys)
@@ -127,91 +106,9 @@ public class CoreMIDIConnection : ObservableObject {
             self.source,
             &self.source
         )
-        startLogTimer()
         
-        // Note: as per the CoreMIDI documentation, CoreMIDI creates a high-priority receive thread
-        //       on the client's behalf, and from that thread, the MIDIReceiveBlock will be called
-        //       when incoming MIDI messages arrive.
-        // Note: do not allocated memory in time-constraint threads.
-        // Reference: SnoizeMIDI/Streams/Input Streams/InputStream, line 80
-//        lazy var receiveBlock: MIDIReceiveBlock = { [weak self]
-//            (evtList: UnsafePointer<MIDIEventList>,
-//             srcConnRefCon: UnsafeMutableRawPointer?) in
-            
-//            log(.coreMIDIInterface, "-------------------------------")
-//            log(.coreMIDIInterface, "Event list received.")
-//            log(.coreMIDIInterface, "Event list size in bytes: " + String(MIDIEventList.sizeInBytes(pktList: evtList)))
-//            log(.coreMIDIInterface, "Event list number of packets: " + String(evtList.pointee.numPackets))
-//            log(.coreMIDIInterface, "Event list word count: " + String(describing: evtList.pointee.packet.wordCount))
-//            log(.coreMIDIInterface, "Event list type: " + String(describing: MIDIMessageTypeForUPWord(evtList.pointee.packet.words.0)))
-//            log(.coreMIDIInterface, "Event list word.0: " + String(evtList.pointee.packet.words.0))
-//            log(.coreMIDIInterface, "Event list word.0: " + uInt32Raw(evtList.pointee.packet.words.0, true))
-//            log(.coreMIDIInterface, "-------------------------------")
-            
-            // Copy data
-//            let evtListSize: Int = MIDIEventList.sizeInBytes(pktList: evtList)
-//            let data = Data(bytes: evtList, count: evtListSize)
-//
-//            let pairBuffer
-            
-            
-            
-//            if let self = self {
-//
-//                self.boolBuffer[self.boolBufferWrite] = false
-//
-//                // TODO: REWRITE AS BUFFER CLASS
-//                if self.boolBufferWrite < 15 {
-//                    self.boolBufferWrite += 1
-//                } else {
-//                    self.boolBufferWrite = 0
-//                }
-//
-//                // Process buffer data asynchronously
-//                self.readQueue.async {
-//                    autoreleasepool /* why is this necessary? */ {
-//
-//                        for i in 0...15 {
-//                            self.pubBoolBuffer[i] = self.boolBuffer[i]
-//                        }
-////                    log(.coreMIDIInterface, String(describing: data))
-////                    log(.coreMIDIInterface, data.hexDescription)
-//
-////                        connection.noteToggle = connection.noteToggle ? false : true
-//
-//                    }
-//                }
-//            }
-            
-//            var eventStatus: MIDICVStatus? = evtList.pointee.packet.status
-//            switch eventStatus {
-//            case .noteOn: self.eventStatus = .noteOn
-//            case .noteOff: self.eventStatus = .noteOff
-//            default: self.eventStatus = .other
-//            }
-//            log(.coreMIDIInterface, "Event status: " + String(describing: evtList.pointee.packet.status))
-//
-//            var eventNote = evtList.pointee.packet.note ?? nil
-//            log(.coreMIDIInterface, "Event note: " + String(describing: evtList.pointee.packet.note))
-//            if let uEventNote = eventNote {
-//                self.eventNote = eventNote
-//                switch eventStatus {
-//                case .noteOn:
-//                    self.notesOn.insert(uEventNote)
-//                case .noteOff:
-//                    self.notesOn.remove(uEventNote)
-//                default: break
-//                }
-//            }
-//        }
-//
-//        let clientPortStatus = interface.inputPortCreateWithProtocol(
-//            client,
-//            "Chord Analyser Default OutPort" as CFString,
-//            MIDIProtocolID._1_0,
-//            &clientOutPort,
-//            receiveBlock
-//        )
+        // Start MIDI listener
+        startLogTimer()
         
         log(.coreMIDIInterface, "init() complete")
             
@@ -220,16 +117,6 @@ public class CoreMIDIConnection : ObservableObject {
     private func setupModel() {
         
         log(.coreMIDIInterface, "setupModel() has begun.")
-        
-//        receiverOptions.createMIDIInputPort = { [weak self] in
-//
-//            print("check")
-//
-//            guard let self = self else { return }
-//
-//            if self.hasDestination {
-//                MIDIEndpointDispose(self.destination)
-//            }
             
             guard let protocolID = MIDIProtocolID(rawValue: self.receiverOptions.protocolID) else { return }
             
