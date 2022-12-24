@@ -37,12 +37,11 @@ struct ContentView: View {
 //                Text("Bool buffer:")
 //                Text(String(describing: midiConnection.pubBoolBuffer))
 //            }
-//            Spacer()
-//            PhantomKeyboardView(
-//                eventStatus: $midiConnection.eventStatus,
-//                eventNote: $midiConnection.eventNote
-//            )
-            Text("Hello again")
+            Spacer()
+            PhantomKeyboardView(
+//                eventStatus: midiConnection.packetStatus,
+//                eventNote: midiConnection.packetNote
+            )
             Spacer()
         }
 //        .onAppear {
@@ -60,8 +59,8 @@ struct ContentView: View {
 //   a "clear" colour.
 struct PhantomKeyboardView : View {
     
-    @Binding var eventStatus: EventStatus
-    @Binding var eventNote: UInt32?
+//    @Binding var eventStatus: MIDICVStatus?
+//    @Binding var eventNote: UInt32?
     
     private let keyOnColour = Color.teal
     
@@ -114,8 +113,8 @@ struct PhantomKeyboardView : View {
     
     var body: some View {
         VStack {
-            Text(String(describing: eventStatus))
-            Text(String(describing: eventNote))
+//            Text(String(describing: eventStatus))
+//            Text(String(describing: eventNote))
             ZStack {
                 // Background
                 Rectangle()
@@ -142,20 +141,20 @@ struct PhantomKeyboardView : View {
                         .offset(x: -280.5 + 5.5 + CGFloat($0) * 11,
                                 y: -20)
                 }
-            }.onChange(of: eventStatus) { _ in
+            }//.onChange(of: eventStatus) { _ in
                 // Update notes that are on.
-                switch eventStatus {
-                case .noteOn: phantomKeyboardKeysOn[
-                    // ! TODO: FIX HACK: evenNote SHOULD BE UNWRAPPED PROPERLY
-                    midiToPhantomKeyboardNote[Int(eventNote ?? 0) - 21]] = true
-                case .noteOff: phantomKeyboardKeysOn[
-                    midiToPhantomKeyboardNote[Int(eventNote ?? 0) - 21]] = false
-                default: break
-                }
+//                switch eventStatus {
+//                case .noteOn: phantomKeyboardKeysOn[
+//                    // ! TODO: FIX HACK: evenNote SHOULD BE UNWRAPPED PROPERLY
+//                    midiToPhantomKeyboardNote[Int(eventNote ?? 0) - 21]] = true
+//                case .noteOff: phantomKeyboardKeysOn[
+//                    midiToPhantomKeyboardNote[Int(eventNote ?? 0) - 21]] = false
+//                default: break
+//                }
             }
         }
     }
-}
+//}
 
 struct ContentView_Previews: PreviewProvider {
     static var previews: some View {
