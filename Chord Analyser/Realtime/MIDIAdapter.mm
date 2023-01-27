@@ -10,15 +10,28 @@ An Objective-C adapter for low-level MIDI functions.
 
 typedef SingleProducerSingleConsumerQueue<MIDIEventPacket> MIDIMessageFIFO;
 
+int returnAnInt() { return 23423; }
+
 @implementation MIDIAdapter {
     std::unique_ptr<MIDIMessageFIFO> messageQueue;
+    // keyboard notes on/off
+    @public bool notes[128];
 }
+
+- (bool)getNote:(int)n {
+    return notes[n];
+}
+
+- (void)setNote:(int)n :(bool)value {
+    notes[n] = value;
+}
+
 
 - (instancetype)initWithLogging:(BOOL)queueEnabled {
     self = [super init];
     if (self) {
         if (queueEnabled) {
-            messageQueue = std::make_unique<MIDIMessageFIFO>(64);
+            messageQueue = std::make_unique<MIDIMessageFIFO>(1024);
         }
     }
     return self;
@@ -26,34 +39,10 @@ typedef SingleProducerSingleConsumerQueue<MIDIEventPacket> MIDIMessageFIFO;
 
 // MARK: - Core MIDI
 
-//-(OSStatus)createMIDIDestination:(MIDIClientRef)client named:(CFStringRef)name protocol:(MIDIProtocolID)protocol dest:(MIDIEndpointRef *)outDest {
-//    __block MIDIMessageFIFO *msgQueue = messageQueue.get();
-//    const auto status = MIDIDestinationCreateWithProtocol(client, name, protocol, outDest, ^(const MIDIEventList * _Nonnull evtlist, void * _Nullable srcConnRefCon) {
-//
-//        if (evtlist->numPackets > 0 && msgQueue) {
-//            auto pkt = &evtlist->packet[0];
-//
-//            for (int i = 0; i < evtlist->numPackets; ++i) {
-//                if (!msgQueue->push(evtlist->packet[i])) {
-//                    msgQueue->push(evtlist->packet[i]);
-//                }
-//                pkt = MIDIEventPacketNext(pkt);
-//            }
-//        }
-//    });
-//    return status;
-//}
-
--(OSStatus)createMIDIInputPort:(MIDIClientRef)client named:(CFStringRef)name protocol:(MIDIProtocolID)protocol dest:(MIDIPortRef *)outPort {
-    
-    // Create queue
+-(OSStatus)createMIDIDestination:(MIDIClientRef)client named:(CFStringRef)name protocol:(MIDIProtocolID)protocol dest:(MIDIEndpointRef *)outDest {
     __block MIDIMessageFIFO *msgQueue = messageQueue.get();
-    
-    // Create input port
-    const auto status = MIDIInputPortCreateWithProtocol(client, name, protocol, outPort, ^(const MIDIEventList *evtlist, void * __nullable srcConnRefCon) {
-        
-        printf("MIDIAdapter: HELLO");
-        
+    const auto status = MIDIDestinationCreateWithProtocol(client, name, protocol, outDest, ^(const MIDIEventList * _Nonnull evtlist, void * _Nullable srcConnRefCon) {
+
         if (evtlist->numPackets > 0 && msgQueue) {
             auto pkt = &evtlist->packet[0];
 
@@ -68,13 +57,63 @@ typedef SingleProducerSingleConsumerQueue<MIDIEventPacket> MIDIMessageFIFO;
     return status;
 }
 
+-(OSStatus)createMIDIInputPort:(MIDIClientRef)client named:(CFStringRef)name protocol:(MIDIProtocolID)protocol dest:(MIDIPortRef *)outPort {
+
+    // Create queue
+    __block MIDIMessageFIFO *msgQueue = messageQueue.get();
+    printf("Ring buffer created.\n");
+
+    // Create input port
+    const auto status = MIDIInputPortCreateWithProtocol(client, name, protocol, outPort, ^(const MIDIEventList *evtlist, void * __nullable srcConnRefCon) {
+
+        if (evtlist->numPackets > 0 && msgQueue) {
+
+            // get first event packet
+            auto pkt = &evtlist->packet[0];
+
+            for (int i = 0; i < evtlist->numPackets; ++i) {
+                if (!msgQueue->push(evtlist->packet[i])) {
+                    msgQueue->push(evtlist->packet[i]);
+                }
+
+                // go to next event packet
+                pkt = MIDIEventPacketNext(pkt);
+            }
+        }
+    });
+
+    return status;
+}
+
+-(void)processBuffer {
+    if (!messageQueue) return;
+    
+    while (const auto message = messageQueue->pop()) {
+        // Note: `message` has type std::optional<MIDIEventPacket>
+        if (message.has_value()) {
+            for (auto i = 0; i < message->wordCount; i++) {
+                uint8_t status = (message->words[i] >> 16) & 0xFF;
+                uint8_t note   = (message->words[i] >> 8)  & 0xFF;
+//                printf("Note: %d\n", note);
+                if (status == 0x90 || status == 0x80) {
+                    notes[note - 1] = (status == 0x90);
+                }
+            }
+            
+        }
+    }
+}
 
 -(void)popDestinationMessages:(void (^)(const MIDIEventPacket))callback {
     if (!messageQueue)
         return;
 
     while (const auto message = messageQueue->pop()) {
-        callback(*message);
+        printf("hey");
+        notes[24] = true;
+        notes[13] = true;
+        notes[0] = true;
+//        callback(*message);
     }
 }
 
@@ -97,3 +136,5 @@ typedef SingleProducerSingleConsumerQueue<MIDIEventPacket> MIDIMessageFIFO;
 }
 
 @end
+
+

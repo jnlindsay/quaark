@@ -7,10 +7,17 @@ An Objective-C adapter for low-level MIDI functions.
 
 #import <Foundation/Foundation.h>
 #import <CoreMIDI/CoreMIDI.h>
+#include <stdio.h>
+//#include <atomic>
 
 NS_ASSUME_NONNULL_BEGIN
 
+extern int returnAnInt();
+
 @interface MIDIAdapter : NSObject
+
+- (bool)getNote:(int)n;
+- (void)setNote:(int)n :(bool)value;
 
 /// Initialize a MIDI adapter with optional logging.
 /// @param queueEnabled Enable the queue for logging data to the screen.
@@ -24,9 +31,13 @@ NS_ASSUME_NONNULL_BEGIN
 //-(OSStatus)createMIDIDestination:(MIDIClientRef)client named:(CFStringRef)name protocol:(MIDIProtocolID)protocol dest:(MIDIEndpointRef *)outDest;
 -(OSStatus)createMIDIInputPort:(MIDIClientRef)client named:(CFStringRef)name protocol:(MIDIProtocolID)protocol dest:(MIDIPortRef *)outPort;
 
+-(int)getCount;
+
 /// Pop a message from the MIDI queue from the main thread (if the adapter initializes with one, or else the system doesn't call the callback).
 /// @param callback A block to call when a MIDI message successfully pops.
 -(void)popDestinationMessages:(void (^)(const MIDIEventPacket))callback;
+
+-(void)processBuffer;
 
 /// Open a Core MIDI port.
 /// @param client A reference to the MIDI client.
@@ -45,6 +56,7 @@ NS_ASSUME_NONNULL_BEGIN
 /// @param port A reference to the output MIDI port.
 /// @param destination The Core MIDI destination to send the message to.
 -(OSStatus)sendMIDI2Message:(MIDIMessage_64)message port:(MIDIPortRef)port destination:(MIDIEndpointRef)destination;
+
 @end
 
 NS_ASSUME_NONNULL_END
