@@ -52,6 +52,6 @@ private:
     std::vector<T>       elements;
     size_t               _writePos = 0;
     std::atomic<size_t>  _readPos = {0};
-    alignas(64)  // Prevents false sharing.
+    alignas(64);  // Prevents false sharing.
     std::atomic<size_t>  numElements = {0};
 };
