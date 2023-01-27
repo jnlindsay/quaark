@@ -11,26 +11,7 @@ import Foundation
 import CoreMIDI
 import Logger
 import CoreMIDIInterface
-
-public enum EventStatus : CustomStringConvertible {
-    case noteOn
-    case noteOff
-    case other
-    
-    public var description: String {
-        switch self {
-        case .noteOn: return "Note on"
-        case .noteOff: return "Note off"
-        default: return "Other"
-        }
-    }
-}
-
-extension Data {
-    var hexDescription: String {
-        return reduce("") {$0 + String(format: "%02x", $1)}
-    }
-}
+import SwiftUI
 
 @available(macOS 11.0, *)
 public class CoreMIDIConnection : ObservableObject {
@@ -49,16 +30,19 @@ public class CoreMIDIConnection : ObservableObject {
     
     /// ! TODO: rewrite as class in interface
     
-    // update UI
-    @Published public var changed: Bool = false;
-    
     // create client and port
     private var client = MIDIClientRef()
     private var outPort = MIDIPortRef()
     
     // Keep track of on/off notes
+    private var chord: (PitchClass, Chord) = (.defaultPitchClass, .none)
     @Published public var packetNote: UInt32?
-//    @Published public var notesOn = Set<UInt32>()
+    @Published public var keysOn = Set<UInt32>()
+    @Published public var keysOnNames = Set<String>()
+    @Published public var chordName = " "
+    
+    // Visuals
+    @Published public var backgroundColour: Color = .gray
     
     public init() {
         
@@ -150,11 +134,52 @@ public class CoreMIDIConnection : ObservableObject {
         timer = Timer.scheduledTimer(withTimeInterval: 0.01, repeats: true) { [weak self] timer in
             guard let self = self else { return }
             
-            if self.changed { self.changed = false }
-            else { self.changed = true }
-            
-            self.midiAdapter.processBuffer()
+            self.midiAdapter.processBuffer() {
+                
+                // --------- CALLBACK ---------
+                // Note: following occurs only if there were new MIDI messages to be processed.
+                
+                // Update keys on
+                self.keysOn = []
+                self.keysOnNames = []
+                for i in 0..<128 {
+                    if self.midiAdapter.getNote(Int32(i)) {
+                        self.keysOn.insert(UInt32(i + 1))
+                        self.keysOnNames.insert(toPClass(UInt32(i + 1)).name)
+                    }
+                }
+                
+                // Update chord
+                if self.keysOn.isEmpty {
+                    self.chord = (.defaultPitchClass, .none)
+                } else {
+                    self.chord = toChord(self.keysOn)
+                }
+                
+                // Update chord name
+                if self.keysOn.isEmpty {
+                    self.chordName = " "
+                } else {
+                    self.chordName = chordToName(self.chord) ?? " "
+                }
+                
+                // Update lighting
+                if self.chord.1 == .min {
+                    self.backgroundColour = .black
+                } else if self.chord.1 == .maj {
+                    self.backgroundColour = .yellow
+                } else {
+                    self.backgroundColour = .gray
+                }
+                
+            }
             
         }
+    }
+}
+
+extension Data {
+    var hexDescription: String {
+        return reduce("") {$0 + String(format: "%02x", $1)}
     }
 }

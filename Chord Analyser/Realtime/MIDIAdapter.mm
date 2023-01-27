@@ -85,7 +85,7 @@ int returnAnInt() { return 23423; }
     return status;
 }
 
--(void)processBuffer {
+-(void)processBuffer:(void (^)(void))callback {
     if (!messageQueue) return;
     
     while (const auto message = messageQueue->pop()) {
@@ -100,8 +100,12 @@ int returnAnInt() { return 23423; }
                 }
             }
             
+            // Callback runs only if there were new messages
+            callback();
+            
         }
     }
+    
 }
 
 -(void)popDestinationMessages:(void (^)(const MIDIEventPacket))callback {

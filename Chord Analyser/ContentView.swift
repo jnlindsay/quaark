@@ -13,23 +13,29 @@ struct ContentView: View {
     @ObservedObject private var midiConnection = CoreMIDIConnection()
     
     var body: some View {
-        
-        VStack {
-            Spacer()
-            HStack {
-                Text("Packet note:")
+        ZStack {
+            midiConnection.backgroundColour
+            VStack {
+                Spacer()
+                HStack {
+                    Text("Packet note:")
+                }
+                HStack {
+                    Text("Notes on:")
+                    Text(String(describing: midiConnection.keysOnNames))
+                }
+                Spacer()
+                Text(String(midiConnection.chordName))
+                    .font(.largeTitle)
+                Spacer()
+                PhantomKeyboardView(
+                    midiConnection: midiConnection
+                )
+                Spacer()
             }
-            HStack {
-                Text("Notes on:")
-            }
-            Spacer()
-            PhantomKeyboardView(
-                midiConnection: midiConnection
-            )
-            Spacer()
         }
+//            .background(midiConnection.backgroundColour)
     }
-    
 }
 
 // Phantom keyboard. The word "phantom" indicates the

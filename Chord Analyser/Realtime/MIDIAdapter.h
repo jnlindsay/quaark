@@ -31,13 +31,11 @@ extern int returnAnInt();
 //-(OSStatus)createMIDIDestination:(MIDIClientRef)client named:(CFStringRef)name protocol:(MIDIProtocolID)protocol dest:(MIDIEndpointRef *)outDest;
 -(OSStatus)createMIDIInputPort:(MIDIClientRef)client named:(CFStringRef)name protocol:(MIDIProtocolID)protocol dest:(MIDIPortRef *)outPort;
 
--(int)getCount;
-
 /// Pop a message from the MIDI queue from the main thread (if the adapter initializes with one, or else the system doesn't call the callback).
 /// @param callback A block to call when a MIDI message successfully pops.
 -(void)popDestinationMessages:(void (^)(const MIDIEventPacket))callback;
 
--(void)processBuffer;
+-(void)processBuffer:(void (^)(void))callback;
 
 /// Open a Core MIDI port.
 /// @param client A reference to the MIDI client.
