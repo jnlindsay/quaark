@@ -7,8 +7,6 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		191830342982A2E4002D8FAB /* Old.mm in Sources */ = {isa = PBXBuildFile; fileRef = 191830332982A2E4002D8FAB /* Old.mm */; };
-		191830532982BE83002D8FAB /* Realtime.c in Sources */ = {isa = PBXBuildFile; fileRef = 191830522982BE83002D8FAB /* Realtime.c */; };
 		19E2CC612949FEE700DFE7F9 /* CoreMIDIInterface in Frameworks */ = {isa = PBXBuildFile; productRef = 19E2CC602949FEE700DFE7F9 /* CoreMIDIInterface */; };
 		19E2CC63294AB74400DFE7F9 /* Pitch.swift in Sources */ = {isa = PBXBuildFile; fileRef = 19E2CC62294AB74400DFE7F9 /* Pitch.swift */; };
 		19E2CC69294DCB2100DFE7F9 /* MIDIAdapter.mm in Sources */ = {isa = PBXBuildFile; fileRef = 19E2CC66294DCB2100DFE7F9 /* MIDIAdapter.mm */; };
@@ -29,11 +27,7 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
-		191830332982A2E4002D8FAB /* Old.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = Old.mm; sourceTree = "<group>"; };
-		191830352982A31D002D8FAB /* Old.hh */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = Old.hh; sourceTree = "<group>"; };
 		191830362982A970002D8FAB /* Chord Analyser-Bridging-Header.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "Chord Analyser-Bridging-Header.h"; sourceTree = "<group>"; };
-		191830512982BE83002D8FAB /* Realtime.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Realtime.h; sourceTree = "<group>"; };
-		191830522982BE83002D8FAB /* Realtime.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = Realtime.c; sourceTree = "<group>"; };
 		19E2CC62294AB74400DFE7F9 /* Pitch.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Pitch.swift; sourceTree = "<group>"; };
 		19E2CC66294DCB2100DFE7F9 /* MIDIAdapter.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = MIDIAdapter.mm; sourceTree = "<group>"; };
 		19E2CC67294DCB2100DFE7F9 /* MIDIAdapter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MIDIAdapter.h; sourceTree = "<group>"; };
@@ -85,10 +79,6 @@
 				19E2CC67294DCB2100DFE7F9 /* MIDIAdapter.h */,
 				19E2CC66294DCB2100DFE7F9 /* MIDIAdapter.mm */,
 				19E2CC68294DCB2100DFE7F9 /* SingleProducerSingleConsumerQueue.hpp */,
-				191830332982A2E4002D8FAB /* Old.mm */,
-				191830352982A31D002D8FAB /* Old.hh */,
-				191830512982BE83002D8FAB /* Realtime.h */,
-				191830522982BE83002D8FAB /* Realtime.c */,
 			);
 			path = Realtime;
 			sourceTree = "<group>";
@@ -273,9 +263,7 @@
 				19E456D229494AC00037DF4B /* Persistence.swift in Sources */,
 				19E2CC6E294DD23A00DFE7F9 /* ReceiverOptions.swift in Sources */,
 				19E456D529494AC00037DF4B /* Chord_Analyser.xcdatamodeld in Sources */,
-				191830532982BE83002D8FAB /* Realtime.c in Sources */,
 				19E2CC7B294DDC1F00DFE7F9 /* CoreMIDIConnection.swift in Sources */,
-				191830342982A2E4002D8FAB /* Old.mm in Sources */,
 				19E2CC79294DD3A500DFE7F9 /* MIDIProtocolIDExtensions.swift in Sources */,
 				19E2CC75294DD39E00DFE7F9 /* DataExtensions.swift in Sources */,
 				19E2CC70294DD24700DFE7F9 /* AppState.swift in Sources */,
