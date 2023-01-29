@@ -24,6 +24,10 @@ struct ContentView: View {
                     Text("Notes on:")
                     Text(String(describing: midiConnection.keysOnNames))
                 }
+                HStack {
+                    Text("Previous chords:")
+                    Text(String(describing: midiConnection.prevNotes))
+                }
                 Spacer()
                 Text(String(midiConnection.chordName))
                     .font(.largeTitle)

@@ -9,6 +9,7 @@
 /* Begin PBXBuildFile section */
 		196830882983D26F002232A7 /* ChordRecogniser.swift in Sources */ = {isa = PBXBuildFile; fileRef = 196830872983D26F002232A7 /* ChordRecogniser.swift */; };
 		1968308B2983E6CA002232A7 /* DequeModule in Frameworks */ = {isa = PBXBuildFile; productRef = 1968308A2983E6CA002232A7 /* DequeModule */; };
+		19D8E2A3298605880003B5EC /* Miscellaneous.swift in Sources */ = {isa = PBXBuildFile; fileRef = 19D8E2A2298605880003B5EC /* Miscellaneous.swift */; };
 		19E2CC612949FEE700DFE7F9 /* CoreMIDIInterface in Frameworks */ = {isa = PBXBuildFile; productRef = 19E2CC602949FEE700DFE7F9 /* CoreMIDIInterface */; };
 		19E2CC63294AB74400DFE7F9 /* Pitch.swift in Sources */ = {isa = PBXBuildFile; fileRef = 19E2CC62294AB74400DFE7F9 /* Pitch.swift */; };
 		19E2CC69294DCB2100DFE7F9 /* MIDIAdapter.mm in Sources */ = {isa = PBXBuildFile; fileRef = 19E2CC66294DCB2100DFE7F9 /* MIDIAdapter.mm */; };
@@ -31,6 +32,7 @@
 /* Begin PBXFileReference section */
 		191830362982A970002D8FAB /* Chord Analyser-Bridging-Header.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "Chord Analyser-Bridging-Header.h"; sourceTree = "<group>"; };
 		196830872983D26F002232A7 /* ChordRecogniser.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChordRecogniser.swift; sourceTree = "<group>"; };
+		19D8E2A2298605880003B5EC /* Miscellaneous.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Miscellaneous.swift; sourceTree = "<group>"; };
 		19E2CC62294AB74400DFE7F9 /* Pitch.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Pitch.swift; sourceTree = "<group>"; };
 		19E2CC66294DCB2100DFE7F9 /* MIDIAdapter.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = MIDIAdapter.mm; sourceTree = "<group>"; };
 		19E2CC67294DCB2100DFE7F9 /* MIDIAdapter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MIDIAdapter.h; sourceTree = "<group>"; };
@@ -141,6 +143,7 @@
 				19E2CC62294AB74400DFE7F9 /* Pitch.swift */,
 				19E456CE29494AC00037DF4B /* Preview Content */,
 				19E2CC64294DCAF000DFE7F9 /* Realtime */,
+				19D8E2A2298605880003B5EC /* Miscellaneous.swift */,
 			);
 			path = "Chord Analyser";
 			sourceTree = "<group>";
@@ -280,6 +283,7 @@
 				19E456CB29494ABF0037DF4B /* ContentView.swift in Sources */,
 				19E2CC6C294DD14C00DFE7F9 /* PacketReceiver.swift in Sources */,
 				19E456C929494ABF0037DF4B /* Chord_AnalyserApp.swift in Sources */,
+				19D8E2A3298605880003B5EC /* Miscellaneous.swift in Sources */,
 				19E2CC69294DCB2100DFE7F9 /* MIDIAdapter.mm in Sources */,
 				19E2CC63294AB74400DFE7F9 /* Pitch.swift in Sources */,
 				196830882983D26F002232A7 /* ChordRecogniser.swift in Sources */,

@@ -21,7 +21,7 @@ enum Chord : String {
 // At any one time, a maximum of 16 notes can be played simultaneously. We keep track of chords using Swift's 'set' data structure.
 
 // Given a set of keys, return the pitch classes
-func keysToPitches(_ keys: Set<UInt32>) -> Set<PitchClass> {
+func keysToPitches(_ keys: Array<UInt32>) -> Set<PitchClass> {
     var res: Set<PitchClass> = Set()
     for key in keys {
         res.insert(toPClass(key))
@@ -69,7 +69,7 @@ func chordToName(_ chord: (PitchClass, Chord)) -> String? {
 }
 
 // given a set of pitches, return the chord name
-func toChord(_ keys: Set<UInt32>) -> (PitchClass, Chord) {
+func toChord(_ keys: Array<UInt32>) -> (PitchClass, Chord) {
     
     // sort pitch classes
     var pitches = Array(keysToPitches(keys))

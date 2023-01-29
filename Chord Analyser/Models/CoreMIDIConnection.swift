@@ -13,6 +13,9 @@ import Logger
 import CoreMIDIInterface
 import SwiftUI
 
+// Constants
+private let numPrevChords = 8
+
 @available(macOS 11.0, *)
 public class CoreMIDIConnection : ObservableObject {
     // ! TODO: USE AN EXTENSION IN MAIN PROGRAM FOR OBSERVABLEOBJECT
@@ -36,8 +39,10 @@ public class CoreMIDIConnection : ObservableObject {
     
     // Keep track of on/off notes
     private var chord: (PitchClass, Chord) = (.defaultPitchClass, .none)
+    private var currNotesIdx = 0
+    @Published var prevNotes = [Array<UInt32>?](repeating: nil, count: numPrevChords)
     @Published public var packetNote: UInt32?
-    @Published public var keysOn = Set<UInt32>()
+    @Published public var keysOn = Array<UInt32>()
     @Published public var keysOnNames = Set<String>()
     @Published public var chordName = " "
     
@@ -144,7 +149,7 @@ public class CoreMIDIConnection : ObservableObject {
                 self.keysOnNames = []
                 for i in 0..<128 {
                     if self.midiAdapter.getNote(Int32(i)) {
-                        self.keysOn.insert(UInt32(i + 1))
+                        self.keysOn.append(UInt32(i + 1))
                         self.keysOnNames.insert(toPClass(UInt32(i + 1)).name)
                     }
                 }
@@ -161,6 +166,29 @@ public class CoreMIDIConnection : ObservableObject {
                     self.chordName = " "
                 } else {
                     self.chordName = chordToName(self.chord) ?? " "
+                }
+                
+                // Update previous chords
+                if let uCurrNotes = self.prevNotes[mod(self.currNotesIdx, numPrevChords)] {
+                    print("idx", self.currNotesIdx)
+                    let currChord = toChord(uCurrNotes).1
+                    let nextNotes = self.keysOn
+                    let nextChord = self.chord.1
+                    print("    currChord", currChord)
+                    print("    nextChord", nextChord)
+                    if nextChord != .none && nextChord != currChord {
+                        if (nextChord == .majSeven && currChord == .maj)
+                                || (nextChord == .maj && currChord == .majSeven) {
+                            self.prevNotes[self.currNotesIdx] = nextNotes
+                        } else {
+                            print("    ...different")
+                            self.currNotesIdx = mod(self.currNotesIdx + 1, numPrevChords)
+                            self.prevNotes[self.currNotesIdx] = nextNotes
+                        }
+                    }
+                } else if self.chord.1 != .none {
+                    print(self.chord.1, "replace")
+                    self.prevNotes[self.currNotesIdx] = self.keysOn
                 }
                 
                 // Update lighting
