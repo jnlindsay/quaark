@@ -7,13 +7,12 @@
 
 import SwiftUI
 import Foundation
-import Logger
 
 @main
 struct Chord_AnalyserApp: App {
     
     init() {
-        log(.routine, "Chord Analyser has started.")            
+        print("Chord Analyser has started.")            
     }
     
     var body: some Scene {

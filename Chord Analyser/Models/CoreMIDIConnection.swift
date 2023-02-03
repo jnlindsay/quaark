@@ -9,8 +9,6 @@
 
 import Foundation
 import CoreMIDI
-import Logger
-import CoreMIDIInterface
 import SwiftUI
 
 // Constants
@@ -18,26 +16,14 @@ private let numPrevChords = 8
 
 @available(macOS 11.0, *)
 public class CoreMIDIConnection : ObservableObject {
-    // ! TODO: USE AN EXTENSION IN MAIN PROGRAM FOR OBSERVABLEOBJECT
     
-    /// ! WARNING: bad API separation
-
-    let interface = CoreMIDIInterface()
-    
-    // PacketReceiver.swift stuff
     public let midiAdapter = MIDIAdapter(logging: true)
-    private var receiverOptions = ReceiverOptions()
-    private var hasDestination: Bool = false
-    private var source: MIDIEndpointRef
+    private var client: MIDIClientRef
+    private var port: MIDIPortRef
+    private var source: MIDIEndpointRef?
     private var timer: Timer?
     
-    /// ! TODO: rewrite as class in interface
-    
-    // create client and port
-    private var client = MIDIClientRef()
-    private var outPort = MIDIPortRef()
-    
-    // Keep track of on/off notes
+    // SwiftUI
     private var chord: (PitchClass, Chord) = (.defaultPitchClass, .none)
     private var currNotesIdx = 0
     @Published var prevNotes = [Array<UInt32>?](repeating: nil, count: numPrevChords)
@@ -51,98 +37,102 @@ public class CoreMIDIConnection : ObservableObject {
     
     public init() {
         
-        log(.coreMIDIInterface, "Initialisation has begun.")
+        print("--- Initialisation has begun. ---")
         
-        // all notes off by default
+        self.client = MIDIClientRef()
+        self.port = MIDIPortRef()
+        self.createMIDIClient()
+        self.listMIDIDevices()
+        self.listMIDISources()
+        if MIDIGetNumberOfSources() > 0 {
+            self.source = MIDIGetSource(0)
+        }
+        self.createMIDIInputPort()
+        self.connectPortToSource(self.port, self.source)
+        self.turnAllKeyboardNotesOff()
+        self.startMIDIListener()
+        
+        print("--- Initialisation is complete. ---")
+            
+    }
+    
+    private func createMIDIClient() {
+        let status = MIDIClientCreateWithBlock("Chord Analyser MIDI Client" as CFString, &self.client) { _ in }
+        if status == noErr { print("MIDI Client successfully created.") }
+        else { print("Failed to create the MIDI client.") }
+    }
+    
+    private func listMIDIDevices() {
+        let numDevices = MIDIGetNumberOfDevices()
+        print("Number of MIDI devices found: \(numDevices)")
+        for i in 0..<numDevices {
+            let device = MIDIGetDevice(i)
+            var maybeDeviceName: Unmanaged<CFString>?
+            MIDIObjectGetStringProperty(device, kMIDIPropertyName, &maybeDeviceName)
+            if let deviceName = maybeDeviceName {
+                print("    Name of device \(i): \(deviceName.takeRetainedValue() as String)")
+            } else {
+                print("    Name of device \(i) not found.")
+            }
+        }
+    }
+    
+    private func listMIDISources() {
+        let numSources = MIDIGetNumberOfSources()
+        print("Number of MIDI sources found: \(numSources)")
+        for i in 0..<numSources {
+            let source = MIDIGetSource(i)
+            var maybeSourceName: Unmanaged<CFString>?
+            MIDIObjectGetStringProperty(source, kMIDIPropertyName, &maybeSourceName)
+            if let sourceName = maybeSourceName {
+                print("    Name of source \(i): \(sourceName.takeRetainedValue() as String)")
+            } else {
+                print("    Name of source \(i) not found.")
+            }
+        }
+    }
+    
+    private func createMIDIInputPort() {
+        let destinationName = "Default destination name"
+        let status = self.midiAdapter.createMIDIInputPort(self.client,
+                                                          named: destinationName as CFString,
+                                                          protocol: MIDIProtocolID._1_0,
+                                                          dest: &self.port)
+        if status == noErr {
+            print("MIDI input port successfully created.")
+        } else {
+            print("Failed creating MIDI input port.")
+        }
+    }
+    
+    private func connectPortToSource(_ port: MIDIPortRef, _ source: MIDIEndpointRef?) {
+        if let uSource = source {
+            let status = MIDIPortConnectSource(port, uSource, nil)
+//            print("self.outPort:", self.outPort)
+//            print("self.source", self.source)
+            if status == noErr {
+                print("Port successfully connected to source.")
+            } else {
+                print("Failed connecting port to source (ERR: \(status))")
+            }
+        } else {
+            print("Failed connecting port to source (invalid source)")
+        }
+    }
+    
+    func turnAllKeyboardNotesOff() {
         for i in 0..<117 {
             midiAdapter.setNote(Int32(i), false)
         }
-        
-        // create client
-        var status = MIDIClientCreateWithBlock("Chord Analyser MIDI Client" as CFString, &client) { _ in }
-        if status != noErr { print("Failed to create the MIDI client.") }
-        else { log(.coreMIDIInterface, "Chord Analyser MIDI Client successfully created.") }
-        
-        // list devices
-        let numDevices = interface.getNumberOfDevices()
-        log(.coreMIDIInterface, "\(numDevices) devices found")
-        for i in 0..<numDevices {
-            let device = interface.getDevice(i)
-            var deviceName: Unmanaged<CFString>?
-            interface.objectGetStringProperty(device, kMIDIPropertyName, &deviceName)
-            log(.coreMIDIInterface, "Name of device \(i): \(deviceName?.takeRetainedValue() as String?)")
-        }
-        
-        // list external devices
-        let numExternalDevices = interface.getNumberOfExternalDevices()
-        log(.coreMIDIInterface, "\(numExternalDevices) external devices found")
-        
-        // list sources
-        let numSources = interface.getNumberOfSources()
-        log(.coreMIDIInterface, "\(numSources) sources found")
-        for i in 0..<numSources {
-            let source = interface.getSource(i)
-            var sourceName: Unmanaged<CFString>?
-            interface.objectGetStringProperty(source, kMIDIPropertyName, &sourceName)
-            log(.coreMIDIInterface, "Name of source \(i): \(sourceName?.takeRetainedValue() as String?)")
-        }
-        
-        // choose source
-        self.source = interface.getSource(0)
-        
-        setupModel()
-        
-        // connect port to source
-        status = interface.portConnectSource(
-            self.outPort,
-            self.source,
-            nil
-        )
-        print("self.outPort:", self.outPort)
-        print("self.source", self.source)
-        print("portConnectSource >>", String(describing: status))
-        
-        // Start MIDI listener
-        startLogTimer()
-        
-        log(.coreMIDIInterface, "Initialisation is complete.")
-            
     }
     
-    private func setupModel() {
-        
-        log(.coreMIDIInterface, "setupModel() has begun.")
-            
-            guard let protocolID = MIDIProtocolID(rawValue: self.receiverOptions.protocolID) else { return }
-            
-            let destinationName = self.receiverOptions.destinationName
-            
-            let status = self.midiAdapter.createMIDIInputPort(self.client,
-                                                                named: destinationName as CFString,
-                                                                protocol: protocolID,
-                                                                dest: &self.outPort)
-
-            if status == noErr {
-                print("Successfully created the \(protocolID.description) destination with the name \(destinationName).")
-                self.hasDestination = true
-            } else {
-                print("Failed to create the \(protocolID.description) destination.")
-                print(String(describing: status))
-            }
-    }
-    
-    // This function calls the MIDIAdapter Objective-C++ files, which deal with realtime MIDI input.
-    // MIDIAdapter.mm has functionatliy that unwraps an `evtlist` into packets, which are stuffed
-    //   into a queue to be dealt with below.
-    func startLogTimer() {
-        log(.coreMIDIInterface, "Log timer started")
+    func startMIDIListener() {
+        print("MIDI listener has been started.")
         timer = Timer.scheduledTimer(withTimeInterval: 0.01, repeats: true) { [weak self] timer in
+            
             guard let self = self else { return }
             
             self.midiAdapter.processBuffer() {
-                
-                // --------- CALLBACK ---------
-                // Note: following occurs only if there were new MIDI messages to be processed.
                 
                 // Update keys on
                 self.keysOn = []
@@ -203,11 +193,5 @@ public class CoreMIDIConnection : ObservableObject {
             }
             
         }
-    }
-}
-
-extension Data {
-    var hexDescription: String {
-        return reduce("") {$0 + String(format: "%02x", $1)}
     }
 }

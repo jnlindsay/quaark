@@ -61,7 +61,6 @@ int returnAnInt() { return 23423; }
 
     // Create queue
     __block MIDIMessageFIFO *msgQueue = messageQueue.get();
-    printf("Ring buffer created.\n");
 
     // Create input port
     const auto status = MIDIInputPortCreateWithProtocol(client, name, protocol, outPort, ^(const MIDIEventList *evtlist, void * __nullable srcConnRefCon) {
