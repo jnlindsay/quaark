@@ -5,7 +5,7 @@
 
 typedef SingleProducerSingleConsumerQueue<MIDIEventPacket> MIDIMessageFIFO;
 
-@implementation MIDIAdapter {
+@implementation CoreMIDIRealTime {
     std::unique_ptr<MIDIMessageFIFO> messageQueue;
     @public bool notes[128];
 }
@@ -60,39 +60,39 @@ typedef SingleProducerSingleConsumerQueue<MIDIEventPacket> MIDIMessageFIFO;
     
     if (!messageQueue) return;
     
-    while (const auto message = messageQueue->pop()) {
-        // Note: `message` has type std::optional<MIDIEventPacket>
-        if (message.has_value()) {
-            for (auto i = 0; i < message->wordCount; i++) {
-                uint8_t velocity =  message->words[i]        & 0xFF;
-                uint8_t status   = (message->words[i] >> 16) & 0xFF;
-                uint8_t note     = (message->words[i] >> 8)  & 0xFF;
-//                printf("Note: %d\n", note);
-                if (status == 0x90 || status == 0x80) {
-                    notes[note - 1] = (status == 0x90);
-                }
-                if (velocity == 0x00) {
-                    printf("Velocity: %x\n", velocity);
-                    notes[note - 1] = false;
-                }
-            }
-            
-            // Callback runs only if there were new messages
-            callback();
-            
-        }
-    }
+//    while (const auto message = messageQueue->pop()) {
+//        // Note: `message` has type std::optional<MIDIEventPacket>
+//        if (message.has_value()) {
+//            for (auto i = 0; i < message->wordCount; i++) {
+//                uint8_t velocity =  message->words[i]        & 0xFF;
+//                uint8_t status   = (message->words[i] >> 16) & 0xFF;
+//                uint8_t note     = (message->words[i] >> 8)  & 0xFF;
+////                printf("Note: %d\n", note);
+//                if (status == 0x90 || status == 0x80) {
+//                    notes[note - 1] = (status == 0x90);
+//                }
+//                if (velocity == 0x00) {
+//                    printf("Velocity: %x\n", velocity);
+//                    notes[note - 1] = false;
+//                }
+//            }
+//
+//            // Callback runs only if there were new messages
+//            callback();
+//
+//        }
+//    }
     
 }
 
-//-(void)popDestinationMessages:(void (^)(const MIDIEventPacket))callback {
-//    if (!messageQueue)
-//        return;
-//
-//    while (const auto message = messageQueue->pop()) {
-//        callback(*message);
-//    }
-//}
+-(void)popMIDIMessages:(void (^)(const MIDIEventPacket))callback {
+    if (!messageQueue)
+        return;
+
+    while (const auto message = messageQueue->pop()) {
+        callback(*message);
+    }
+}
 
 @end
 

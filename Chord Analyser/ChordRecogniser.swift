@@ -20,8 +20,7 @@ enum Chord : String {
 
 // At any one time, a maximum of 16 notes can be played simultaneously. We keep track of chords using Swift's 'set' data structure.
 
-// Given a set of keys, return the pitch classes
-func keysToPitches(_ keys: Array<UInt32>) -> Set<PitchClass> {
+func keysToPitches(_ keys: Array<UInt8>) -> Set<PitchClass> {
     var res: Set<PitchClass> = Set()
     for key in keys {
         res.insert(toPClass(key))
@@ -30,7 +29,7 @@ func keysToPitches(_ keys: Array<UInt32>) -> Set<PitchClass> {
 }
 
 // Given a set of keys, return the pitch classes
-func keysToPitchNames(_ keys: Set<UInt32>) -> Set<String> {
+func keysToPitchNames(_ keys: Set<UInt8>) -> Set<String> {
     var res: Set<String> = Set()
     for key in keys {
         res.insert(toPClass(key).name)
@@ -39,7 +38,7 @@ func keysToPitchNames(_ keys: Set<UInt32>) -> Set<String> {
 }
 
 // Given a set of keys, sort the keys and return the pitch classes in order
-func sortKeysToPitches(_ keys: Set<UInt32>) -> Array<PitchClass> {
+func sortKeysToPitches(_ keys: Set<UInt8>) -> Array<PitchClass> {
     var keysArray = Array(keys)
     keysArray.sort()
     var res: Array<PitchClass> = Array(repeating: .defaultPitchClass, count: keysArray.count)
@@ -51,7 +50,7 @@ func sortKeysToPitches(_ keys: Set<UInt32>) -> Array<PitchClass> {
 }
 
 // Given a set of keys, sort the keys and return the pitch names in order
-func sortChordtoPitchNames(keys: Set<UInt32>) -> Array<String> {
+func sortChordtoPitchNames(keys: Set<UInt8>) -> Array<String> {
     var keysArray = Array(keys)
     keysArray.sort()
     var res: Array<String> = Array(repeating: "", count: keysArray.count)
@@ -69,7 +68,7 @@ func chordToName(_ chord: (PitchClass, Chord)) -> String? {
 }
 
 // given a set of pitches, return the chord name
-func toChord(_ keys: Array<UInt32>) -> (PitchClass, Chord) {
+func toChord(_ keys: Array<UInt8>) -> (PitchClass, Chord) {
     
     // sort pitch classes
     var pitches = Array(keysToPitches(keys))

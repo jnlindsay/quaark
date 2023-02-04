@@ -5,19 +5,23 @@
 //  Created by Jeremy Lindsay on 14/12/2022.
 //
 
-// ! TODO: CONVERT THIS FILE INTO MIDIConnection, i.e. REMOVE ALL REFERENCES TO COREMIDI
-
 import Foundation
 import CoreMIDI
 import SwiftUI
 
 // Constants
+private let NUM_NOTES = 128
 private let numPrevChords = 8
 
 @available(macOS 11.0, *)
 public class CoreMIDIConnection : ObservableObject {
     
-    public let midiAdapter = MIDIAdapter(logging: true)
+    // TEMP
+    @Published private var notesOn = [Bool](repeating: false, count: NUM_NOTES)
+    @Published public var readableNotesOn = Set<String>()
+    
+//    public let obj = obj()
+    public var obj = ObjCoreMIDIConnection()
     private var client: MIDIClientRef
     private var port: MIDIPortRef
     private var source: MIDIEndpointRef?
@@ -49,7 +53,6 @@ public class CoreMIDIConnection : ObservableObject {
         }
         self.createMIDIInputPort()
         self.connectPortToSource(self.port, self.source)
-        self.turnAllKeyboardNotesOff()
         self.startMIDIListener()
         
         print("--- Initialisation is complete. ---")
@@ -94,7 +97,7 @@ public class CoreMIDIConnection : ObservableObject {
     
     private func createMIDIInputPort() {
         let destinationName = "Default destination name"
-        let status = self.midiAdapter.createMIDIInputPort(self.client,
+        let status = self.obj.createMIDIInputPort(self.client,
                                                           named: destinationName as CFString,
                                                           protocol: MIDIProtocolID._1_0,
                                                           dest: &self.port)
@@ -118,78 +121,104 @@ public class CoreMIDIConnection : ObservableObject {
         }
     }
     
-    func turnAllKeyboardNotesOff() {
-        for i in 0..<117 {
-            midiAdapter.setNote(Int32(i), false)
-        }
-    }
-    
     func startMIDIListener() {
+        
         print("MIDI listener has been started.")
+        
         timer = Timer.scheduledTimer(withTimeInterval: 0.01, repeats: true) { [weak self] timer in
             
             guard let self = self else { return }
             
-            self.midiAdapter.processBuffer() {
-                
-                // Update keys on
-                self.keysOn = []
-                self.keysOnNames = []
-                for i in 0..<128 {
-                    if self.midiAdapter.getNote(Int32(i)) {
-                        self.keysOn.append(UInt32(i + 1))
-                        self.keysOnNames.insert(toPClass(UInt32(i + 1)).name)
-                    }
-                }
-                
-                // Update chord
-                if self.keysOn.isEmpty {
-                    self.chord = (.defaultPitchClass, .none)
-                } else {
-                    self.chord = toChord(self.keysOn)
-                }
-                
-                // Update chord name
-                if self.keysOn.isEmpty {
-                    self.chordName = " "
-                } else {
-                    self.chordName = chordToName(self.chord) ?? " "
-                }
-                
-                // Update previous chords
-                if let uCurrNotes = self.prevNotes[mod(self.currNotesIdx, numPrevChords)] {
-                    print("idx", self.currNotesIdx)
-                    let currChord = toChord(uCurrNotes).1
-                    let nextNotes = self.keysOn
-                    let nextChord = self.chord.1
-                    print("    currChord", currChord)
-                    print("    nextChord", nextChord)
-                    if nextChord != .none && nextChord != currChord {
-                        if (nextChord == .majSeven && currChord == .maj)
-                                || (nextChord == .maj && currChord == .majSeven) {
-                            self.prevNotes[self.currNotesIdx] = nextNotes
-                        } else {
-                            print("    ...different")
-                            self.currNotesIdx = mod(self.currNotesIdx + 1, numPrevChords)
-                            self.prevNotes[self.currNotesIdx] = nextNotes
-                        }
-                    }
-                } else if self.chord.1 != .none {
-                    print(self.chord.1, "replace")
-                    self.prevNotes[self.currNotesIdx] = self.keysOn
-                }
-                
-                // Update lighting
-                if self.chord.1 == .min {
-                    self.backgroundColour = .black
-                } else if self.chord.1 == .maj {
-                    self.backgroundColour = .yellow
-                } else {
-                    self.backgroundColour = .gray
-                }
-                
+            self.obj.popMIDIWords() { word in
+                let note = toNote(word)
+                self.updateCurrentState(note)
             }
+            
+//            self.obj.processMessage() //{
+                
+//                // Update keys on
+//                self.keysOn = []
+//                self.keysOnNames = []
+//                for i in 0..<128 {
+//                    if self.obj.getNote(Int32(i)) {
+//                        self.keysOn.append(UInt32(i + 1))
+//                        self.keysOnNames.insert(toPClass(UInt32(i + 1)).name)
+//                    }
+//                }
+//
+//                // Update chord
+//                if self.keysOn.isEmpty {
+//                    self.chord = (.defaultPitchClass, .none)
+//                } else {
+//                    self.chord = toChord(self.keysOn)
+//                }
+//
+//                // Update chord name
+//                if self.keysOn.isEmpty {
+//                    self.chordName = " "
+//                } else {
+//                    self.chordName = chordToName(self.chord) ?? " "
+//                }
+//
+//                // Update previous chords
+//                if let uCurrNotes = self.prevNotes[mod(self.currNotesIdx, numPrevChords)] {
+//                    print("idx", self.currNotesIdx)
+//                    let currChord = toChord(uCurrNotes).1
+//                    let nextNotes = self.keysOn
+//                    let nextChord = self.chord.1
+//                    print("    currChord", currChord)
+//                    print("    nextChord", nextChord)
+//                    if nextChord != .none && nextChord != currChord {
+//                        if (nextChord == .majSeven && currChord == .maj)
+//                                || (nextChord == .maj && currChord == .majSeven) {
+//                            self.prevNotes[self.currNotesIdx] = nextNotes
+//                        } else {
+//                            print("    ...different")
+//                            self.currNotesIdx = mod(self.currNotesIdx + 1, numPrevChords)
+//                            self.prevNotes[self.currNotesIdx] = nextNotes
+//                        }
+//                    }
+//                } else if self.chord.1 != .none {
+//                    print(self.chord.1, "replace")
+//                    self.prevNotes[self.currNotesIdx] = self.keysOn
+//                }
+//
+//                // Update lighting
+//                if self.chord.1 == .min {
+//                    self.backgroundColour = .black
+//                } else if self.chord.1 == .maj {
+//                    self.backgroundColour = .yellow
+//                } else {
+//                    self.backgroundColour = .gray
+//                }
+//
+//            }
             
         }
     }
+    
+    func getNotesOn(_ index: Int) -> Bool {
+        return self.notesOn[index]
+    }
+
+    func updateCurrentState(_ note: Note) {
+        
+        // 0x90 is on, 0x80 is off
+        if (note.status == 0x90 || note.status == 0x80) {
+            let noteOn: Bool = (note.status == 0x90)
+            self.notesOn[Int(note.note) - 1] = noteOn
+            if noteOn {
+                readableNotesOn.insert(toPClass(note.note).name)
+            } else {
+                readableNotesOn.remove(toPClass(note.note).name)
+            }
+        }
+        
+        if (note.velocity == 0x00) {
+            self.notesOn[Int(note.note) - 1] = false
+            self.readableNotesOn.remove(String(note.note))
+        }
+    }
+
+    
 }

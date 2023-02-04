@@ -13,7 +13,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 extern int returnAnInt();
 
-@interface MIDIAdapter : NSObject
+@interface CoreMIDIRealTime : NSObject
 
 -(instancetype)init;
 
@@ -27,7 +27,7 @@ extern int returnAnInt();
 
 -(void)processBuffer:(void (^)(void))callback;
 
-//-(void)popDestinationMessages:(void (^)(const MIDIEventPacket))callback;
+-(void)popMIDIMessages:(void (^)(const MIDIEventPacket))callback;
 
 @end
 

@@ -11,8 +11,9 @@
 		1968308B2983E6CA002232A7 /* DequeModule in Frameworks */ = {isa = PBXBuildFile; productRef = 1968308A2983E6CA002232A7 /* DequeModule */; };
 		19D8E2A3298605880003B5EC /* Miscellaneous.swift in Sources */ = {isa = PBXBuildFile; fileRef = 19D8E2A2298605880003B5EC /* Miscellaneous.swift */; };
 		19D8E2A8298DE69F0003B5EC /* Pitch.mm in Sources */ = {isa = PBXBuildFile; fileRef = 19D8E2A7298DE69F0003B5EC /* Pitch.mm */; };
+		19D8E2AF298E128C0003B5EC /* CoreMIDIConnection.mm in Sources */ = {isa = PBXBuildFile; fileRef = 19D8E2AE298E128C0003B5EC /* CoreMIDIConnection.mm */; };
 		19E2CC63294AB74400DFE7F9 /* Pitch.swift in Sources */ = {isa = PBXBuildFile; fileRef = 19E2CC62294AB74400DFE7F9 /* Pitch.swift */; };
-		19E2CC69294DCB2100DFE7F9 /* MIDIAdapter.mm in Sources */ = {isa = PBXBuildFile; fileRef = 19E2CC66294DCB2100DFE7F9 /* MIDIAdapter.mm */; };
+		19E2CC69294DCB2100DFE7F9 /* CoreMIDIRealTime.mm in Sources */ = {isa = PBXBuildFile; fileRef = 19E2CC66294DCB2100DFE7F9 /* CoreMIDIRealTime.mm */; };
 		19E2CC7B294DDC1F00DFE7F9 /* CoreMIDIConnection.swift in Sources */ = {isa = PBXBuildFile; fileRef = 19E2CC7A294DDC1F00DFE7F9 /* CoreMIDIConnection.swift */; };
 		19E456C929494ABF0037DF4B /* Chord_AnalyserApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 19E456C829494ABF0037DF4B /* Chord_AnalyserApp.swift */; };
 		19E456CB29494ABF0037DF4B /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 19E456CA29494ABF0037DF4B /* ContentView.swift */; };
@@ -27,9 +28,11 @@
 		19D8E2A2298605880003B5EC /* Miscellaneous.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Miscellaneous.swift; sourceTree = "<group>"; };
 		19D8E2A7298DE69F0003B5EC /* Pitch.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = Pitch.mm; sourceTree = "<group>"; };
 		19D8E2A9298DE6B40003B5EC /* Pitch.hh */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = Pitch.hh; sourceTree = "<group>"; };
+		19D8E2AE298E128C0003B5EC /* CoreMIDIConnection.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = CoreMIDIConnection.mm; sourceTree = "<group>"; };
+		19D8E2B0298E12A00003B5EC /* CoreMIDIConnection.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = CoreMIDIConnection.h; sourceTree = "<group>"; };
 		19E2CC62294AB74400DFE7F9 /* Pitch.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Pitch.swift; sourceTree = "<group>"; };
-		19E2CC66294DCB2100DFE7F9 /* MIDIAdapter.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = MIDIAdapter.mm; sourceTree = "<group>"; };
-		19E2CC67294DCB2100DFE7F9 /* MIDIAdapter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MIDIAdapter.h; sourceTree = "<group>"; };
+		19E2CC66294DCB2100DFE7F9 /* CoreMIDIRealTime.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = CoreMIDIRealTime.mm; sourceTree = "<group>"; };
+		19E2CC67294DCB2100DFE7F9 /* CoreMIDIRealTime.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CoreMIDIRealTime.h; sourceTree = "<group>"; };
 		19E2CC68294DCB2100DFE7F9 /* SingleProducerSingleConsumerQueue.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = SingleProducerSingleConsumerQueue.hpp; sourceTree = "<group>"; };
 		19E2CC7A294DDC1F00DFE7F9 /* CoreMIDIConnection.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CoreMIDIConnection.swift; sourceTree = "<group>"; };
 		19E456C529494ABF0037DF4B /* Chord Analyser.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Chord Analyser.app"; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -61,13 +64,22 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		19D8E2B1298E2E7B0003B5EC /* Libraries */ = {
+			isa = PBXGroup;
+			children = (
+				19D8E2A9298DE6B40003B5EC /* Pitch.hh */,
+				19D8E2A7298DE69F0003B5EC /* Pitch.mm */,
+				19E2CC62294AB74400DFE7F9 /* Pitch.swift */,
+			);
+			path = Libraries;
+			sourceTree = "<group>";
+		};
 		19E2CC64294DCAF000DFE7F9 /* Realtime */ = {
 			isa = PBXGroup;
 			children = (
-				191830362982A970002D8FAB /* Chord Analyser-Bridging-Header.h */,
-				19E2CC67294DCB2100DFE7F9 /* MIDIAdapter.h */,
-				19E2CC66294DCB2100DFE7F9 /* MIDIAdapter.mm */,
 				19E2CC68294DCB2100DFE7F9 /* SingleProducerSingleConsumerQueue.hpp */,
+				19E2CC67294DCB2100DFE7F9 /* CoreMIDIRealTime.h */,
+				19E2CC66294DCB2100DFE7F9 /* CoreMIDIRealTime.mm */,
 			);
 			path = Realtime;
 			sourceTree = "<group>";
@@ -76,6 +88,8 @@
 			isa = PBXGroup;
 			children = (
 				19E2CC7A294DDC1F00DFE7F9 /* CoreMIDIConnection.swift */,
+				19D8E2B0298E12A00003B5EC /* CoreMIDIConnection.h */,
+				19D8E2AE298E128C0003B5EC /* CoreMIDIConnection.mm */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -104,12 +118,11 @@
 				19E456D629494AC00037DF4B /* Chord_Analyser.entitlements */,
 				19E456D329494AC00037DF4B /* Chord_Analyser.xcdatamodeld */,
 				19E456C829494ABF0037DF4B /* Chord_AnalyserApp.swift */,
+				191830362982A970002D8FAB /* Chord Analyser-Bridging-Header.h */,
 				19E456CA29494ABF0037DF4B /* ContentView.swift */,
 				196830872983D26F002232A7 /* ChordRecogniser.swift */,
 				19D8E2A2298605880003B5EC /* Miscellaneous.swift */,
-				19D8E2A9298DE6B40003B5EC /* Pitch.hh */,
-				19D8E2A7298DE69F0003B5EC /* Pitch.mm */,
-				19E2CC62294AB74400DFE7F9 /* Pitch.swift */,
+				19D8E2B1298E2E7B0003B5EC /* Libraries */,
 				19E2CC6A294DD13200DFE7F9 /* Models */,
 				19E456CE29494AC00037DF4B /* Preview Content */,
 				19E2CC64294DCAF000DFE7F9 /* Realtime */,
@@ -235,8 +248,9 @@
 				19E2CC7B294DDC1F00DFE7F9 /* CoreMIDIConnection.swift in Sources */,
 				19E456CB29494ABF0037DF4B /* ContentView.swift in Sources */,
 				19E456C929494ABF0037DF4B /* Chord_AnalyserApp.swift in Sources */,
+				19D8E2AF298E128C0003B5EC /* CoreMIDIConnection.mm in Sources */,
 				19D8E2A3298605880003B5EC /* Miscellaneous.swift in Sources */,
-				19E2CC69294DCB2100DFE7F9 /* MIDIAdapter.mm in Sources */,
+				19E2CC69294DCB2100DFE7F9 /* CoreMIDIRealTime.mm in Sources */,
 				19E2CC63294AB74400DFE7F9 /* Pitch.swift in Sources */,
 				196830882983D26F002232A7 /* ChordRecogniser.swift in Sources */,
 			);
@@ -394,7 +408,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = "jeremylindsay.Chord-Analyser";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_EMIT_LOC_STRINGS = YES;
-				SWIFT_OBJC_BRIDGING_HEADER = "Chord Analyser/Realtime/Chord Analyser-Bridging-Header.h";
+				SWIFT_OBJC_BRIDGING_HEADER = "Chord Analyser/Chord Analyser-Bridging-Header.h";
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				SWIFT_VERSION = 5.0;
 			};
@@ -427,7 +441,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = "jeremylindsay.Chord-Analyser";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_EMIT_LOC_STRINGS = YES;
-				SWIFT_OBJC_BRIDGING_HEADER = "Chord Analyser/Realtime/Chord Analyser-Bridging-Header.h";
+				SWIFT_OBJC_BRIDGING_HEADER = "Chord Analyser/Chord Analyser-Bridging-Header.h";
 				SWIFT_VERSION = 5.0;
 			};
 			name = Release;

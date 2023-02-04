@@ -9,13 +9,21 @@
 #define CoreMIDIConnection_h
 
 #include <Foundation/Foundation.h>
+#import <CoreMIDI/CoreMIDI.h>
+#import <stdio.h>
 
-@interface MIDIConnectionWrapper : NSObject
-@property (nonatomic, readonly) MIDIConnection *midiConnection;
-- (instancetype)initWithMyClass:(MyClass*)myClass;
-@end
+@interface ObjCoreMIDIConnection : NSObject
 
-- (void)initNotesToOff;
+-(bool)getNote:(int)n;
+-(void)setNote:(int)n :(bool)value;
+-(void)initNotesToOff;
+
+-(OSStatus)createMIDIInputPort:(MIDIClientRef)client
+                         named:(CFStringRef)name
+                      protocol:(MIDIProtocolID)protocol
+                          dest:(MIDIPortRef *)outPort;
+
+-(void)popMIDIWords:(void (^)(uint32_t word))callback;
 
 @end
 

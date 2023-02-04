@@ -59,7 +59,7 @@ extension PitchClass : Comparable {
     }
 }
 
-func toPClass(_ note: UInt32) -> PitchClass {
+func toPClass(_ note: UInt8) -> PitchClass {
     switch note % 12 {
     case 0:  return .c
     case 1:  return .csh
@@ -130,4 +130,17 @@ func toInterval(_ pClass1: PitchClass, _ pClass2: PitchClass) -> Interval {
     case 12: return Interval.octave
     default: return Interval.defaultInterval
     }
+}
+
+struct Note {
+    var velocity: UInt8
+    var note: UInt8
+    var status: UInt8
+}
+
+func toNote(_ midiWord: UInt32) -> Note {
+    let velocity: UInt8 = UInt8(midiWord       & 0xFF)
+    let note:     UInt8 = UInt8(midiWord >> 8  & 0xFF)
+    let status:   UInt8 = UInt8(midiWord >> 16 & 0xFF)
+    return Note(velocity: velocity, note: note, status: status)
 }
