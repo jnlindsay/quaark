@@ -3,4 +3,5 @@
 //
 
 #import "MIDIAdapter.h"
+#import "CoreMIDIConnection.h"
 #import "Pitch.hh"
