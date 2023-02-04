@@ -3,3 +3,4 @@
 //
 
 #import "MIDIAdapter.h"
+#import "Pitch.hh"

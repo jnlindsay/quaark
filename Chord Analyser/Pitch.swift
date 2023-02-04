@@ -8,7 +8,7 @@
 import Foundation
 
 // In MIDI 1.0, each note is assigned a numeric value, where middle C is 60.
-//   Here, we call each numeric value in the range 0, ..., 128 a "key".
+//   Here, we call each numeric value in the range 0, ..., 128 a "note".
 // There are 12 pitch classes.
 //   0  <-> C
 //   1  <-> C# ~ Db

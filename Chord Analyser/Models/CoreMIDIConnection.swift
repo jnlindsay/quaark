@@ -99,7 +99,7 @@ public class CoreMIDIConnection : ObservableObject {
                                                           protocol: MIDIProtocolID._1_0,
                                                           dest: &self.port)
         if status == noErr {
-            print("MIDI input port successfully created.")
+            print("MIDI input port successfully created at \(self.port).")
         } else {
             print("Failed creating MIDI input port.")
         }
@@ -108,8 +108,6 @@ public class CoreMIDIConnection : ObservableObject {
     private func connectPortToSource(_ port: MIDIPortRef, _ source: MIDIEndpointRef?) {
         if let uSource = source {
             let status = MIDIPortConnectSource(port, uSource, nil)
-//            print("self.outPort:", self.outPort)
-//            print("self.source", self.source)
             if status == noErr {
                 print("Port successfully connected to source.")
             } else {

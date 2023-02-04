@@ -8,7 +8,6 @@ An Objective-C adapter for low-level MIDI functions.
 #import <Foundation/Foundation.h>
 #import <CoreMIDI/CoreMIDI.h>
 #include <stdio.h>
-//#include <atomic>
 
 NS_ASSUME_NONNULL_BEGIN
 

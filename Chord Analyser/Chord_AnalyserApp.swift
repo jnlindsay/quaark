@@ -12,7 +12,11 @@ import Foundation
 struct Chord_AnalyserApp: App {
     
     init() {
-        print("Chord Analyser has started.")            
+        print("Chord Analyser has started.")
+        
+        // pure shenanigans
+        let myPitch = Pitch();
+        myPitch.printer();
     }
     
     var body: some Scene {
