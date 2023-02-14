@@ -17,8 +17,9 @@ private let numPrevChords = 8
 public class CoreMIDIConnection : ObservableObject {
     
     // TEMP
-    @Published private var notesOn = [Bool](repeating: false, count: NUM_NOTES)
-    @Published public var readableNotesOn = Set<String>()
+    @Published private var notesOnOff = [Bool](repeating: false, count: NUM_NOTES)
+    @Published public  var notesOn = Set<UInt8>()
+    @Published public  var notesOnNames = Set<String>()
     
 //    public let obj = obj()
     public var obj = ObjCoreMIDIConnection()
@@ -125,13 +126,17 @@ public class CoreMIDIConnection : ObservableObject {
         
         print("MIDI listener has been started.")
         
+        var i = 0
+        
         timer = Timer.scheduledTimer(withTimeInterval: 0.01, repeats: true) { [weak self] timer in
             
             guard let self = self else { return }
             
             self.obj.popMIDIWords() { word in
                 let note = toNote(word)
-                self.updateCurrentState(note)
+                self.updateNotesOnOff(note)
+                i += 1
+//                self.updateNotesOn()
             }
             
 //            self.obj.processMessage() //{
@@ -197,28 +202,43 @@ public class CoreMIDIConnection : ObservableObject {
         }
     }
     
-    func getNotesOn(_ index: Int) -> Bool {
-        return self.notesOn[index]
+    func getNotesOnOff(_ index: Int) -> Bool {
+        return self.notesOnOff[index]
     }
 
-    func updateCurrentState(_ note: Note) {
+    func updateNotesOnOff(_ note: Note) {
+        /*
+            Note: as of Feb 5, 2023, there must be a "single source of truth" for notes on,
+                  which is currently the `notesOnOff` boolean array. Each MIDI update loop, this
+                  array must be the FIRST data structure to be updated, so that others might
+                  read from it afterwards.
+         */
         
-        // 0x90 is on, 0x80 is off
         if (note.status == 0x90 || note.status == 0x80) {
-            let noteOn: Bool = (note.status == 0x90)
-            self.notesOn[Int(note.note) - 1] = noteOn
-            if noteOn {
-                readableNotesOn.insert(toPClass(note.note).name)
-            } else {
-                readableNotesOn.remove(toPClass(note.note).name)
-            }
+            // 0x90 is on, 0x80 is off
+            self.notesOnOff[Int(note.note) - 1] = (note.status == 0x90)
         }
         
         if (note.velocity == 0x00) {
-            self.notesOn[Int(note.note) - 1] = false
-            self.readableNotesOn.remove(String(note.note))
+            self.notesOnOff[Int(note.note) - 1] = false
+        }
+    }
+    
+    func updateNotesOn() {
+        self.notesOn.removeAll(keepingCapacity: true)
+        self.notesOnNames.removeAll(keepingCapacity: true)
+        for (i, noteOn) in self.notesOnOff.enumerated() {
+            let note = UInt8(i + 1)
+            if noteOn {
+                self.notesOn.insert(note)
+                self.notesOnNames.insert(toPClass(note).name)
+            } else {
+                if self.notesOn.contains(note) {
+                    self.notesOn.remove(note)
+                    self.notesOnNames.insert(toPClass(note).name)
+                }
+            }
         }
     }
 
-    
 }

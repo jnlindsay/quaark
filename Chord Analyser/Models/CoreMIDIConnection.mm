@@ -10,17 +10,20 @@
 
 #include "CoreMIDIConnection.h"
 #import "SingleProducerSingleConsumerQueue.hpp"
+#import <iostream>
 
 typedef SingleProducerSingleConsumerQueue<MIDIEventPacket> MIDIMessageFIFO;
 
 @implementation ObjCoreMIDIConnection {
     std::unique_ptr<MIDIMessageFIFO> messageQueue;
+    int count;
     bool notesOn[NUM_NOTES];
 }
 
 -(instancetype)init {
     self = [super init];
     if (self) {
+        count = 0;
         messageQueue = std::make_unique<MIDIMessageFIFO>(BUFFER_SIZE);
     }
     return self;
@@ -55,10 +58,19 @@ typedef SingleProducerSingleConsumerQueue<MIDIEventPacket> MIDIMessageFIFO;
             auto pkt = &evtlist->packet[0];
             
             for (int i = 0; i < evtlist->numPackets; ++i) {
+                printf("Word count of %d: %d\n", i, evtlist->packet[i].wordCount);
+                printf("0th message: %x\n", evtlist->packet[i].words[0]);
+                printf("1st packet: %x\n", evtlist->packet[1].words[0]);
                 if (!msgQueue->push(evtlist->packet[i])) {
                     msgQueue->push(evtlist->packet[i]);
                 }
                 pkt = MIDIEventPacketNext(pkt);
+                    /*
+                     TODO: pkt seems to go to nothing when evtlist->numPackets > 1.
+                           As of Feb 5 2022, this has only happened using Network MIDI.
+                           Should compare to MIDIPacketNext() in deprecated versions,
+                           and file bug report on MIDIEventPacketNext() if it works.
+                     */
             }
         }
     });
@@ -71,9 +83,16 @@ typedef SingleProducerSingleConsumerQueue<MIDIEventPacket> MIDIMessageFIFO;
     if (!messageQueue) return;
 
     while (const std::optional<MIDIEventPacket> message = messageQueue->pop()) {
-        for (int i = 0; i < message->wordCount; i++) {
-            uint32_t word = message->words[i];
-            callback(word);
+        if (message.has_value()) {
+//            printf("Word count: %d\n", message->wordCount);
+//            printf("0th message: %x\n", message->words[0]);
+//            printf("Words: %x\n", message->words);
+            for (int i = 0; i < message->wordCount; i++) {
+                uint32_t word = message->words[i];
+    //            count++;
+    //            std::cout << count << std::endl;
+                callback(word);
+            }
         }
     }
 }

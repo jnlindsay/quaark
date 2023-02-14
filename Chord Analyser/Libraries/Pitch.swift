@@ -134,13 +134,19 @@ func toInterval(_ pClass1: PitchClass, _ pClass2: PitchClass) -> Interval {
 
 struct Note {
     var velocity: UInt8
-    var note: UInt8
-    var status: UInt8
+    var note:     UInt8
+    var channel:  UInt8
+    var status:   UInt8
 }
+
+//          10000001 01001101 00000000
+// 00000000 sssscccc nnnnnnnn vvvvvvvv
+// s: status, c: channel, n: note, v: velocity
 
 func toNote(_ midiWord: UInt32) -> Note {
     let velocity: UInt8 = UInt8(midiWord       & 0xFF)
     let note:     UInt8 = UInt8(midiWord >> 8  & 0xFF)
-    let status:   UInt8 = UInt8(midiWord >> 16 & 0xFF)
-    return Note(velocity: velocity, note: note, status: status)
+    let channel:  UInt8 = UInt8(midiWord >> 16 & 0x0F)
+    let status:   UInt8 = UInt8(midiWord >> 16 & 0xF0)
+    return Note(velocity: velocity, note: note, channel: channel, status: status)
 }

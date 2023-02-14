@@ -21,7 +21,11 @@ struct ContentView: View {
                 }
                 HStack {
                     Text("Notes on:")
-                    Text(String(describing: midiConnection.readableNotesOn))
+                    Text(String(describing: midiConnection.notesOn))
+                }
+                HStack {
+                    Text("Readable notes on:")
+                    Text(String(describing: midiConnection.notesOnNames))
                 }
                 HStack {
                     Text("Previous chords:")
@@ -81,7 +85,7 @@ struct PhantomKeyboardView : View {
     func phantomOrBlackKeyToColour(i: Int) -> Color {
         let maybeNote: Int32? = blackKeyToNote[i]
         if let note = maybeNote {
-            return midiConnection.getNotesOn(Int(note)) ? keyOnColour : .black
+            return midiConnection.getNotesOnOff(Int(note)) ? keyOnColour : .black
         } else {
             return .clear
         }
@@ -100,7 +104,7 @@ struct PhantomKeyboardView : View {
                 // White keys
                 ForEach(0..<52) {
                     Rectangle()
-                        .fill(midiConnection.getNotesOn(Int(whiteKeyToNote[$0])) ? keyOnColour : .white)
+                        .fill(midiConnection.getNotesOnOff(Int(whiteKeyToNote[$0])) ? keyOnColour : .white)
                         .frame(width: 10, height: 100)
                         // -281 = -(572 / 2) + 5
                         .offset(x: -280.5 + CGFloat($0) * 11)
