@@ -51,26 +51,23 @@ typedef SingleProducerSingleConsumerQueue<MIDIEventPacket> MIDIMessageFIFO;
 
     __block MIDIMessageFIFO *msgQueue = messageQueue.get();
 
-    // In `MIDIInputPortCreateWithProtocol`, CoreMIDI creates a high-priority thread for us.
-    const auto status = MIDIInputPortCreateWithProtocol(client, name, protocol, outPort, ^(const MIDIEventList *evtlist, void * __nullable srcConnRefCon) {
+    
+    const auto status = MIDIInputPortCreateWithProtocol(client, name, protocol, outPort, ^(const MIDIEventList *evtlist,
+                                                                                           void * __nullable srcConnRefCon) {
+        /*
+         In this function, CoreMIDI creates a high-priority thread for us.
+         */
+        
+        /*
+         The variable `evtlist` holds MIDI packets, and each MIDI packet
+         has a fixed size.
+         */
 
         if (evtlist->numPackets > 0 && msgQueue) {
-            auto pkt = &evtlist->packet[0];
-            
+            const MIDIEventPacket *pkt = &evtlist->packet[0];
             for (int i = 0; i < evtlist->numPackets; ++i) {
-                printf("Word count of %d: %d\n", i, evtlist->packet[i].wordCount);
-                printf("0th message: %x\n", evtlist->packet[i].words[0]);
-                printf("1st packet: %x\n", evtlist->packet[1].words[0]);
-                if (!msgQueue->push(evtlist->packet[i])) {
-                    msgQueue->push(evtlist->packet[i]);
-                }
+                msgQueue->push(*pkt);
                 pkt = MIDIEventPacketNext(pkt);
-                    /*
-                     TODO: pkt seems to go to nothing when evtlist->numPackets > 1.
-                           As of Feb 5 2022, this has only happened using Network MIDI.
-                           Should compare to MIDIPacketNext() in deprecated versions,
-                           and file bug report on MIDIEventPacketNext() if it works.
-                     */
             }
         }
     });
@@ -84,13 +81,8 @@ typedef SingleProducerSingleConsumerQueue<MIDIEventPacket> MIDIMessageFIFO;
 
     while (const std::optional<MIDIEventPacket> message = messageQueue->pop()) {
         if (message.has_value()) {
-//            printf("Word count: %d\n", message->wordCount);
-//            printf("0th message: %x\n", message->words[0]);
-//            printf("Words: %x\n", message->words);
             for (int i = 0; i < message->wordCount; i++) {
                 uint32_t word = message->words[i];
-    //            count++;
-    //            std::cout << count << std::endl;
                 callback(word);
             }
         }
