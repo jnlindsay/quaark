@@ -19,9 +19,11 @@ struct Chord_AnalyserApp: App {
         myPitch.printer();
     }
     
+    @ObservedObject var midiConnection = CoreMIDIConnection()
+    
     var body: some Scene {
         WindowGroup {
-            ContentView()
+            ContentView(midiConnection: midiConnection)
         }
         Window("Yep", id: "yep") {
             MetalView()

@@ -17,12 +17,16 @@ class MetalViewController {
         self.view = MTKView()
         self.view.enableSetNeedsDisplay = true
         self.view.device = MTLCreateSystemDefaultDevice()
-        self.view.clearColor = MTLClearColorMake(0.0, 0.5, 1.0, 1.0)
+        self.view.clearColor = MTLClearColorMake(0.5, 0.5, 1.0, 1.0)
 
         self.renderer = MetalRenderer(metalKitView: view) // do we need to check !renderer, like in Objective-C?
         self.renderer.mtkView(self.view, drawableSizeWillChange: self.view.drawableSize)
 
         self.view.delegate = self.renderer
+    }
+    
+    func updateView() {
+//        self.renderer.draw(in: self.view)
     }
     
 }
@@ -37,7 +41,7 @@ struct MetalView : NSViewRepresentable {
     }
     
     func updateNSView(_ nsView: MTKView, context: Context) {
-        viewController.renderer.draw(in: viewController.view)
+        viewController.updateView()
     }
     
 }

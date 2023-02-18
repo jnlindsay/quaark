@@ -10,7 +10,7 @@ import SwiftUI
 struct ContentView: View {
     
     @Environment(\.openWindow) private var openWindow
-    @ObservedObject private var midiConnection = CoreMIDIConnection()
+    @State var midiConnection: CoreMIDIConnection
     
     var body: some View {
         ZStack {
@@ -126,9 +126,3 @@ struct PhantomKeyboardView : View {
             }
         }
     }
-
-struct ContentView_Previews: PreviewProvider {
-    static var previews: some View {
-        ContentView()
-    }
-}
