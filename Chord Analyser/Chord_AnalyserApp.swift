@@ -23,5 +23,8 @@ struct Chord_AnalyserApp: App {
         WindowGroup {
             ContentView()
         }
+        Window("Yep", id: "yep") {
+            MetalView()
+        }
     }
 }

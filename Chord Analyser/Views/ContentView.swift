@@ -9,6 +9,7 @@ import SwiftUI
 
 struct ContentView: View {
     
+    @Environment(\.openWindow) private var openWindow
     @ObservedObject private var midiConnection = CoreMIDIConnection()
     
     var body: some View {
@@ -16,24 +17,28 @@ struct ContentView: View {
             midiConnection.backgroundColour
             VStack {
                 Spacer()
-                HStack {
-                    Text("Packet note:")
-                }
-                HStack {
-                    Text("Notes on:")
-                    Text(String(describing: midiConnection.notesOn))
-                }
-                HStack {
-                    Text("Readable notes on:")
-                    Text(String(describing: midiConnection.notesOnNames))
-                }
-                HStack {
-                    Text("Previous chords:")
-                    Text(String(describing: midiConnection.prevNotes))
-                }
+//                HStack {
+//                    Text("Packet note:")
+//                }
+//                HStack {
+//                    Text("Notes on:")
+//                    Text(String(describing: midiConnection.notesOn))
+//                }
+//                HStack {
+//                    Text("Readable notes on:")
+//                    Text(String(describing: midiConnection.notesOnNames))
+//                }
+//                HStack {
+//                    Text("Previous chords:")
+//                    Text(String(describing: midiConnection.prevNotes))
+//                }
                 Spacer()
                 Text(String(midiConnection.chordName))
                     .font(.largeTitle)
+                Spacer()
+                Button("MetalView") {
+                    openWindow(id: "yep")
+                }
                 Spacer()
                 PhantomKeyboardView(
                     midiConnection: midiConnection
