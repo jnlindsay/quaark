@@ -9,7 +9,7 @@ import Foundation
 import simd
 import MetalKit
 
-class MetalRenderer : NSObject, MTKViewDelegate {
+class Renderer : NSObject, MTKViewDelegate {
     
     private let device: MTLDevice
     private let commandQueue: MTLCommandQueue

@@ -13,10 +13,6 @@ struct Chord_AnalyserApp: App {
     
     init() {
         print("Chord Analyser has started.")
-        
-        // pure shenanigans
-        let myPitch = Pitch();
-        myPitch.printer();
     }
     
     @ObservedObject var midiConnection = CoreMIDIConnection()

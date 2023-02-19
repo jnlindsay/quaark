@@ -11,7 +11,7 @@ import MetalKit
 class MetalViewController {
     
     public var view: MTKView
-    public var renderer: MetalRenderer
+    public var renderer: Renderer
     
     init() {
         self.view = MTKView()
@@ -19,7 +19,7 @@ class MetalViewController {
         self.view.device = MTLCreateSystemDefaultDevice()
         self.view.clearColor = MTLClearColorMake(0.5, 0.5, 1.0, 1.0)
 
-        self.renderer = MetalRenderer(mtkView: view) // do we need to check !renderer, like in Objective-C?
+        self.renderer = Renderer(mtkView: view) // do we need to check !renderer, like in Objective-C?
         self.renderer.mtkView(self.view, drawableSizeWillChange: self.view.drawableSize)
 
         self.view.delegate = self.renderer
