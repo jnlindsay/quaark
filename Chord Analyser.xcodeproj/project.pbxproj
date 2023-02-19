@@ -22,6 +22,7 @@
 		19E456CD29494AC00037DF4B /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 19E456CC29494AC00037DF4B /* Assets.xcassets */; };
 		19E456D029494AC00037DF4B /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 19E456CF29494AC00037DF4B /* Preview Assets.xcassets */; };
 		19E456D529494AC00037DF4B /* Chord_Analyser.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 19E456D329494AC00037DF4B /* Chord_Analyser.xcdatamodeld */; };
+		19F12BF729A1BB380064B3E7 /* MetalRenderer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 19F12BF629A1BB380064B3E7 /* MetalRenderer.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -48,6 +49,7 @@
 		19E456D429494AC00037DF4B /* Chord_Analyser.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = Chord_Analyser.xcdatamodel; sourceTree = "<group>"; };
 		19E456D629494AC00037DF4B /* Chord_Analyser.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = Chord_Analyser.entitlements; sourceTree = "<group>"; };
 		19E456E129494C140037DF4B /* CoreMIDIInterface.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = CoreMIDIInterface.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		19F12BF629A1BB380064B3E7 /* MetalRenderer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MetalRenderer.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -74,6 +76,7 @@
 			children = (
 				197CCB4929A0CD08005BFEC0 /* MetalRenderer.h */,
 				197CCB5029A0E545005BFEC0 /* MetalRenderer.m */,
+				19F12BF629A1BB380064B3E7 /* MetalRenderer.swift */,
 			);
 			path = Metal;
 			sourceTree = "<group>";
@@ -279,6 +282,7 @@
 				19E2CC69294DCB2100DFE7F9 /* CoreMIDIRealTime.mm in Sources */,
 				19E2CC63294AB74400DFE7F9 /* Pitch.swift in Sources */,
 				196830882983D26F002232A7 /* ChordRecogniser.swift in Sources */,
+				19F12BF729A1BB380064B3E7 /* MetalRenderer.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
