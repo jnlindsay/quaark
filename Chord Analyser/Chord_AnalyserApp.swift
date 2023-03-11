@@ -11,18 +11,22 @@ import Foundation
 @main
 struct Chord_AnalyserApp: App {
     
-    init() {
-        print("Chord Analyser has started.")
-    }
-    
-    @ObservedObject var midiConnection = CoreMIDIConnection()
+    private var midiConnection = CoreMIDIConnection()
+    @ObservedObject var keyboardModel = KeyboardModel()    
     
     var body: some Scene {
         WindowGroup {
-            ContentView(midiConnection: midiConnection)
+            ContentView(keyboardModel: keyboardModel)
         }
         Window("MetalView", id: "metalView") {
             MetalView()
         }
     }
+    
+    init() {
+        print("Chord Analyser has started.")
+        self.midiConnection.setKeyboardModel(keyboardModel: self.keyboardModel)
+        self.midiConnection.startMIDIListener()
+    }
+    
 }

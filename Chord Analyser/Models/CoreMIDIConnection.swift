@@ -1,5 +1,5 @@
 //
-//  File.swift
+//  CoreMIDIConnection.swift
 //  
 //
 //  Created by Jeremy Lindsay on 14/12/2022.
@@ -9,17 +9,14 @@ import Foundation
 import CoreMIDI
 import SwiftUI
 
-private let NUM_NOTES = 128
-
 @available(macOS 11.0, *)
 public class CoreMIDIConnection : ObservableObject {
-    
-    @Published private var notesOnOff = [Bool](repeating: false, count: NUM_NOTES)
     
     private var realTime = CoreMIDIRealTime()
     private var client: MIDIClientRef
     private var port: MIDIPortRef
     private var source: MIDIEndpointRef?
+    private var keyboardModel: KeyboardModel?
     private var timer: Timer?
     
     public init() {
@@ -36,7 +33,6 @@ public class CoreMIDIConnection : ObservableObject {
         }
         self.createMIDIInputPort()
         self.connectPortToSource(self.port, self.source)
-        self.startMIDIListener()
         
         print("--- Initialisation is complete. ---")
             
@@ -105,9 +101,18 @@ public class CoreMIDIConnection : ObservableObject {
         }
     }
     
-    private func startMIDIListener() {
+    func setKeyboardModel(keyboardModel: KeyboardModel) {
+        self.keyboardModel = keyboardModel
+    }
+    
+    func startMIDIListener() {
         
         print("MIDI listener has been started.")
+        
+        guard let uKeyboardModel = self.keyboardModel else {
+            print("Keyboard model not detected in Core MIDI connection.")
+            return
+        }
         
         timer = Timer.scheduledTimer(withTimeInterval: 0.01, repeats: true) { [weak self] timer in
             
@@ -115,30 +120,8 @@ public class CoreMIDIConnection : ObservableObject {
             
             self.realTime.popMIDIWords() { word in
                 let note = toNote(word)
-                self.updateNotesOnOff(note)
+                uKeyboardModel.updateNotesOnOff(note)
             }
-        }
-    }
-    
-    func getNotesOnOff(_ index: Int) -> Bool {
-        return self.notesOnOff[index]
-    }
-
-    func updateNotesOnOff(_ note: Note) {
-        /*
-            Note: as of Feb 5, 2023, there must be a "single source of truth" for notes on,
-                  which is currently the `notesOnOff` boolean array. Each MIDI update loop, this
-                  array must be the FIRST data structure to be updated, so that others might
-                  read from it afterwards.
-         */
-        
-        if (note.status == 0x90 || note.status == 0x80) {
-            // 0x90 is on, 0x80 is off
-            self.notesOnOff[Int(note.note) - 1] = (note.status == 0x90)
-        }
-        
-        if (note.velocity == 0x00) {
-            self.notesOnOff[Int(note.note) - 1] = false
         }
     }
 

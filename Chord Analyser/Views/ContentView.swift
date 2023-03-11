@@ -10,7 +10,7 @@ import SwiftUI
 struct ContentView: View {
     
     @Environment(\.openWindow) private var openWindow
-    @State var midiConnection: CoreMIDIConnection
+    @State var keyboardModel: KeyboardModel
     
     var body: some View {
         VStack {
@@ -39,7 +39,7 @@ struct ContentView: View {
             }
             Spacer()
             PhantomKeyboardView(
-                midiConnection: midiConnection
+                keyboardModel: keyboardModel
             )
             Spacer()
         }
@@ -51,7 +51,8 @@ struct ContentView: View {
 struct PhantomKeyboardView : View {
     
     private let keyOnColour = Color.teal
-    @ObservedObject var midiConnection: CoreMIDIConnection
+//    @ObservedObject var midiConnection: CoreMIDIConnection
+    @ObservedObject var keyboardModel: KeyboardModel
     
     // 52 white keys
     private let whiteKeyToNote: [Int32] = [ // Note: the index of 59, for example, gives MIDI note 60 (middle C)
@@ -85,7 +86,7 @@ struct PhantomKeyboardView : View {
     func phantomOrBlackKeyToColour(i: Int) -> Color {
         let maybeNote: Int32? = blackKeyToNote[i]
         if let note = maybeNote {
-            return midiConnection.getNotesOnOff(Int(note)) ? keyOnColour : .black
+            return keyboardModel.getNotesOnOff(Int(note)) ? keyOnColour : .black
         } else {
             return .clear
         }
@@ -104,7 +105,7 @@ struct PhantomKeyboardView : View {
                 // White keys
                 ForEach(0..<52) {
                     Rectangle()
-                        .fill(midiConnection.getNotesOnOff(Int(whiteKeyToNote[$0])) ? keyOnColour : .white)
+                        .fill(keyboardModel.getNotesOnOff(Int(whiteKeyToNote[$0])) ? keyOnColour : .white)
                         .frame(width: 10, height: 100)
                         // -281 = -(572 / 2) + 5
                         .offset(x: -280.5 + CGFloat($0) * 11)
