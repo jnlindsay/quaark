@@ -11,23 +11,16 @@ An Objective-C adapter for low-level MIDI functions.
 
 NS_ASSUME_NONNULL_BEGIN
 
-extern int returnAnInt();
-
 @interface CoreMIDIRealTime : NSObject
 
 -(instancetype)init;
 
--(bool)getNote:(int)n;
--(void)setNote:(int)n :(bool)value;
-
 -(OSStatus)createMIDIInputPort:(MIDIClientRef)client
                          named:(CFStringRef)name
                       protocol:(MIDIProtocolID)protocol
-                          dest:(MIDIPortRef *)outPort;
+                       outPort:(MIDIPortRef *)outPort;
 
--(void)processBuffer:(void (^)(void))callback;
-
--(void)popMIDIMessages:(void (^)(const MIDIEventPacket))callback;
+-(void)popMIDIWords:(void (^)(const uint32_t))callback;
 
 @end
 

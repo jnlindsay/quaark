@@ -13,10 +13,8 @@ struct ContentView: View {
     @State var midiConnection: CoreMIDIConnection
     
     var body: some View {
-        ZStack {
-            midiConnection.backgroundColour
-            VStack {
-                Spacer()
+        VStack {
+            Spacer()
 //                HStack {
 //                    Text("Packet note:")
 //                }
@@ -32,27 +30,24 @@ struct ContentView: View {
 //                    Text("Previous chords:")
 //                    Text(String(describing: midiConnection.prevNotes))
 //                }
-                Spacer()
-                Text(String(midiConnection.chordName))
-                    .font(.largeTitle)
-                Spacer()
-                Button("MetalView") {
-                    openWindow(id: "yep")
-                }
-                Spacer()
-                PhantomKeyboardView(
-                    midiConnection: midiConnection
-                )
-                Spacer()
+            Spacer()
+//            Text(String(midiConnection.chordName))
+//                .font(.largeTitle)
+            Spacer()
+            Button("MetalView") {
+                openWindow(id: "metalView")
             }
+            Spacer()
+            PhantomKeyboardView(
+                midiConnection: midiConnection
+            )
+            Spacer()
         }
-//            .background(midiConnection.backgroundColour)
-    }
+        }
 }
 
-// Phantom keyboard. The word "phantom" indicates the
-//   "missing" black keys on the keyboard are drawn but have
-//   a "clear" colour.
+// The word "phantom" indicates the "missing" black keys on the
+//   keyboard are drawn but have a "clear" colour.
 struct PhantomKeyboardView : View {
     
     private let keyOnColour = Color.teal

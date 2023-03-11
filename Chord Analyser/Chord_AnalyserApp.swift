@@ -21,7 +21,7 @@ struct Chord_AnalyserApp: App {
         WindowGroup {
             ContentView(midiConnection: midiConnection)
         }
-        Window("Yep", id: "yep") {
+        Window("MetalView", id: "metalView") {
             MetalView()
         }
     }

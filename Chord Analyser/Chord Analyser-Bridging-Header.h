@@ -3,4 +3,3 @@
 //
 
 #import "CoreMIDIRealTime.h"
-#import "CoreMIDIConnection.h"

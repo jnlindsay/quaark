@@ -9,36 +9,18 @@ import Foundation
 import CoreMIDI
 import SwiftUI
 
-// Constants
 private let NUM_NOTES = 128
-private let numPrevChords = 8
 
 @available(macOS 11.0, *)
 public class CoreMIDIConnection : ObservableObject {
     
-    // TEMP
     @Published private var notesOnOff = [Bool](repeating: false, count: NUM_NOTES)
-    @Published public  var notesOn = Set<UInt8>()
-    @Published public  var notesOnNames = Set<String>()
     
-//    public let obj = obj()
-    public var obj = ObjCoreMIDIConnection()
+    private var realTime = CoreMIDIRealTime()
     private var client: MIDIClientRef
     private var port: MIDIPortRef
     private var source: MIDIEndpointRef?
     private var timer: Timer?
-    
-    // SwiftUI
-    private var chord: (PitchClass, Chord) = (.defaultPitchClass, .none)
-    private var currNotesIdx = 0
-    @Published var prevNotes = [Array<UInt32>?](repeating: nil, count: numPrevChords)
-    @Published public var packetNote: UInt32?
-    @Published public var keysOn = Array<UInt32>()
-    @Published public var keysOnNames = Set<String>()
-    @Published public var chordName = " "
-    
-    // Visuals
-    @Published public var backgroundColour: Color = .gray
     
     public init() {
         
@@ -90,6 +72,7 @@ public class CoreMIDIConnection : ObservableObject {
             MIDIObjectGetStringProperty(source, kMIDIPropertyName, &maybeSourceName)
             if let sourceName = maybeSourceName {
                 print("    Name of source \(i): \(sourceName.takeRetainedValue() as String)")
+                print("    GET RID: source \(source)")
             } else {
                 print("    Name of source \(i) not found.")
             }
@@ -98,10 +81,10 @@ public class CoreMIDIConnection : ObservableObject {
     
     private func createMIDIInputPort() {
         let destinationName = "Default destination name"
-        let status = self.obj.createMIDIInputPort(self.client,
-                                                          named: destinationName as CFString,
-                                                          protocol: MIDIProtocolID._1_0,
-                                                          dest: &self.port)
+        let status = self.realTime.createMIDIInputPort(self.client,
+                                                              named: destinationName as CFString,
+                                                              protocol: MIDIProtocolID._1_0,
+                                                              outPort: &self.port)
         if status == noErr {
             print("MIDI input port successfully created at \(self.port).")
         } else {
@@ -113,7 +96,7 @@ public class CoreMIDIConnection : ObservableObject {
         if let uSource = source {
             let status = MIDIPortConnectSource(port, uSource, nil)
             if status == noErr {
-                print("Port successfully connected to source.")
+                print("Port successfully connected to source \(uSource).")
             } else {
                 print("Failed connecting port to source (ERR: \(status))")
             }
@@ -122,83 +105,18 @@ public class CoreMIDIConnection : ObservableObject {
         }
     }
     
-    func startMIDIListener() {
+    private func startMIDIListener() {
         
         print("MIDI listener has been started.")
-        
-        var i = 0
         
         timer = Timer.scheduledTimer(withTimeInterval: 0.01, repeats: true) { [weak self] timer in
             
             guard let self = self else { return }
             
-            self.obj.popMIDIWords() { word in
+            self.realTime.popMIDIWords() { word in
                 let note = toNote(word)
                 self.updateNotesOnOff(note)
-                i += 1
-//                self.updateNotesOn()
             }
-            
-//            self.obj.processMessage() //{
-                
-//                // Update keys on
-//                self.keysOn = []
-//                self.keysOnNames = []
-//                for i in 0..<128 {
-//                    if self.obj.getNote(Int32(i)) {
-//                        self.keysOn.append(UInt32(i + 1))
-//                        self.keysOnNames.insert(toPClass(UInt32(i + 1)).name)
-//                    }
-//                }
-//
-//                // Update chord
-//                if self.keysOn.isEmpty {
-//                    self.chord = (.defaultPitchClass, .none)
-//                } else {
-//                    self.chord = toChord(self.keysOn)
-//                }
-//
-//                // Update chord name
-//                if self.keysOn.isEmpty {
-//                    self.chordName = " "
-//                } else {
-//                    self.chordName = chordToName(self.chord) ?? " "
-//                }
-//
-//                // Update previous chords
-//                if let uCurrNotes = self.prevNotes[mod(self.currNotesIdx, numPrevChords)] {
-//                    print("idx", self.currNotesIdx)
-//                    let currChord = toChord(uCurrNotes).1
-//                    let nextNotes = self.keysOn
-//                    let nextChord = self.chord.1
-//                    print("    currChord", currChord)
-//                    print("    nextChord", nextChord)
-//                    if nextChord != .none && nextChord != currChord {
-//                        if (nextChord == .majSeven && currChord == .maj)
-//                                || (nextChord == .maj && currChord == .majSeven) {
-//                            self.prevNotes[self.currNotesIdx] = nextNotes
-//                        } else {
-//                            print("    ...different")
-//                            self.currNotesIdx = mod(self.currNotesIdx + 1, numPrevChords)
-//                            self.prevNotes[self.currNotesIdx] = nextNotes
-//                        }
-//                    }
-//                } else if self.chord.1 != .none {
-//                    print(self.chord.1, "replace")
-//                    self.prevNotes[self.currNotesIdx] = self.keysOn
-//                }
-//
-//                // Update lighting
-//                if self.chord.1 == .min {
-//                    self.backgroundColour = .black
-//                } else if self.chord.1 == .maj {
-//                    self.backgroundColour = .yellow
-//                } else {
-//                    self.backgroundColour = .gray
-//                }
-//
-//            }
-            
         }
     }
     
@@ -221,23 +139,6 @@ public class CoreMIDIConnection : ObservableObject {
         
         if (note.velocity == 0x00) {
             self.notesOnOff[Int(note.note) - 1] = false
-        }
-    }
-    
-    func updateNotesOn() {
-        self.notesOn.removeAll(keepingCapacity: true)
-        self.notesOnNames.removeAll(keepingCapacity: true)
-        for (i, noteOn) in self.notesOnOff.enumerated() {
-            let note = UInt8(i + 1)
-            if noteOn {
-                self.notesOn.insert(note)
-                self.notesOnNames.insert(toPClass(note).name)
-            } else {
-                if self.notesOn.contains(note) {
-                    self.notesOn.remove(note)
-                    self.notesOnNames.insert(toPClass(note).name)
-                }
-            }
         }
     }
 

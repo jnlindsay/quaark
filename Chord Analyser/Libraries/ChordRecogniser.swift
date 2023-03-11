@@ -18,7 +18,8 @@ enum Chord : String {
     case none = " unidentified chord"
 }
 
-// At any one time, a maximum of 16 notes can be played simultaneously. We keep track of chords using Swift's 'set' data structure.
+// At any one time, a maximum of 16 notes can be played simultaneously.
+//   We keep track of chords using Swift's 'set' data structure.
 
 func keysToPitches(_ keys: Array<UInt8>) -> Set<PitchClass> {
     var res: Set<PitchClass> = Set()
