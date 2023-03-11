@@ -8,7 +8,7 @@
 import Foundation
 import DequeModule
 
-enum Chord : String {
+enum ChordType : String {
     case maj = " major"
     case min = " minor"
     case dim = " dim"
@@ -18,8 +18,10 @@ enum Chord : String {
     case none = " unidentified chord"
 }
 
-// At any one time, a maximum of 16 notes can be played simultaneously.
-//   We keep track of chords using Swift's 'set' data structure.
+struct Chord {
+    var root: PitchClass
+    var type: ChordType
+}
 
 func keysToPitches(_ keys: Array<UInt8>) -> Set<PitchClass> {
     var res: Set<PitchClass> = Set()
@@ -29,7 +31,6 @@ func keysToPitches(_ keys: Array<UInt8>) -> Set<PitchClass> {
     return res
 }
 
-// Given a set of keys, return the pitch classes
 func keysToPitchNames(_ keys: Set<UInt8>) -> Set<String> {
     var res: Set<String> = Set()
     for key in keys {
@@ -38,7 +39,6 @@ func keysToPitchNames(_ keys: Set<UInt8>) -> Set<String> {
     return res
 }
 
-// Given a set of keys, sort the keys and return the pitch classes in order
 func sortKeysToPitches(_ keys: Set<UInt8>) -> Array<PitchClass> {
     var keysArray = Array(keys)
     keysArray.sort()
@@ -50,7 +50,6 @@ func sortKeysToPitches(_ keys: Set<UInt8>) -> Array<PitchClass> {
     return res
 }
 
-// Given a set of keys, sort the keys and return the pitch names in order
 func sortChordtoPitchNames(keys: Set<UInt8>) -> Array<String> {
     var keysArray = Array(keys)
     keysArray.sort()
@@ -62,14 +61,12 @@ func sortChordtoPitchNames(keys: Set<UInt8>) -> Array<String> {
     return res
 }
 
-// given a chord in the form of a tuple, return in readable form
-func chordToName(_ chord: (PitchClass, Chord)) -> String? {
-    if chord.1 == .none { return nil }
-    else { return chord.0.name + chord.1.rawValue }
+func chordToName(_ chord: Chord) -> String? {
+    if chord.type == .none { return nil }
+    else { return chord.root.name + chord.type.rawValue }
 }
 
-// given a set of pitches, return the chord name
-func toChord(_ keys: Array<UInt8>) -> (PitchClass, Chord) {
+func toChord(_ keys: Array<UInt8>) -> Chord {
     
     // sort pitch classes
     var pitches = Array(keysToPitches(keys))
@@ -85,24 +82,24 @@ func toChord(_ keys: Array<UInt8>) -> (PitchClass, Chord) {
 //    print(String(describing: intervals))
 //    print("-----------------")
     
-    var res: (PitchClass, Chord) = (.defaultPitchClass, .none)
+    var res: Chord?
     
     if pitches.count <= 4 {
         switch intervals.popFirst() {
         case .minSecond:
             switch intervals.popFirst() {
             case .majThird:
-                if intervals.popFirst() == .minThird { res = (pitches[1], .majSeven) }
+                if intervals.popFirst() == .minThird { res = Chord(root: pitches[1], type: .majSeven) }
             default: break
             }
         case .majSecond:
             switch intervals.popFirst() {
             case .minThird:
-                if intervals.popFirst() == .majThird { res = (pitches[1], .minSeven) }
+                if intervals.popFirst() == .majThird { res = Chord(root: pitches[1], type: .minSeven) }
             case .majThird:
-                if intervals.isEmpty { res = (pitches[1], .domSeven) }
+                if intervals.isEmpty { res = Chord(root: pitches[1], type: .domSeven) }
                 else { switch intervals.popFirst() {
-                case .minThird: res = (pitches[1], .domSeven)
+                case .minThird: res = Chord(root: pitches[1], type: .domSeven)
                 default: break
                 }}
             default: break
@@ -111,56 +108,60 @@ func toChord(_ keys: Array<UInt8>) -> (PitchClass, Chord) {
             switch intervals.popFirst() {
             case .majSecond:
                 switch intervals.popFirst() {
-                case .majThird: res = (pitches[2], .domSeven)
-                case .minThird: res = (pitches[2], .minSeven)
+                case .majThird: res = Chord(root: pitches[2], type: .domSeven)
+                case .minThird: res = Chord(root: pitches[2], type: .minSeven)
                 default: break
                 }
             case .minThird:
-                if intervals.isEmpty { res = (pitches[0], .dim) }
+                if intervals.isEmpty { res = Chord(root: pitches[0], type: .dim) }
                 else { switch intervals.popFirst() {
-                case .majSecond: res = (pitches[3], .domSeven)
+                case .majSecond: res = Chord(root: pitches[3], type: .domSeven)
                 default: break
                 }}
             case .majThird:
-                if intervals.isEmpty { res = (pitches[0], .min) }
+                if intervals.isEmpty { res = Chord(root: pitches[0], type: .min) }
                 else { switch intervals.popFirst() {
-                case .minSecond: res = (pitches[3], .majSeven)
-                case .minThird: res = (pitches[0], .minSeven)
+                case .minSecond: res = Chord(root: pitches[3], type: .majSeven)
+                case .minThird: res = Chord(root: pitches[0], type: .minSeven)
                 default: break
                 }}
-            case .perfFourth: if intervals.isEmpty { res = (pitches[2], .maj) }
+            case .perfFourth: if intervals.isEmpty { res = Chord(root: pitches[2], type: .maj) }
             default: break
             }
         case .majThird:
             switch intervals.popFirst() {
             case .minSecond:
-                if intervals.popFirst() == .majThird { res = (pitches[2], .majSeven) }
+                if intervals.popFirst() == .majThird { res = Chord(root: pitches[2], type: .majSeven) }
             case .minThird:
-                if intervals.isEmpty { res = (pitches[0], .maj) }
+                if intervals.isEmpty { res = Chord(root: pitches[0], type: .maj) }
                 else { switch intervals.popFirst() {
-                case .majSecond: res = (pitches[3], .minSeven)
-                case .minThird: res = (pitches[0], .domSeven)
-                case .majThird: res = (pitches[0], .majSeven)
+                case .majSecond: res = Chord(root: pitches[3], type: .minSeven)
+                case .minThird: res = Chord(root: pitches[0], type: .domSeven)
+                case .majThird: res = Chord(root: pitches[0], type: .majSeven)
                 default: break
                 }}
-            case .perfFourth: if intervals.isEmpty { res = (pitches[2], .min) }
-            case .dimFifth: if intervals.isEmpty { res = (pitches[0], .domSeven) }
+            case .perfFourth: if intervals.isEmpty { res = Chord(root: pitches[2], type: .min) }
+            case .dimFifth: if intervals.isEmpty { res = Chord(root: pitches[0], type: .domSeven) }
             default: break
             }
         case .perfFourth:
             switch intervals.popFirst() {
-            case .minThird: if intervals.isEmpty { res = (pitches[1], .min) }
-            case .majThird: if intervals.isEmpty { res = (pitches[1], .maj) }
+            case .minThird: if intervals.isEmpty { res = Chord(root: pitches[1], type: .min) }
+            case .majThird: if intervals.isEmpty { res = Chord(root: pitches[1], type: .maj) }
             default: break
             }
         case .dimFifth:
             switch intervals.popFirst() {
-            case .majSecond: if intervals.isEmpty { res = (pitches[2], .domSeven) }
+            case .majSecond: if intervals.isEmpty { res = Chord(root: pitches[2], type: .domSeven) }
             default: break
             }
         default: break
         }
     }
     
-    return res
+    guard let uRes = res else {
+        return Chord(root: .defaultPitchClass, type: .none)
+    }
+    
+    return uRes
 }

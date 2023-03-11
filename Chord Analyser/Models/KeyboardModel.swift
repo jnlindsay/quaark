@@ -12,12 +12,14 @@ private let NUM_NOTES = 128
 public class KeyboardModel : ObservableObject {
     
     @Published private var notesOnOff = [Bool](repeating: false, count: NUM_NOTES)
+//    @Published private var chordName: String = "N/A"
+    @Published private var chord: Chord?
     
     func getNotesOnOff(_ index: Int) -> Bool {
         return self.notesOnOff[index]
     }
 
-    func updateNotesOnOff(_ note: Note) {
+    func updateNotesOnOffAndChord(_ note: Note) {
         /*
             Note: as of Feb 5, 2023, there must be a "single source of truth" for notes on,
                   which is currently the `notesOnOff` boolean array. Each MIDI update loop, this
@@ -33,8 +35,29 @@ public class KeyboardModel : ObservableObject {
         if (note.velocity == 0x00) {
             self.notesOnOff[Int(note.note) - 1] = false
         }
+        
+        self.updateChord()
+        
+    }
+    
+    func updateChord() {
+        var notes = Array<UInt8>()
+        for (i, note) in self.notesOnOff.enumerated() {
+            if note { notes.append(UInt8(i + 1)) }
+        }
+        self.chord = toChord(notes)
+    }
+    
+    func getChordName() -> String {
+        if let uChord = self.chord {
+            if let uChordName = chordToName(uChord) {
+                return uChordName
+            } else {
+                return "No chord name"
+            }
+        } else {
+            return "No chord"
+        }
     }
     
 }
-
-

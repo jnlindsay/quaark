@@ -12,11 +12,11 @@ import Foundation
 struct Chord_AnalyserApp: App {
     
     private var midiConnection = CoreMIDIConnection()
-    @ObservedObject var keyboardModel = KeyboardModel()    
+    private var keyboardModel = KeyboardModel()    
     
     var body: some Scene {
         WindowGroup {
-            ContentView(keyboardModel: keyboardModel)
+            ContentView(keyboardModel: self.keyboardModel)
         }
         Window("MetalView", id: "metalView") {
             MetalView()

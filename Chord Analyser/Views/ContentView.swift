@@ -10,29 +10,13 @@ import SwiftUI
 struct ContentView: View {
     
     @Environment(\.openWindow) private var openWindow
-    @State var keyboardModel: KeyboardModel
+    @ObservedObject var keyboardModel: KeyboardModel
     
     var body: some View {
         VStack {
             Spacer()
-//                HStack {
-//                    Text("Packet note:")
-//                }
-//                HStack {
-//                    Text("Notes on:")
-//                    Text(String(describing: midiConnection.notesOn))
-//                }
-//                HStack {
-//                    Text("Readable notes on:")
-//                    Text(String(describing: midiConnection.notesOnNames))
-//                }
-//                HStack {
-//                    Text("Previous chords:")
-//                    Text(String(describing: midiConnection.prevNotes))
-//                }
-            Spacer()
-//            Text(String(midiConnection.chordName))
-//                .font(.largeTitle)
+            Text(String(keyboardModel.getChordName()))
+                .font(.largeTitle)
             Spacer()
             Button("MetalView") {
                 openWindow(id: "metalView")
@@ -43,7 +27,7 @@ struct ContentView: View {
             )
             Spacer()
         }
-        }
+    }
 }
 
 // The word "phantom" indicates the "missing" black keys on the
@@ -51,7 +35,6 @@ struct ContentView: View {
 struct PhantomKeyboardView : View {
     
     private let keyOnColour = Color.teal
-//    @ObservedObject var midiConnection: CoreMIDIConnection
     @ObservedObject var keyboardModel: KeyboardModel
     
     // 52 white keys
