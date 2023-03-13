@@ -94,8 +94,8 @@ enum Interval {
     case defaultInterval
 }
 
-func toInterval(_ note1: Int, _ note2: Int) -> Interval {
-    switch abs(note1 - note2) % 12 {
+func toInterval(_ note1: UInt8, _ note2: UInt8) -> Interval {
+    switch abs(Int(note1) - Int(note2)) % 12 {
     case 0:  return Interval.unison
     case 1:  return Interval.minSecond
     case 2:  return Interval.majSecond

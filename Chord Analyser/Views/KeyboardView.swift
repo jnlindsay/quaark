@@ -18,6 +18,8 @@ struct ContentView: View {
             Text(String(keyboardModel.getChordName()))
                 .font(.largeTitle)
             Spacer()
+            Text("Dissonance: " + String(keyboardModel.getDissonance()))
+            Spacer()
             Button("MetalView") {
                 openWindow(id: "metalView")
             }

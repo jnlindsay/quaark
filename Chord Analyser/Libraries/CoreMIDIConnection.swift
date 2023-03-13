@@ -120,7 +120,7 @@ public class CoreMIDIConnection : ObservableObject {
             
             self.realTime.popMIDIWords() { word in
                 let note = toNote(word)
-                uKeyboardModel.updateNotesOnOffAndChord(note)
+                uKeyboardModel.updateKeyboardState(note)
             }
         }
     }

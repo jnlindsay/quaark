@@ -13,12 +13,40 @@ public class KeyboardModel : ObservableObject {
     
     @Published private var notesOnOff = [Bool](repeating: false, count: NUM_NOTES)
     @Published private var chord: Chord?
+    @Published private var dissonance: Float?
     
-    func getNotesOnOff(_ index: Int) -> Bool {
+    // TODO: make an init() function
+    
+    public func getNotesOnOff(_ index: Int) -> Bool {
         return self.notesOnOff[index]
     }
+    
+    public func getChordName() -> String {
+        if let uChord = self.chord {
+            if let uChordName = chordToName(uChord) {
+                return uChordName
+            } else {
+                return "No chord name"
+            }
+        } else {
+            return "No chord"
+        }
+    }
+    
+    public func getDissonance() -> Float {
+        if let uDissonance = self.dissonance {
+            return uDissonance
+        }
+        return -1.00
+    }
+    
+    func updateKeyboardState(_ note: Note) {
+        updateNotesOnOffAndChord(note)
+        updateChord()
+        updateDissonance()
+    }
 
-    func updateNotesOnOffAndChord(_ note: Note) {
+    private func updateNotesOnOffAndChord(_ note: Note) {
         /*
             Note: as of Feb 5, 2023, there must be a "single source of truth" for notes on,
                   which is currently the `notesOnOff` boolean array. Each MIDI update loop, this
@@ -34,12 +62,9 @@ public class KeyboardModel : ObservableObject {
         if (note.velocity == 0x00) {
             self.notesOnOff[Int(note.note) - 1] = false
         }
-        
-        self.updateChord()
-        
     }
     
-    func updateChord() {
+    private func updateChord() {
         // TODO: modify this function to not append to an array.
         var notes = Array<UInt8>()
         for (i, note) in self.notesOnOff.enumerated() {
@@ -48,15 +73,16 @@ public class KeyboardModel : ObservableObject {
         self.chord = toChord(notes)
     }
     
-    func getChordName() -> String {
-        if let uChord = self.chord {
-            if let uChordName = chordToName(uChord) {
-                return uChordName
-            } else {
-                return "No chord name"
-            }
+    private func updateDissonance() {
+        // TODO: putting notes in an array is duplicated
+        var notes = Array<UInt8>()
+        for (i, note) in self.notesOnOff.enumerated() {
+            if note { notes.append(UInt8(i + 1)) }
+        }
+        if notes.count == 2 {
+            self.dissonance = naiveInterval(toInterval(notes[0], notes[1]))
         } else {
-            return "No chord"
+            self.dissonance = -1.00
         }
     }
     
