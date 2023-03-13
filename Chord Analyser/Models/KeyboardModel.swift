@@ -12,7 +12,6 @@ private let NUM_NOTES = 128
 public class KeyboardModel : ObservableObject {
     
     @Published private var notesOnOff = [Bool](repeating: false, count: NUM_NOTES)
-//    @Published private var chordName: String = "N/A"
     @Published private var chord: Chord?
     
     func getNotesOnOff(_ index: Int) -> Bool {
@@ -41,6 +40,7 @@ public class KeyboardModel : ObservableObject {
     }
     
     func updateChord() {
+        // TODO: modify this function to not append to an array.
         var notes = Array<UInt8>()
         for (i, note) in self.notesOnOff.enumerated() {
             if note { notes.append(UInt8(i + 1)) }
