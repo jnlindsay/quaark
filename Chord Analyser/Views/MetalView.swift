@@ -15,6 +15,7 @@ class MetalViewController {
     
     init() {
         self.view = MTKView()
+//        self.view.isPaused = false
         self.view.enableSetNeedsDisplay = true
         self.view.device = MTLCreateSystemDefaultDevice()
         self.view.clearColor = MTLClearColorMake(0.5, 0.5, 1.0, 1.0)
