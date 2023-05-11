@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		196311822A0CD5F400DED30D /* Shaders.metal in Sources */ = {isa = PBXBuildFile; fileRef = 196311812A0CD5F400DED30D /* Shaders.metal */; };
+		196311852A0CEBD300DED30D /* Quad.swift in Sources */ = {isa = PBXBuildFile; fileRef = 196311842A0CEBD300DED30D /* Quad.swift */; };
 		196830882983D26F002232A7 /* ChordRecogniser.swift in Sources */ = {isa = PBXBuildFile; fileRef = 196830872983D26F002232A7 /* ChordRecogniser.swift */; };
 		1968308B2983E6CA002232A7 /* DequeModule in Frameworks */ = {isa = PBXBuildFile; productRef = 1968308A2983E6CA002232A7 /* DequeModule */; };
 		197CCB4C29A0D2A8005BFEC0 /* MetalView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 197CCB4B29A0D2A8005BFEC0 /* MetalView.swift */; };
@@ -19,13 +21,14 @@
 		19E456C929494ABF0037DF4B /* Chord_AnalyserApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 19E456C829494ABF0037DF4B /* Chord_AnalyserApp.swift */; };
 		19E456CB29494ABF0037DF4B /* KeyboardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 19E456CA29494ABF0037DF4B /* KeyboardView.swift */; };
 		19E456CD29494AC00037DF4B /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 19E456CC29494AC00037DF4B /* Assets.xcassets */; };
-		19E456D029494AC00037DF4B /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 19E456CF29494AC00037DF4B /* Preview Assets.xcassets */; };
 		19E456D529494AC00037DF4B /* Chord_Analyser.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 19E456D329494AC00037DF4B /* Chord_Analyser.xcdatamodeld */; };
 		19F12BF729A1BB380064B3E7 /* Renderer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 19F12BF629A1BB380064B3E7 /* Renderer.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
 		191830362982A970002D8FAB /* Chord Analyser-Bridging-Header.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "Chord Analyser-Bridging-Header.h"; sourceTree = "<group>"; };
+		196311812A0CD5F400DED30D /* Shaders.metal */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.metal; path = Shaders.metal; sourceTree = "<group>"; };
+		196311842A0CEBD300DED30D /* Quad.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Quad.swift; sourceTree = "<group>"; };
 		196830872983D26F002232A7 /* ChordRecogniser.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChordRecogniser.swift; sourceTree = "<group>"; };
 		197CCB4B29A0D2A8005BFEC0 /* MetalView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MetalView.swift; sourceTree = "<group>"; };
 		1982433B29BC9692001B7B0D /* KeyboardModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KeyboardModel.swift; sourceTree = "<group>"; };
@@ -40,10 +43,8 @@
 		19E456C829494ABF0037DF4B /* Chord_AnalyserApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Chord_AnalyserApp.swift; sourceTree = "<group>"; };
 		19E456CA29494ABF0037DF4B /* KeyboardView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KeyboardView.swift; sourceTree = "<group>"; };
 		19E456CC29494AC00037DF4B /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
-		19E456CF29494AC00037DF4B /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
 		19E456D429494AC00037DF4B /* Chord_Analyser.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = Chord_Analyser.xcdatamodel; sourceTree = "<group>"; };
 		19E456D629494AC00037DF4B /* Chord_Analyser.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = Chord_Analyser.entitlements; sourceTree = "<group>"; };
-		19E456E129494C140037DF4B /* CoreMIDIInterface.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = CoreMIDIInterface.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		19F12BF629A1BB380064B3E7 /* Renderer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Renderer.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -56,16 +57,25 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
-		19E456DE29494C140037DF4B /* Frameworks */ = {
-			isa = PBXFrameworksBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		196311802A0CD5D900DED30D /* Shaders */ = {
+			isa = PBXGroup;
+			children = (
+				196311812A0CD5F400DED30D /* Shaders.metal */,
+			);
+			path = Shaders;
+			sourceTree = "<group>";
+		};
+		196311832A0CEBB000DED30D /* Shapes */ = {
+			isa = PBXGroup;
+			children = (
+				196311842A0CEBD300DED30D /* Quad.swift */,
+			);
+			path = Shapes;
+			sourceTree = "<group>";
+		};
 		197CCB4829A0CCC6005BFEC0 /* Metal */ = {
 			isa = PBXGroup;
 			children = (
@@ -117,6 +127,7 @@
 			isa = PBXGroup;
 			children = (
 				19E456C729494ABF0037DF4B /* Chord Analyser */,
+				196311802A0CD5D900DED30D /* Shaders */,
 				19E456C629494ABF0037DF4B /* Products */,
 			);
 			sourceTree = "<group>";
@@ -125,7 +136,6 @@
 			isa = PBXGroup;
 			children = (
 				19E456C529494ABF0037DF4B /* Chord Analyser.app */,
-				19E456E129494C140037DF4B /* CoreMIDIInterface.app */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -142,18 +152,10 @@
 				197CCB4A29A0D28C005BFEC0 /* Views */,
 				19D8E2B1298E2E7B0003B5EC /* Libraries */,
 				197CCB4829A0CCC6005BFEC0 /* Metal */,
-				19E456CE29494AC00037DF4B /* Preview Content */,
 				19E2CC64294DCAF000DFE7F9 /* Realtime */,
+				196311832A0CEBB000DED30D /* Shapes */,
 			);
 			path = "Chord Analyser";
-			sourceTree = "<group>";
-		};
-		19E456CE29494AC00037DF4B /* Preview Content */ = {
-			isa = PBXGroup;
-			children = (
-				19E456CF29494AC00037DF4B /* Preview Assets.xcassets */,
-			);
-			path = "Preview Content";
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -179,23 +181,6 @@
 			productReference = 19E456C529494ABF0037DF4B /* Chord Analyser.app */;
 			productType = "com.apple.product-type.application";
 		};
-		19E456E029494C140037DF4B /* CoreMIDIInterface */ = {
-			isa = PBXNativeTarget;
-			buildConfigurationList = 19E456F229494C160037DF4B /* Build configuration list for PBXNativeTarget "CoreMIDIInterface" */;
-			buildPhases = (
-				19E456DD29494C140037DF4B /* Sources */,
-				19E456DE29494C140037DF4B /* Frameworks */,
-				19E456DF29494C140037DF4B /* Resources */,
-			);
-			buildRules = (
-			);
-			dependencies = (
-			);
-			name = CoreMIDIInterface;
-			productName = CoreMIDIInterface;
-			productReference = 19E456E129494C140037DF4B /* CoreMIDIInterface.app */;
-			productType = "com.apple.product-type.application";
-		};
 /* End PBXNativeTarget section */
 
 /* Begin PBXProject section */
@@ -209,9 +194,6 @@
 					19E456C429494ABF0037DF4B = {
 						CreatedOnToolsVersion = 14.1;
 						LastSwiftMigration = 1410;
-					};
-					19E456E029494C140037DF4B = {
-						CreatedOnToolsVersion = 14.1;
 					};
 				};
 			};
@@ -232,7 +214,6 @@
 			projectRoot = "";
 			targets = (
 				19E456C429494ABF0037DF4B /* Chord Analyser */,
-				19E456E029494C140037DF4B /* CoreMIDIInterface */,
 			);
 		};
 /* End PBXProject section */
@@ -242,15 +223,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				19E456D029494AC00037DF4B /* Preview Assets.xcassets in Resources */,
 				19E456CD29494AC00037DF4B /* Assets.xcassets in Resources */,
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
-		19E456DF29494C140037DF4B /* Resources */ = {
-			isa = PBXResourcesBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -263,23 +236,18 @@
 			files = (
 				19E456D529494AC00037DF4B /* Chord_Analyser.xcdatamodeld in Sources */,
 				19E2CC7B294DDC1F00DFE7F9 /* CoreMIDIConnection.swift in Sources */,
+				196311822A0CD5F400DED30D /* Shaders.metal in Sources */,
 				19E456CB29494ABF0037DF4B /* KeyboardView.swift in Sources */,
 				19E456C929494ABF0037DF4B /* Chord_AnalyserApp.swift in Sources */,
 				197CCB4C29A0D2A8005BFEC0 /* MetalView.swift in Sources */,
 				1982433C29BC9692001B7B0D /* KeyboardModel.swift in Sources */,
 				19D8E2A3298605880003B5EC /* Miscellaneous.swift in Sources */,
 				1982433E29BEE562001B7B0D /* DissonanceMeasure.swift in Sources */,
+				196311852A0CEBD300DED30D /* Quad.swift in Sources */,
 				19E2CC69294DCB2100DFE7F9 /* CoreMIDIRealTime.mm in Sources */,
 				19E2CC63294AB74400DFE7F9 /* Pitch.swift in Sources */,
 				196830882983D26F002232A7 /* ChordRecogniser.swift in Sources */,
 				19F12BF729A1BB380064B3E7 /* Renderer.swift in Sources */,
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
-		19E456DD29494C140037DF4B /* Sources */ = {
-			isa = PBXSourcesBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -466,64 +434,6 @@
 			};
 			name = Release;
 		};
-		19E456F329494C160037DF4B /* Debug */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
-				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
-				CODE_SIGN_ENTITLEMENTS = CoreMIDIInterface/CoreMIDIInterface.entitlements;
-				CODE_SIGN_IDENTITY = "-";
-				CODE_SIGN_STYLE = Automatic;
-				COMBINE_HIDPI_IMAGES = YES;
-				CURRENT_PROJECT_VERSION = 1;
-				DEAD_CODE_STRIPPING = YES;
-				DEVELOPMENT_ASSET_PATHS = "\"CoreMIDIInterface/Preview Content\"";
-				DEVELOPMENT_TEAM = J2N768J9TX;
-				ENABLE_HARDENED_RUNTIME = YES;
-				ENABLE_PREVIEWS = YES;
-				GENERATE_INFOPLIST_FILE = YES;
-				INFOPLIST_KEY_NSHumanReadableCopyright = "";
-				LD_RUNPATH_SEARCH_PATHS = (
-					"$(inherited)",
-					"@executable_path/../Frameworks",
-				);
-				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = jeremylindsay.CoreMIDIInterface;
-				PRODUCT_NAME = "$(TARGET_NAME)";
-				SWIFT_EMIT_LOC_STRINGS = YES;
-				SWIFT_VERSION = 5.0;
-			};
-			name = Debug;
-		};
-		19E456F429494C160037DF4B /* Release */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
-				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
-				CODE_SIGN_ENTITLEMENTS = CoreMIDIInterface/CoreMIDIInterface.entitlements;
-				CODE_SIGN_IDENTITY = "-";
-				CODE_SIGN_STYLE = Automatic;
-				COMBINE_HIDPI_IMAGES = YES;
-				CURRENT_PROJECT_VERSION = 1;
-				DEAD_CODE_STRIPPING = YES;
-				DEVELOPMENT_ASSET_PATHS = "\"CoreMIDIInterface/Preview Content\"";
-				DEVELOPMENT_TEAM = J2N768J9TX;
-				ENABLE_HARDENED_RUNTIME = YES;
-				ENABLE_PREVIEWS = YES;
-				GENERATE_INFOPLIST_FILE = YES;
-				INFOPLIST_KEY_NSHumanReadableCopyright = "";
-				LD_RUNPATH_SEARCH_PATHS = (
-					"$(inherited)",
-					"@executable_path/../Frameworks",
-				);
-				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = jeremylindsay.CoreMIDIInterface;
-				PRODUCT_NAME = "$(TARGET_NAME)";
-				SWIFT_EMIT_LOC_STRINGS = YES;
-				SWIFT_VERSION = 5.0;
-			};
-			name = Release;
-		};
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
@@ -541,15 +451,6 @@
 			buildConfigurations = (
 				19E456DA29494AC00037DF4B /* Debug */,
 				19E456DB29494AC00037DF4B /* Release */,
-			);
-			defaultConfigurationIsVisible = 0;
-			defaultConfigurationName = Release;
-		};
-		19E456F229494C160037DF4B /* Build configuration list for PBXNativeTarget "CoreMIDIInterface" */ = {
-			isa = XCConfigurationList;
-			buildConfigurations = (
-				19E456F329494C160037DF4B /* Debug */,
-				19E456F429494C160037DF4B /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;

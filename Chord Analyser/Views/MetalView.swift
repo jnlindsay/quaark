@@ -15,8 +15,8 @@ class MetalViewController {
     
     init() {
         self.view = MTKView()
-//        self.view.isPaused = false
-        self.view.enableSetNeedsDisplay = true
+        self.view.isPaused = false
+        self.view.enableSetNeedsDisplay = false
         self.view.device = MTLCreateSystemDefaultDevice()
         self.view.clearColor = MTLClearColorMake(0.5, 0.5, 1.0, 1.0)
 
@@ -27,7 +27,6 @@ class MetalViewController {
     }
     
     func updateView() {
-//        self.renderer.draw(in: self.view)
     }
     
 }
