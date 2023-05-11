@@ -9,6 +9,18 @@ import Foundation
 import simd
 import MetalKit
 
+struct Colour {
+  var red:   Float
+  var green: Float
+  var blue:  Float
+
+  init() {
+    red = 0
+    green = 0
+    blue = 1
+  }
+}
+
 class Renderer : NSObject {
     
   private let device: MTLDevice
@@ -16,6 +28,7 @@ class Renderer : NSObject {
   private let library: MTLLibrary!
   private let renderPipelineState: MTLRenderPipelineState!
   var timer: Float = 0
+  var rectangleColour = Colour()
 
   // ! WARNING: DODGY CODE
   lazy var quad: Quad = {
@@ -61,7 +74,6 @@ extension Renderer : MTKViewDelegate {
       
     let commandBuffer: MTLCommandBuffer = self.commandQueue.makeCommandBuffer()!
     
-    // Create a render pass and immediately end encoding, causing the drawable to be cleared
     let commandEncoder: MTLRenderCommandEncoder =
       commandBuffer.makeRenderCommandEncoder(descriptor: renderPassDescriptor)!
     
@@ -72,15 +84,24 @@ extension Renderer : MTKViewDelegate {
       length: MemoryLayout<Float>.stride,
       index: 11
     )
+    
+    rectangleColour.red = abs(sin(timer))
+    commandEncoder.setVertexBytes(
+      &rectangleColour,
+      length: MemoryLayout<Colour>.stride,
+      index: 1
+    )
+    
     commandEncoder.setRenderPipelineState(renderPipelineState)
   
-    // drawing occurs here...
+    
     commandEncoder.setVertexBuffer(
       quad.vertexBuffer,
       offset: 0,
       index: 0
     )
     
+    // draw
     commandEncoder.drawPrimitives(
       type: .triangle,
       vertexStart: 0,
