@@ -2,7 +2,7 @@ import MetalKit
 
 struct Quad {
   
-  var centre: SIMD2<Float> = SIMD2<Float>(0, 0)
+  var centre: simd_float2 = simd_float2(0, 0)
   
   var vertices: [Float] = [
     -1,  1, 0,

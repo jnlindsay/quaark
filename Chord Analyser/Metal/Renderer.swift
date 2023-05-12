@@ -32,9 +32,10 @@ class Renderer : NSObject {
   var rectangleColour = Colour()
 
   // ! WARNING: DODGY CODE
-  lazy var quads: Populator = {
-    Populator(numObjects: 20, device: device, scale: 0.05)
-  }()
+//  lazy var quads: Population = {
+//    Population(numObjects: 20, device: device, scale: 0.05)
+//  }()
+  private var world = World()
   
   init(mtkView: MTKView, keyboardModel: KeyboardModel) {
     self.device = mtkView.device!
@@ -58,6 +59,9 @@ class Renderer : NSObject {
     } catch let error {
       fatalError(error.localizedDescription)
     }
+    
+    // world
+    world.populatePrimitive(numObjects: 20, device: device, scale: 0.05)
   }
     
 }
@@ -88,7 +92,7 @@ extension Renderer : MTKViewDelegate {
     )
     
     // ! WARNING: dodgy for loop; get rid and use vertex descriptors instead
-    for quad in self.quads.quads {
+    for quad in self.world.populations[0].quads {
       commandEncoder.setVertexBuffer(
         quad.vertexBuffer,
         offset: 0,
