@@ -17,6 +17,7 @@ public class CoreMIDIConnection : ObservableObject {
     private var port: MIDIPortRef
     private var source: MIDIEndpointRef?
     private var keyboardModel: KeyboardModel?
+    private var midiEventHandler: MIDIEventHandler?
     private var timer: Timer?
     
     public init() {
@@ -104,25 +105,37 @@ public class CoreMIDIConnection : ObservableObject {
     func setKeyboardModel(keyboardModel: KeyboardModel) {
         self.keyboardModel = keyboardModel
     }
+  
+    func setMIDIEventHandler(midiEventHandler: MIDIEventHandler) {
+      self.midiEventHandler = midiEventHandler
+    }
     
     func startMIDIListener() {
         
-        print("MIDI listener has been started.")
+      print("MIDI listener has been started.")
+      
+      guard let uKeyboardModel = self.keyboardModel else {
+        print("Keyboard model not detected in CoreMIDI connection.")
+        return
+      }
+      
+      guard let uMIDIEventHandler = self.midiEventHandler else {
+        print("MIDI event handler not connected to CoreMIDI connection.")
+        return
+      }
+      
+      timer = Timer.scheduledTimer(withTimeInterval: 0.01, repeats: true) { [weak self] timer in
+          
+        guard let self = self else { return }
         
-        guard let uKeyboardModel = self.keyboardModel else {
-            print("Keyboard model not detected in Core MIDI connection.")
-            return
+        self.realTime.popMIDIWords() { word in
+          let note = toNote(word)
+          
+          // ! WARNING: DUPLICATION. The MIDI event handler should be the only function below.
+          uKeyboardModel.updateKeyboardState(note)
+          uMIDIEventHandler.propagateEvent(note)
         }
-        
-        timer = Timer.scheduledTimer(withTimeInterval: 0.01, repeats: true) { [weak self] timer in
-            
-            guard let self = self else { return }
-            
-            self.realTime.popMIDIWords() { word in
-                let note = toNote(word)
-                uKeyboardModel.updateKeyboardState(note)
-            }
-        }
+      }
     }
 
 }

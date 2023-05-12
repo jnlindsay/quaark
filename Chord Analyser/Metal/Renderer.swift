@@ -28,14 +28,15 @@ class Renderer : NSObject {
   private let library: MTLLibrary!
   private let renderPipelineState: MTLRenderPipelineState!
   private let keyboardModel: KeyboardModel
-  private var world = World()
+  private var world: World
   var timer: Float = 0
   var rectangleColour = Colour()
   
-  init(mtkView: MTKView, keyboardModel: KeyboardModel) {
+  init(mtkView: MTKView, keyboardModel: KeyboardModel, world: World) {
     self.device = mtkView.device!
     self.commandQueue = device.makeCommandQueue()!
     self.keyboardModel = keyboardModel
+    self.world = world
     
     // shaders
     self.library = device.makeDefaultLibrary()
@@ -56,7 +57,11 @@ class Renderer : NSObject {
     }
     
     // world
-    world.populatePrimitive(numObjects: 20, device: device, scale: 0.05)
+    self.world.populatePrimitive(
+      numObjects: 20,
+      device: device,
+      scale: 0.05
+    )
   }
     
 }

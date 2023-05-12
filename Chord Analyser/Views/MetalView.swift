@@ -13,6 +13,7 @@ class MetalViewController {
   public var view: MTKView
   public var renderer: Renderer
   private var keyboardModel: KeyboardModel
+  public var world = World()
     
   init(keyboardModel: KeyboardModel) {
     self.keyboardModel = keyboardModel
@@ -23,7 +24,11 @@ class MetalViewController {
     self.view.device = MTLCreateSystemDefaultDevice()
     self.view.clearColor = MTLClearColorMake(0.5, 0.5, 1.0, 1.0)
 
-    self.renderer = Renderer(mtkView: view, keyboardModel: keyboardModel) // do we need to check !renderer, like in Objective-C?
+    self.renderer = Renderer(
+      mtkView: view,
+      keyboardModel: keyboardModel,
+      world: world
+    ) // do we need to check !renderer, like in Objective-C?
     self.renderer.mtkView(self.view, drawableSizeWillChange: self.view.drawableSize)
 
     self.view.delegate = self.renderer

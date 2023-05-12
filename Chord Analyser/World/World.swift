@@ -14,4 +14,8 @@ struct World {
     var population = Population(numObjects: numObjects, device: device, scale: scale)
     self.populations.append(population)
   }
+  
+  func onNoteOccured() {
+    print("On note occurred!")
+  }
 }
