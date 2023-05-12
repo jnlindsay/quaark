@@ -26,14 +26,25 @@ vertex VertexOut vertex_main(
   constant ushort *indices [[buffer(1)]],
   constant Colour *colour [[buffer(2)]],
   constant float &timer [[buffer(11)]],
+  constant float4x4 &matrix [[buffer(12)]],
   uint vertexID [[vertex_id]]
 ) {
   ushort index = indices[vertexID];
   float4 position = float4(vertices[index], 1);
-//  position.y += timer;
+  
+  // ! WARNING: HACKY CODE
+  if (colour->red == 1) {
+    position.y += timer;
+  }
+  
+  float4 translation = matrix * position;
+//  constant float4x4 &matrix [[buffer(12)]]
+//  position.x += 0.5;
+//  position.y -= 0.3;
 //  return position;
   VertexOut out {
-    .position = position,
+    .position = translation,
+//    .position = position,
     .red = colour->red,
     .green = colour->green,
     .blue = colour->blue

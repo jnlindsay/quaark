@@ -13,8 +13,8 @@ struct Population {
   
   init(numObjects: Int, device: MTLDevice, scale: Float = 1) {
     for _ in 0..<numObjects {
-      let centre = simd_float2(Float.random(in: -1.0...1.0), Float.random(in: -1.0...1.0))
-      quads.append(Quad(device: device, scale: scale, centre: centre))
+      let position = simd_float2(Float.random(in: -1.0...1.0), Float.random(in: -1.0...1.0))
+      quads.append(Quad(device: device, scale: scale, position: position))
     }
     self.numObjects = numObjects
   }

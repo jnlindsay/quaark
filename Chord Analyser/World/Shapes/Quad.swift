@@ -1,14 +1,17 @@
 import MetalKit
 
-struct Quad {
+// Ideally, the vertices and indices defining a quad should be abstracted out of the class.
+//   The class should contain only position and id and other idiosyncratic information.
+class Quad {
   
-  var centre: simd_float2 = simd_float2(0, 0)
+  var position: simd_float2 = simd_float2(0, 0)
   
   var vertices: [Float] = [
-    -1,  1, 0,
-     1,  1, 0,
-    -1, -1, 0,
-     1, -1, 0
+  // x   y   z
+    -1,  1,  0, // 0
+     1,  1,  0, // 1
+    -1, -1,  0, // 2
+     1, -1,  0  // 3
   ]
   
   var indices: [UInt16] = [
@@ -19,21 +22,10 @@ struct Quad {
   let vertexBuffer: MTLBuffer
   let indexBuffer: MTLBuffer
   
-  init(device: MTLDevice, scale: Float = 1, centre: SIMD2<Float>) {
+  init(device: MTLDevice, scale: Float = 1, position: simd_float2) {
     vertices = vertices.map {
       $0 * scale
     }
-    
-    // ! WARNING: BAD CODE. offset vertices
-    vertices[0] += centre[0]
-    vertices[3] += centre[0]
-    vertices[6] += centre[0]
-    vertices[9] += centre[0]
-    
-    vertices[1]  += centre[1]
-    vertices[4]  += centre[1]
-    vertices[7]  += centre[1]
-    vertices[10] += centre[1]
     
     guard let vertexBuffer = device.makeBuffer(
       bytes: &vertices,
@@ -52,5 +44,12 @@ struct Quad {
       fatalError("Unable to create quad index buffer")
     }
     self.indexBuffer = indexBuffer
+    
+    self.position = position
+  }
+  
+  func updatePosition(x: Float, y: Float) {
+    position[0] = x
+    position[1] = y
   }
 }

@@ -28,14 +28,9 @@ class Renderer : NSObject {
   private let library: MTLLibrary!
   private let renderPipelineState: MTLRenderPipelineState!
   private let keyboardModel: KeyboardModel
+  private var world = World()
   var timer: Float = 0
   var rectangleColour = Colour()
-
-  // ! WARNING: DODGY CODE
-//  lazy var quads: Population = {
-//    Population(numObjects: 20, device: device, scale: 0.05)
-//  }()
-  private var world = World()
   
   init(mtkView: MTKView, keyboardModel: KeyboardModel) {
     self.device = mtkView.device!
@@ -93,6 +88,15 @@ extension Renderer : MTKViewDelegate {
     
     // ! WARNING: dodgy for loop; get rid and use vertex descriptors instead
     for quad in self.world.populations[0].quads {
+      
+      let position: simd_float2 = quad.position
+      var translation = simd_float4x4.init(rows: [
+        simd_float4(1, 0, 0, position[0]),
+        simd_float4(0, 1, 0, position[1]),
+        simd_float4(0, 0, 1, 0),
+        simd_float4(0, 0, 0, 1)
+      ])
+      
       commandEncoder.setVertexBuffer(
         quad.vertexBuffer,
         offset: 0,
@@ -111,6 +115,12 @@ extension Renderer : MTKViewDelegate {
         &rectangleColour,
         length: MemoryLayout<Colour>.stride,
         index: 2
+      )
+      
+      commandEncoder.setVertexBytes(
+        &translation,
+        length: MemoryLayout<matrix_float4x4>.stride,
+        index: 12
       )
       
       commandEncoder.setRenderPipelineState(renderPipelineState)

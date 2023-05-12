@@ -8,10 +8,10 @@
 import MetalKit
 
 struct World {
-  public var populations: [Population] = []
+  var populations: [Population] = []
   
   mutating func populatePrimitive(numObjects: Int, device: MTLDevice, scale: Float) {
-    let population = Population(numObjects: numObjects, device: device, scale: scale)
+    var population = Population(numObjects: numObjects, device: device, scale: scale)
     self.populations.append(population)
   }
 }
