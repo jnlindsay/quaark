@@ -7,7 +7,7 @@
 
 import SwiftUI
 
-struct ContentView: View {
+struct KeyboardView : View {
     
     @Environment(\.openWindow) private var openWindow
     @ObservedObject var keyboardModel: KeyboardModel

@@ -16,10 +16,10 @@ struct Chord_AnalyserApp: App {
     
     var body: some Scene {
         WindowGroup {
-            ContentView(keyboardModel: self.keyboardModel)
+            KeyboardView(keyboardModel: self.keyboardModel)
         }
         Window("MetalView", id: "metalView") {
-            MetalView()
+          MetalView(keyboardModel: self.keyboardModel)
         }
     }
     

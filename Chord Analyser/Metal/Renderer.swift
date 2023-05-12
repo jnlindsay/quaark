@@ -27,6 +27,7 @@ class Renderer : NSObject {
   private let commandQueue: MTLCommandQueue
   private let library: MTLLibrary!
   private let renderPipelineState: MTLRenderPipelineState!
+  private let keyboardModel: KeyboardModel
   var timer: Float = 0
   var rectangleColour = Colour()
 
@@ -35,9 +36,10 @@ class Renderer : NSObject {
     Quad(device: self.device, scale: 0.8)
   }()
   
-  init(mtkView: MTKView) {
+  init(mtkView: MTKView, keyboardModel: KeyboardModel) {
     self.device = mtkView.device!
     self.commandQueue = device.makeCommandQueue()!
+    self.keyboardModel = keyboardModel
     
     // shaders
     self.library = device.makeDefaultLibrary()
@@ -85,7 +87,8 @@ extension Renderer : MTKViewDelegate {
       index: 11
     )
     
-    rectangleColour.red = abs(sin(timer))
+//    rectangleColour.red = abs(sin(timer))
+    rectangleColour.red = keyboardModel.getNotesOnOff(59) ? 1 : 0
     commandEncoder.setVertexBytes(
       &rectangleColour,
       length: MemoryLayout<Colour>.stride,
