@@ -7,7 +7,7 @@
 
 import MetalKit
 
-struct Population {
+class Population {
   var quads: [Quad] = []
   var numObjects: Int = 0
   
@@ -17,5 +17,13 @@ struct Population {
       quads.append(Quad(device: device, scale: scale, position: position))
     }
     self.numObjects = numObjects
+  }
+  
+  func addObject(numObjects: Int, device: MTLDevice, scale: Float = 1) {
+    for _ in 0..<numObjects {
+      let position = simd_float2(Float.random(in: -1.0...1.0), Float.random(in: -1.0...1.0))
+      quads.append(Quad(device: device, scale: scale, position: position))
+    }
+    self.numObjects += numObjects
   }
 }

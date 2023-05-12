@@ -21,7 +21,6 @@ struct MIDIEventHandler {
   func propagateEvent(_ note: Note) {
     
     if (note.status == 0x90) {
-//      print("wow!")
       self.metalView.viewController.world.onNoteOccured()
     }
     

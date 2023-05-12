@@ -58,7 +58,7 @@ class Renderer : NSObject {
     
     // world
     self.world.populatePrimitive(
-      numObjects: 20,
+      numObjects: 0,
       device: device,
       scale: 0.05
     )

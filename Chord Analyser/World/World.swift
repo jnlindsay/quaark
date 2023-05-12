@@ -7,15 +7,20 @@
 
 import MetalKit
 
-struct World {
+class World {
+  private var device: MTLDevice
   var populations: [Population] = []
   
-  mutating func populatePrimitive(numObjects: Int, device: MTLDevice, scale: Float) {
+  init(device: MTLDevice) {
+    self.device = device
+  }
+  
+  func populatePrimitive(numObjects: Int, device: MTLDevice, scale: Float) {
     var population = Population(numObjects: numObjects, device: device, scale: scale)
     self.populations.append(population)
   }
   
   func onNoteOccured() {
-    print("On note occurred!")
+    populations[0].addObject(numObjects: 1, device: self.device, scale: 0.05)
   }
 }

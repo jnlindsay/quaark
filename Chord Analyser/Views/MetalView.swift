@@ -13,7 +13,7 @@ class MetalViewController {
   public var view: MTKView
   public var renderer: Renderer
   private var keyboardModel: KeyboardModel
-  public var world = World()
+  public var world: World
     
   init(keyboardModel: KeyboardModel) {
     self.keyboardModel = keyboardModel
@@ -21,8 +21,10 @@ class MetalViewController {
     self.view = MTKView()
     self.view.isPaused = false
     self.view.enableSetNeedsDisplay = false
-    self.view.device = MTLCreateSystemDefaultDevice()
+    self.view.device = MTLCreateSystemDefaultDevice() // ! creation of device
     self.view.clearColor = MTLClearColorMake(0.5, 0.5, 1.0, 1.0)
+    
+    self.world = World(device: self.view.device!)
 
     self.renderer = Renderer(
       mtkView: view,
