@@ -32,8 +32,8 @@ class Renderer : NSObject {
   var rectangleColour = Colour()
 
   // ! WARNING: DODGY CODE
-  lazy var quad: Quad = {
-    Quad(device: self.device, scale: 0.8)
+  lazy var quads: Populator = {
+    Populator(numObjects: 20, device: device, scale: 0.05)
   }()
   
   init(mtkView: MTKView, keyboardModel: KeyboardModel) {
@@ -87,34 +87,37 @@ extension Renderer : MTKViewDelegate {
       index: 11
     )
     
-    commandEncoder.setVertexBuffer(
-      quad.vertexBuffer,
-      offset: 0,
-      index: 0
-    )
-    
-    commandEncoder.setVertexBuffer(
-      quad.indexBuffer,
-      offset: 0,
-      index: 1
-    )
-    
-//    rectangleColour.red = abs(sin(timer))
-    rectangleColour.red = keyboardModel.getNotesOnOff(59) ? 1 : 0
-    commandEncoder.setVertexBytes(
-      &rectangleColour,
-      length: MemoryLayout<Colour>.stride,
-      index: 2
-    )
-    
-    commandEncoder.setRenderPipelineState(renderPipelineState)
-    
-    // draw
-    commandEncoder.drawPrimitives(
-      type: .triangle,
-      vertexStart: 0,
-      vertexCount: quad.indices.count
-    )
+    // ! WARNING: dodgy for loop; get rid and use vertex descriptors instead
+    for quad in self.quads.quads {
+      commandEncoder.setVertexBuffer(
+        quad.vertexBuffer,
+        offset: 0,
+        index: 0
+      )
+      
+      commandEncoder.setVertexBuffer(
+        quad.indexBuffer,
+        offset: 0,
+        index: 1
+      )
+      
+      //    rectangleColour.red = abs(sin(timer))
+      rectangleColour.red = keyboardModel.getNotesOnOff(59) ? 1 : 0
+      commandEncoder.setVertexBytes(
+        &rectangleColour,
+        length: MemoryLayout<Colour>.stride,
+        index: 2
+      )
+      
+      commandEncoder.setRenderPipelineState(renderPipelineState)
+      
+      // draw
+      commandEncoder.drawPrimitives(
+        type: .triangle,
+        vertexStart: 0,
+        vertexCount: quad.indices.count
+      )
+    }
   
     commandEncoder.endEncoding()
 
