@@ -87,28 +87,33 @@ extension Renderer : MTKViewDelegate {
       index: 11
     )
     
-//    rectangleColour.red = abs(sin(timer))
-    rectangleColour.red = keyboardModel.getNotesOnOff(59) ? 1 : 0
-    commandEncoder.setVertexBytes(
-      &rectangleColour,
-      length: MemoryLayout<Colour>.stride,
-      index: 1
-    )
-    
-    commandEncoder.setRenderPipelineState(renderPipelineState)
-  
-    
     commandEncoder.setVertexBuffer(
       quad.vertexBuffer,
       offset: 0,
       index: 0
     )
     
+    commandEncoder.setVertexBuffer(
+      quad.indexBuffer,
+      offset: 0,
+      index: 1
+    )
+    
+//    rectangleColour.red = abs(sin(timer))
+    rectangleColour.red = keyboardModel.getNotesOnOff(59) ? 1 : 0
+    commandEncoder.setVertexBytes(
+      &rectangleColour,
+      length: MemoryLayout<Colour>.stride,
+      index: 2
+    )
+    
+    commandEncoder.setRenderPipelineState(renderPipelineState)
+    
     // draw
     commandEncoder.drawPrimitives(
       type: .triangle,
       vertexStart: 0,
-      vertexCount: quad.vertices.count
+      vertexCount: quad.indices.count
     )
   
     commandEncoder.endEncoding()
