@@ -27,16 +27,14 @@ class Renderer : NSObject {
   private let commandQueue: MTLCommandQueue
   private let library: MTLLibrary!
   private let renderPipelineState: MTLRenderPipelineState!
-  private let keyboardModel: KeyboardModel
-  private var world: World
+  private var world: World?
   var timer: Float = 0
   var rectangleColour = Colour()
   
-  init(mtkView: MTKView, keyboardModel: KeyboardModel, world: World) {
+  init(mtkView: MTKView) {
     self.device = mtkView.device!
+    
     self.commandQueue = device.makeCommandQueue()!
-    self.keyboardModel = keyboardModel
-    self.world = world
     
     // shaders
     self.library = device.makeDefaultLibrary()
@@ -55,13 +53,7 @@ class Renderer : NSObject {
     } catch let error {
       fatalError(error.localizedDescription)
     }
-    
-    // world
-    self.world.populatePrimitive(
-      numObjects: 0,
-      device: device,
-      scale: 0.05
-    )
+
   }
     
 }
@@ -92,52 +84,52 @@ extension Renderer : MTKViewDelegate {
     )
     
     // ! WARNING: dodgy for loop; get rid and use vertex descriptors instead
-    for quad in self.world.populations[0].quads {
-      
-      let position: simd_float2 = quad.position
-      var translation = simd_float4x4.init(rows: [
-        simd_float4(1, 0, 0, position[0]),
-        simd_float4(0, 1, 0, position[1]),
-        simd_float4(0, 0, 1, 0),
-        simd_float4(0, 0, 0, 1)
-      ])
-      
-      commandEncoder.setVertexBuffer(
-        quad.vertexBuffer,
-        offset: 0,
-        index: 0
-      )
-      
-      commandEncoder.setVertexBuffer(
-        quad.indexBuffer,
-        offset: 0,
-        index: 1
-      )
-      
-      //    rectangleColour.red = abs(sin(timer))
-      rectangleColour.red = keyboardModel.getNotesOnOff(59) ? 1 : 0
-      commandEncoder.setVertexBytes(
-        &rectangleColour,
-        length: MemoryLayout<Colour>.stride,
-        index: 2
-      )
-      
-      commandEncoder.setVertexBytes(
-        &translation,
-        length: MemoryLayout<matrix_float4x4>.stride,
-        index: 12
-      )
-      
-      commandEncoder.setRenderPipelineState(renderPipelineState)
-      
-      // draw
-      commandEncoder.drawPrimitives(
-        type: .triangle,
-        vertexStart: 0,
-        vertexCount: quad.indices.count
-      )
-    }
-  
+//    for quad in self.world.populations[0].quads {
+//
+//      let position: simd_float2 = quad.position
+//      var translation = simd_float4x4.init(rows: [
+//        simd_float4(1, 0, 0, position[0]),
+//        simd_float4(0, 1, 0, position[1]),
+//        simd_float4(0, 0, 1, 0),
+//        simd_float4(0, 0, 0, 1)
+//      ])
+//
+//      commandEncoder.setVertexBuffer(
+//        quad.vertexBuffer,
+//        offset: 0,
+//        index: 0
+//      )
+//
+//      commandEncoder.setVertexBuffer(
+//        quad.indexBuffer,
+//        offset: 0,
+//        index: 1
+//      )
+//
+//      rectangleColour.red = abs(sin(timer))
+////      rectangleColour.red = keyboardModel.getNotesOnOff(59) ? 1 : 0
+//      commandEncoder.setVertexBytes(
+//        &rectangleColour,
+//        length: MemoryLayout<Colour>.stride,
+//        index: 2
+//      )
+//
+//      commandEncoder.setVertexBytes(
+//        &translation,
+//        length: MemoryLayout<matrix_float4x4>.stride,
+//        index: 12
+//      )
+//
+//      commandEncoder.setRenderPipelineState(renderPipelineState)
+//
+//      // draw
+//      commandEncoder.drawPrimitives(
+//        type: .triangle,
+//        vertexStart: 0,
+//        vertexCount: quad.indices.count
+//      )
+//    }
+
     commandEncoder.endEncoding()
 
     // Get the drawable that will be presented at the end of the frame

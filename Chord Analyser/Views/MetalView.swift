@@ -12,52 +12,39 @@ class MetalViewController {
     
   public var view: MTKView
   public var renderer: Renderer
-  private var keyboardModel: KeyboardModel
-  public var world: World
+  private var world: World?
     
-  init(keyboardModel: KeyboardModel) {
-    self.keyboardModel = keyboardModel
+  init() {
     
+    // MTKView
     self.view = MTKView()
+    self.view.device = MTLCreateSystemDefaultDevice() // ! creation of device
     self.view.isPaused = false
     self.view.enableSetNeedsDisplay = false
-    self.view.device = MTLCreateSystemDefaultDevice() // ! creation of device
     self.view.clearColor = MTLClearColorMake(0.5, 0.5, 1.0, 1.0)
-    
-    self.world = World(device: self.view.device!)
 
-    self.renderer = Renderer(
-      mtkView: view,
-      keyboardModel: keyboardModel,
-      world: world
-    ) // do we need to check !renderer, like in Objective-C?
+    self.renderer = Renderer(mtkView: view)
     self.renderer.mtkView(self.view, drawableSizeWillChange: self.view.drawableSize)
 
     self.view.delegate = self.renderer
-  }
-
-  func updateView() {
-  }
     
+  }
 }
 
 struct MetalView : NSViewRepresentable {
   
-  var keyboardModel: KeyboardModel
-  let viewController: MetalViewController
-  
-  init(keyboardModel: KeyboardModel) {
-    self.keyboardModel = keyboardModel
-    self.viewController = MetalViewController(keyboardModel: keyboardModel)
+  public var controller: MetalViewController
+
+  init() {
+    self.controller = MetalViewController()
   }
   
   func makeNSView(context: Context) -> MTKView {
-      viewController.renderer.draw(in: viewController.view)
-      return viewController.view
+    controller.renderer.draw(in: controller.view)
+    return controller.view
   }
   
   func updateNSView(_ nsView: MTKView, context: Context) {
-      viewController.updateView()
   }
-    
+
 }

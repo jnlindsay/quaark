@@ -144,7 +144,6 @@
 			isa = PBXGroup;
 			children = (
 				19E456C729494ABF0037DF4B /* Chord Analyser */,
-				196311802A0CD5D900DED30D /* Shaders */,
 				19E456C629494ABF0037DF4B /* Products */,
 			);
 			sourceTree = "<group>";
@@ -167,6 +166,7 @@
 				19D8E2B1298E2E7B0003B5EC /* Libraries */,
 				197CCB4829A0CCC6005BFEC0 /* Metal */,
 				19E2CC64294DCAF000DFE7F9 /* Realtime */,
+				196311802A0CD5D900DED30D /* Shaders */,
 				19E456D629494AC00037DF4B /* Chord_Analyser.entitlements */,
 				191830362982A970002D8FAB /* Chord Analyser-Bridging-Header.h */,
 				19E456CC29494AC00037DF4B /* Assets.xcassets */,

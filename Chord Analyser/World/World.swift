@@ -7,20 +7,10 @@
 
 import MetalKit
 
-class World {
-  private var device: MTLDevice
-  var populations: [Population] = []
+class World : MIDIListener {
   
-  init(device: MTLDevice) {
-    self.device = device
+  func handleMIDIEvent() {
+    print("MIDI event received by class World.")
   }
-  
-  func populatePrimitive(numObjects: Int, device: MTLDevice, scale: Float) {
-    var population = Population(numObjects: numObjects, device: device, scale: scale)
-    self.populations.append(population)
-  }
-  
-  func onNoteOccured() {
-    populations[0].addObject(numObjects: 1, device: self.device, scale: 0.05)
-  }
+
 }

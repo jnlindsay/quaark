@@ -21,7 +21,6 @@ public class CoreMIDIConnection : ObservableObject {
   private var timer: Timer?
   
   init(
-    keyboardModel: KeyboardModel,
     midiEventHandler: MIDIEventHandler
   ) {
       
@@ -30,7 +29,7 @@ public class CoreMIDIConnection : ObservableObject {
     self.realTime = CoreMIDIRealTime()
     self.client = MIDIClientRef()
     self.port = MIDIPortRef()
-    self.keyboardModel = keyboardModel
+    self.keyboardModel = KeyboardModel()
     self.midiEventHandler = midiEventHandler
     self.createMIDIClient()
     self.listMIDIDevices()
@@ -126,6 +125,10 @@ public class CoreMIDIConnection : ObservableObject {
         self.midiEventHandler.propagateEvent(note)
       }
     }
+  }
+  
+  func getKeyboardModel() -> KeyboardModel {
+    return self.keyboardModel
   }
 
 }
