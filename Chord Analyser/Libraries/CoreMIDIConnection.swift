@@ -12,7 +12,7 @@ import SwiftUI
 @available(macOS 11.0, *)
 public class CoreMIDIConnection : ObservableObject {
     
-  private var realTime = CoreMIDIRealTime()
+  private var realTime: CoreMIDIRealTime
   private var client: MIDIClientRef
   private var port: MIDIPortRef
   private var source: MIDIEndpointRef?
@@ -27,6 +27,7 @@ public class CoreMIDIConnection : ObservableObject {
       
     print("--- CoreMIDIConnection initialisation has begun. ---")
     
+    self.realTime = CoreMIDIRealTime()
     self.client = MIDIClientRef()
     self.port = MIDIPortRef()
     self.keyboardModel = keyboardModel
