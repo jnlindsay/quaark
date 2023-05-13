@@ -18,7 +18,8 @@ class MetalViewController {
     
     // MTKView
     self.view = MTKView()
-    self.view.device = MTLCreateSystemDefaultDevice() // ! creation of device
+    self.view.device = MTLCreateSystemDefaultDevice()
+      // ! creation of device; maybe create in Renderer instead?
     self.view.isPaused = false
     self.view.enableSetNeedsDisplay = false
     self.view.clearColor = MTLClearColorMake(0.5, 0.5, 1.0, 1.0)

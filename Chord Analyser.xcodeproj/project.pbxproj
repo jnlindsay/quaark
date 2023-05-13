@@ -8,13 +8,11 @@
 
 /* Begin PBXBuildFile section */
 		196311822A0CD5F400DED30D /* Shaders.metal in Sources */ = {isa = PBXBuildFile; fileRef = 196311812A0CD5F400DED30D /* Shaders.metal */; };
-		196311852A0CEBD300DED30D /* Quad.swift in Sources */ = {isa = PBXBuildFile; fileRef = 196311842A0CEBD300DED30D /* Quad.swift */; };
 		196830882983D26F002232A7 /* ChordRecogniser.swift in Sources */ = {isa = PBXBuildFile; fileRef = 196830872983D26F002232A7 /* ChordRecogniser.swift */; };
 		1968308B2983E6CA002232A7 /* DequeModule in Frameworks */ = {isa = PBXBuildFile; productRef = 1968308A2983E6CA002232A7 /* DequeModule */; };
 		197CCB4C29A0D2A8005BFEC0 /* MetalView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 197CCB4B29A0D2A8005BFEC0 /* MetalView.swift */; };
 		1982433C29BC9692001B7B0D /* KeyboardModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1982433B29BC9692001B7B0D /* KeyboardModel.swift */; };
 		1982433E29BEE562001B7B0D /* DissonanceMeasure.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1982433D29BEE562001B7B0D /* DissonanceMeasure.swift */; };
-		19D46D932A0DCC9E009F6E2F /* Population.swift in Sources */ = {isa = PBXBuildFile; fileRef = 19D46D922A0DCC9E009F6E2F /* Population.swift */; };
 		19D46D962A0DE2AB009F6E2F /* World.swift in Sources */ = {isa = PBXBuildFile; fileRef = 19D46D952A0DE2AB009F6E2F /* World.swift */; };
 		19D46D9A2A0E50DC009F6E2F /* MIDIEventHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = 19D46D992A0E50DC009F6E2F /* MIDIEventHandler.swift */; };
 		19D8E2A3298605880003B5EC /* Miscellaneous.swift in Sources */ = {isa = PBXBuildFile; fileRef = 19D8E2A2298605880003B5EC /* Miscellaneous.swift */; };
@@ -31,12 +29,10 @@
 /* Begin PBXFileReference section */
 		191830362982A970002D8FAB /* Chord Analyser-Bridging-Header.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "Chord Analyser-Bridging-Header.h"; sourceTree = "<group>"; };
 		196311812A0CD5F400DED30D /* Shaders.metal */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.metal; path = Shaders.metal; sourceTree = "<group>"; };
-		196311842A0CEBD300DED30D /* Quad.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Quad.swift; sourceTree = "<group>"; };
 		196830872983D26F002232A7 /* ChordRecogniser.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChordRecogniser.swift; sourceTree = "<group>"; };
 		197CCB4B29A0D2A8005BFEC0 /* MetalView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MetalView.swift; sourceTree = "<group>"; };
 		1982433B29BC9692001B7B0D /* KeyboardModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KeyboardModel.swift; sourceTree = "<group>"; };
 		1982433D29BEE562001B7B0D /* DissonanceMeasure.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DissonanceMeasure.swift; sourceTree = "<group>"; };
-		19D46D922A0DCC9E009F6E2F /* Population.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Population.swift; sourceTree = "<group>"; };
 		19D46D952A0DE2AB009F6E2F /* World.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = World.swift; sourceTree = "<group>"; };
 		19D46D992A0E50DC009F6E2F /* MIDIEventHandler.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MIDIEventHandler.swift; sourceTree = "<group>"; };
 		19D8E2A2298605880003B5EC /* Miscellaneous.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Miscellaneous.swift; sourceTree = "<group>"; };
@@ -74,14 +70,6 @@
 			path = Shaders;
 			sourceTree = "<group>";
 		};
-		196311832A0CEBB000DED30D /* Primitives */ = {
-			isa = PBXGroup;
-			children = (
-				196311842A0CEBD300DED30D /* Quad.swift */,
-			);
-			path = Primitives;
-			sourceTree = "<group>";
-		};
 		197CCB4829A0CCC6005BFEC0 /* Metal */ = {
 			isa = PBXGroup;
 			children = (
@@ -103,8 +91,6 @@
 			isa = PBXGroup;
 			children = (
 				19D46D952A0DE2AB009F6E2F /* World.swift */,
-				19D46D922A0DCC9E009F6E2F /* Population.swift */,
-				196311832A0CEBB000DED30D /* Primitives */,
 			);
 			path = World;
 			sourceTree = "<group>";
@@ -256,14 +242,12 @@
 				196311822A0CD5F400DED30D /* Shaders.metal in Sources */,
 				19E456CB29494ABF0037DF4B /* KeyboardView.swift in Sources */,
 				19D46D962A0DE2AB009F6E2F /* World.swift in Sources */,
-				19D46D932A0DCC9E009F6E2F /* Population.swift in Sources */,
 				19E456C929494ABF0037DF4B /* Chord_AnalyserApp.swift in Sources */,
 				197CCB4C29A0D2A8005BFEC0 /* MetalView.swift in Sources */,
 				19D46D9A2A0E50DC009F6E2F /* MIDIEventHandler.swift in Sources */,
 				1982433C29BC9692001B7B0D /* KeyboardModel.swift in Sources */,
 				19D8E2A3298605880003B5EC /* Miscellaneous.swift in Sources */,
 				1982433E29BEE562001B7B0D /* DissonanceMeasure.swift in Sources */,
-				196311852A0CEBD300DED30D /* Quad.swift in Sources */,
 				19E2CC69294DCB2100DFE7F9 /* CoreMIDIRealTime.mm in Sources */,
 				19E2CC63294AB74400DFE7F9 /* Pitch.swift in Sources */,
 				196830882983D26F002232A7 /* ChordRecogniser.swift in Sources */,
