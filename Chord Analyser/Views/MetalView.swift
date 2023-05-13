@@ -12,19 +12,16 @@ class MetalViewController {
     
   public var view: MTKView
   public var renderer: Renderer
-  private var world: World?
     
-  init() {
+  init(world: GraphicsWorld) {
     
     // MTKView
     self.view = MTKView()
-    self.view.device = MTLCreateSystemDefaultDevice()
-      // ! creation of device; maybe create in Renderer instead?
     self.view.isPaused = false
     self.view.enableSetNeedsDisplay = false
     self.view.clearColor = MTLClearColorMake(0.5, 0.5, 1.0, 1.0)
 
-    self.renderer = Renderer(mtkView: view)
+    self.renderer = Renderer(mtkView: view, world: world)
     self.renderer.mtkView(self.view, drawableSizeWillChange: self.view.drawableSize)
 
     self.view.delegate = self.renderer
@@ -36,8 +33,8 @@ struct MetalView : NSViewRepresentable {
   
   public var controller: MetalViewController
 
-  init() {
-    self.controller = MetalViewController()
+  init(world: GraphicsWorld) {
+    self.controller = MetalViewController(world: world)
   }
   
   func makeNSView(context: Context) -> MTKView {

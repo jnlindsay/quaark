@@ -14,7 +14,7 @@ struct Chord_AnalyserApp: App {
   private var midiConnection: CoreMIDIConnection
   private var midiEventHandler: MIDIEventHandler
   private var metalView: MetalView
-  private var world: World
+  private var world: GraphicsWorld
   
   var body: some Scene {
     WindowGroup {
@@ -31,8 +31,8 @@ struct Chord_AnalyserApp: App {
     print("Chord Analyser has started.")
     
     self.midiEventHandler = MIDIEventHandler()
-    self.world = World()
-    self.metalView = MetalView()
+    self.world = GraphicsWorld()
+    self.metalView = MetalView(world: self.world)
     self.midiEventHandler.addListener(midiListener: self.world)
     self.midiConnection = CoreMIDIConnection(midiEventHandler: self.midiEventHandler) // TODO: listener wrong way around
     self.midiConnection.startMIDIListener()

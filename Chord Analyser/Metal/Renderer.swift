@@ -9,35 +9,29 @@ import Foundation
 import simd
 import MetalKit
 
-struct Colour {
-  var red:   Float
-  var green: Float
-  var blue:  Float
-
-  init() {
-    red = 0
-    green = 0
-    blue = 1
-  }
-}
-
 class Renderer : NSObject {
-    
-  private let device: MTLDevice
+  private var device: MTLDevice
   private let commandQueue: MTLCommandQueue
   private let library: MTLLibrary!
   private let renderPipelineState: MTLRenderPipelineState!
-  private var world: World?
+  private var world: GraphicsWorld
   var timer: Float = 0
-  var rectangleColour = Colour()
   
-  init(mtkView: MTKView) {
-    self.device = mtkView.device!
+  init(mtkView: MTKView, world: GraphicsWorld) {
+    print("--- Renderer initialisation has begun. ---")
     
-    self.commandQueue = device.makeCommandQueue()!
+    if let newDevice = MTLCreateSystemDefaultDevice() {
+      self.device = newDevice
+    } else {
+      fatalError("Renderer device could not be created.")
+    }
+
+    mtkView.device = self.device
+    
+    self.commandQueue = self.device.makeCommandQueue()!
     
     // shaders
-    self.library = device.makeDefaultLibrary()
+    self.library = self.device.makeDefaultLibrary()
     let vertexFunction = library?.makeFunction(name: "vertex_main")
     let fragmentFunction = library?.makeFunction(name: "fragment_main")
     
@@ -49,11 +43,19 @@ class Renderer : NSObject {
       mtkView.colorPixelFormat
     do {
       renderPipelineState =
-      try device.makeRenderPipelineState(descriptor: renderPipelineDescriptor)
+      try self.device.makeRenderPipelineState(descriptor: renderPipelineDescriptor)
     } catch let error {
       fatalError(error.localizedDescription)
     }
+    
+    // create GraphicsWorld meshes
+    self.world = world
+    for mesh in self.world.models {
+      mesh.createMeshes(device: self.device)
+    }
 
+    print("--- Renderer initialisation is complete. ---")
+    
   }
     
 }
