@@ -15,7 +15,7 @@ struct GraphicsMesh {
   let vertexBuffers: [MTLBuffer]
   let submeshes: [GraphicsSubmesh]
   
-  init(mtkMesh: MTKMesh, mdlMesh: MDLMesh) {
+  init(mdlMesh: MDLMesh, mtkMesh: MTKMesh) {
     var newVertexBuffers: [MTLBuffer] = []
     for mtkMeshBuffer in mtkMesh.vertexBuffers {
       newVertexBuffers.append(mtkMeshBuffer.buffer)
@@ -24,12 +24,12 @@ struct GraphicsMesh {
     
     self.submeshes =
       zip(
-        mtkMesh.submeshes,
-        mdlMesh.submeshes!
+        mdlMesh.submeshes!,
+        mtkMesh.submeshes
       ).map { mesh in
         GraphicsSubmesh(
-          mtkSubmesh: mesh.0,
-          mdlSubmesh: mesh.1 as! MDLSubmesh
+          mdlSubmesh: mesh.0 as! MDLSubmesh,
+          mtkSubmesh: mesh.1
         )
       }
   }

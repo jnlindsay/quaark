@@ -26,6 +26,9 @@
 		19E456CB29494ABF0037DF4B /* KeyboardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 19E456CA29494ABF0037DF4B /* KeyboardView.swift */; };
 		19E456CD29494AC00037DF4B /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 19E456CC29494AC00037DF4B /* Assets.xcassets */; };
 		19E456D529494AC00037DF4B /* Chord_Analyser.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 19E456D329494AC00037DF4B /* Chord_Analyser.xcdatamodeld */; };
+		19EA6F392A1065BB00F3070E /* VertexDescriptor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 19EA6F382A1065BB00F3070E /* VertexDescriptor.swift */; };
+		19EA6F3F2A106ACE00F3070E /* lowpoly-house.mtl in Resources */ = {isa = PBXBuildFile; fileRef = 19EA6F3D2A106ACE00F3070E /* lowpoly-house.mtl */; };
+		19EA6F402A106ACE00F3070E /* lowpoly-house.obj in Resources */ = {isa = PBXBuildFile; fileRef = 19EA6F3E2A106ACE00F3070E /* lowpoly-house.obj */; };
 		19F12BF729A1BB380064B3E7 /* Renderer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 19F12BF629A1BB380064B3E7 /* Renderer.swift */; };
 /* End PBXBuildFile section */
 
@@ -53,6 +56,10 @@
 		19E456CC29494AC00037DF4B /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		19E456D429494AC00037DF4B /* Chord_Analyser.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = Chord_Analyser.xcdatamodel; sourceTree = "<group>"; };
 		19E456D629494AC00037DF4B /* Chord_Analyser.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = Chord_Analyser.entitlements; sourceTree = "<group>"; };
+		19EA6F382A1065BB00F3070E /* VertexDescriptor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VertexDescriptor.swift; sourceTree = "<group>"; };
+		19EA6F3A2A10667C00F3070E /* Common.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Common.h; sourceTree = "<group>"; };
+		19EA6F3D2A106ACE00F3070E /* lowpoly-house.mtl */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = "lowpoly-house.mtl"; sourceTree = "<group>"; };
+		19EA6F3E2A106ACE00F3070E /* lowpoly-house.obj */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = "lowpoly-house.obj"; sourceTree = "<group>"; };
 		19F12BF629A1BB380064B3E7 /* Renderer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Renderer.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -80,6 +87,8 @@
 			isa = PBXGroup;
 			children = (
 				19F12BF629A1BB380064B3E7 /* Renderer.swift */,
+				19EA6F382A1065BB00F3070E /* VertexDescriptor.swift */,
+				19EA6F3A2A10667C00F3070E /* Common.h */,
 			);
 			path = Metal;
 			sourceTree = "<group>";
@@ -156,6 +165,7 @@
 			children = (
 				19E456C829494ABF0037DF4B /* Chord_AnalyserApp.swift */,
 				19D46D942A0DE29F009F6E2F /* Graphics */,
+				19EA6F3B2A106A9900F3070E /* GraphicsModels */,
 				19E2CC6A294DD13200DFE7F9 /* Models */,
 				197CCB4A29A0D28C005BFEC0 /* Views */,
 				19D8E2B1298E2E7B0003B5EC /* Libraries */,
@@ -168,6 +178,23 @@
 				19E456D329494AC00037DF4B /* Chord_Analyser.xcdatamodeld */,
 			);
 			path = "Chord Analyser";
+			sourceTree = "<group>";
+		};
+		19EA6F3B2A106A9900F3070E /* GraphicsModels */ = {
+			isa = PBXGroup;
+			children = (
+				19EA6F3C2A106ABC00F3070E /* LowPolyHouse */,
+			);
+			path = GraphicsModels;
+			sourceTree = "<group>";
+		};
+		19EA6F3C2A106ABC00F3070E /* LowPolyHouse */ = {
+			isa = PBXGroup;
+			children = (
+				19EA6F3D2A106ACE00F3070E /* lowpoly-house.mtl */,
+				19EA6F3E2A106ACE00F3070E /* lowpoly-house.obj */,
+			);
+			path = LowPolyHouse;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -236,6 +263,8 @@
 			buildActionMask = 2147483647;
 			files = (
 				19E456CD29494AC00037DF4B /* Assets.xcassets in Resources */,
+				19EA6F402A106ACE00F3070E /* lowpoly-house.obj in Resources */,
+				19EA6F3F2A106ACE00F3070E /* lowpoly-house.mtl in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -253,6 +282,7 @@
 				19E456CB29494ABF0037DF4B /* KeyboardView.swift in Sources */,
 				19D46D962A0DE2AB009F6E2F /* GraphicsWorld.swift in Sources */,
 				19E456C929494ABF0037DF4B /* Chord_AnalyserApp.swift in Sources */,
+				19EA6F392A1065BB00F3070E /* VertexDescriptor.swift in Sources */,
 				197CCB4C29A0D2A8005BFEC0 /* MetalView.swift in Sources */,
 				19D46DA02A0FA929009F6E2F /* GraphicsSubmesh.swift in Sources */,
 				19D46D9A2A0E50DC009F6E2F /* MIDIEventHandler.swift in Sources */,

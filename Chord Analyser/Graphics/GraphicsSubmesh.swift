@@ -13,7 +13,7 @@ struct GraphicsSubmesh {
   let indexBuffer: MTLBuffer
   let indexBufferOffset: Int
   
-  init(mtkSubmesh: MTKSubmesh, mdlSubmesh: MDLSubmesh) {
+  init(mdlSubmesh: MDLSubmesh, mtkSubmesh: MTKSubmesh) {
     self.indexCount = mtkSubmesh.indexCount
     self.indexType = mtkSubmesh.indexType
     self.indexBuffer = mtkSubmesh.indexBuffer.buffer

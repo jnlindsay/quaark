@@ -12,7 +12,7 @@ class GraphicsWorld : MIDIListener {
   var models: [GraphicsModel]
   
   init() {
-    let tempModel = GraphicsModel(name: "tempModel")
+    let tempModel = GraphicsModel(name: "lowpoly-house.obj")
     self.models = [tempModel]
   }
   

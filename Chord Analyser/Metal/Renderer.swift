@@ -11,6 +11,8 @@ import MetalKit
 
 class Renderer : NSObject {
   private var device: MTLDevice
+    /* Do not under any circumstances change this declaration of `device`.
+       It should be accessed only in this class and all derivatives. */
   private let commandQueue: MTLCommandQueue
   private let library: MTLLibrary!
   private let renderPipelineState: MTLRenderPipelineState!
@@ -50,8 +52,8 @@ class Renderer : NSObject {
     
     // create GraphicsWorld meshes
     self.world = world
-    for mesh in self.world.models {
-      mesh.createMeshes(device: self.device)
+    for model in self.world.models {
+      model.configureMeshes(device: self.device)
     }
 
     print("--- Renderer initialisation is complete. ---")
@@ -142,4 +144,8 @@ extension Renderer : MTKViewDelegate {
     commandBuffer.commit()
       
   }
+}
+
+protocol Renderable {
+  func render()
 }
