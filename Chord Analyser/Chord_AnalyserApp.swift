@@ -33,7 +33,8 @@ struct Chord_AnalyserApp: App {
     self.midiEventHandler = MIDIEventHandler()
     self.world = GraphicsWorld()
     self.metalView = MetalView(world: self.world)
-    self.midiEventHandler.addListener(midiListener: self.world)
+//    self.midiEventHandler.addListener(midiListener: self.world)
+    self.midiEventHandler.addListener(midiListener: self.metalView.controller.renderer)
     self.midiConnection = CoreMIDIConnection(midiEventHandler: self.midiEventHandler) // TODO: listener wrong way around
     self.midiConnection.startMIDIListener()
   }

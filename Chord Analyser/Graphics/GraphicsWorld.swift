@@ -18,7 +18,6 @@ class GraphicsWorld : MIDIListener {
   }
   
   func handleMIDIEvent() {
-    print("MIDI event received by class World.")
   }
 
 }

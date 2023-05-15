@@ -8,7 +8,7 @@
 import simd
 import MetalKit
 
-class Renderer : NSObject {
+class Renderer : NSObject, MIDIListener {
   private var device: MTLDevice
     /* Do not under any circumstances change this declaration of `device`.
        It should be accessed only in this class and its derivatives. */
@@ -18,6 +18,9 @@ class Renderer : NSObject {
   private var world: GraphicsWorld
   private var uniforms: Uniforms
   var timer: Float
+  
+  // ! WARNING: BAD CODE
+  private var keyPressed: Bool = false
 
   init(metalView: MTKView, world: GraphicsWorld) {
     print("--- Renderer initialisation has begun. ---")
@@ -104,6 +107,10 @@ class Renderer : NSObject {
     self.uniforms.viewMatrix =
       createTranslationMatrix(x: 0.5, y: 0.0, z: 0.0).inverse
   }
+  
+  func handleMIDIEvent() {
+    self.keyPressed = self.keyPressed ? false : true
+  }
     
 }
 
@@ -149,11 +156,17 @@ extension Renderer : MTKViewDelegate {
     }
     
     commandEncoder.setRenderPipelineState(self.pipelineState)
-    commandEncoder.setTriangleFillMode(.lines)
+//    commandEncoder.setTriangleFillMode(.lines)
     commandEncoder.setVertexBytes(
       &uniforms,
       length: MemoryLayout<Uniforms>.stride,
       index: 11
+    )
+//    var keyPressed: Bool = true
+    commandEncoder.setVertexBytes(
+      &self.keyPressed,
+      length: MemoryLayout<Bool>.stride,
+      index: 12
     )
     
     // timer

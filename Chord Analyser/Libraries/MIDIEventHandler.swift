@@ -6,8 +6,7 @@
 //
 
 class MIDIEventHandler {
-  
-  //  private var metalView: MetalView
+
   private var midiListeners: [MIDIListener] = []
   
   init() {
