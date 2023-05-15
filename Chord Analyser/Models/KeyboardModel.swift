@@ -40,6 +40,8 @@ public class KeyboardModel : ObservableObject {
         return -1.00
     }
     
+  // TODO: this function should be abstracted out to MIDIEventHandler.swift,
+  //       triggered by the high priority thread of the CoreMIDI connection.
     func updateKeyboardState(_ note: Note) {
         updateNotesOnOffAndChord(note)
         updateChord()
