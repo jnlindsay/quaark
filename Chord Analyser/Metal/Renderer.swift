@@ -16,7 +16,8 @@ class Renderer : NSObject {
   private let library: MTLLibrary
   private let pipelineState: MTLRenderPipelineState
   private var world: GraphicsWorld
-//  var timer: Float = 0
+  private var uniforms: Uniforms
+  var timer: Float
 
   init(metalView: MTKView, world: GraphicsWorld) {
     print("--- Renderer initialisation has begun. ---")
@@ -62,13 +63,23 @@ class Renderer : NSObject {
       fatalError(error.localizedDescription)
     }
     
+    // uniforms
+    self.uniforms = Uniforms()
+    
     // configure GraphicsWorld meshes
     self.world = world
     for model in self.world.models {
       model.configureMeshes(device: self.device)
     }
     
+    self.timer = 0
+    
+    // must be called after all variables have been initialised
     super.init()
+    
+    // configure uniforms
+    self.configureUniforms()
+    
     mtkView(
       metalView,
       drawableSizeWillChange: metalView.bounds.size
@@ -77,6 +88,22 @@ class Renderer : NSObject {
     print("--- Renderer initialisation is complete. ---")
     
   }
+  
+  func configureUniforms() {
+    let translationMatrix = createTranslationMatrix(
+      x:  0.5,
+      y: -0.4,
+      z:  0.0
+    )
+    let rotationMatrix = createRotationMatrix(
+      angleX: 0.0,
+      angleY: 0.0,
+      angleZ: Float(45).degreesToRadians
+    )
+    self.uniforms.modelMatrix = translationMatrix * rotationMatrix
+    self.uniforms.viewMatrix =
+      createTranslationMatrix(x: 0.5, y: 0.0, z: 0.0).inverse
+  }
     
 }
 
@@ -84,7 +111,20 @@ extension Renderer : MTKViewDelegate {
   func mtkView(
     _ mtkView: MTKView,
     drawableSizeWillChange size: CGSize
-  ) {}
+  ) {
+    
+    // update projection matrix
+    let aspectRatio =
+      Float(mtkView.bounds.width) / Float(mtkView.bounds.height)
+    let projectionMatrix = createProjectionMatrix(
+      projectionFOV: Float(45).degreesToRadians,
+      nearPlane: 0.1,
+      farPlane: 100,
+      aspectRatio: aspectRatio
+    )
+    self.uniforms.projectionMatrix = projectionMatrix
+    
+  }
   
   func draw(in metalView: MTKView) {
       
@@ -109,19 +149,40 @@ extension Renderer : MTKViewDelegate {
     }
     
     commandEncoder.setRenderPipelineState(self.pipelineState)
+    commandEncoder.setTriangleFillMode(.lines)
+    commandEncoder.setVertexBytes(
+      &uniforms,
+      length: MemoryLayout<Uniforms>.stride,
+      index: 11
+    )
     
-//    timer += 0.005
-//    var currentTime = sin(timer)
-//    commandEncoder.setVertexBytes(
-//      &currentTime,
-//      length: MemoryLayout<Float>.stride,
-//      index: 11
-//    )
+    // timer
+    timer += 0.005
+  
+    // HACKY CODE START -----------------------
+    
+    // rotate model around z axis
+    let translationMatrix = createTranslationMatrix(
+      x:  0.0,
+      y: -0.6, // NOTE: manually made to match initialisation value
+      z:  0.0
+    )
+    let rotationMatrix = createRotationMatrix(
+      angleX: 0.0,
+      angleY: sin(timer),
+      angleZ: 0.0
+    )
+    uniforms.modelMatrix = translationMatrix * rotationMatrix
+    uniforms.viewMatrix = createTranslationMatrix(
+      x: 0.0, y: 0.0, z: -3
+    ).inverse
+    
+    // HACKY CODE END ----------------------------
     
     for model in self.world.models {
       model.render(commandEncoder: commandEncoder)
     }
-
+    
     commandEncoder.endEncoding()
 
     guard let drawable = metalView.currentDrawable else {
