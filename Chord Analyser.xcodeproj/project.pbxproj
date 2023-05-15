@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		194B428B2A11EDF2005FE25C /* Shaders.metal in Sources */ = {isa = PBXBuildFile; fileRef = 196311812A0CD5F400DED30D /* Shaders.metal */; };
+		194B428E2A121783005FE25C /* train.usd in Resources */ = {isa = PBXBuildFile; fileRef = 194B428D2A12171D005FE25C /* train.usd */; };
 		196830882983D26F002232A7 /* ChordRecogniser.swift in Sources */ = {isa = PBXBuildFile; fileRef = 196830872983D26F002232A7 /* ChordRecogniser.swift */; };
 		1968308B2983E6CA002232A7 /* DequeModule in Frameworks */ = {isa = PBXBuildFile; productRef = 1968308A2983E6CA002232A7 /* DequeModule */; };
 		197CCB4C29A0D2A8005BFEC0 /* MetalView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 197CCB4B29A0D2A8005BFEC0 /* MetalView.swift */; };
@@ -34,6 +35,7 @@
 
 /* Begin PBXFileReference section */
 		191830362982A970002D8FAB /* Chord Analyser-Bridging-Header.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "Chord Analyser-Bridging-Header.h"; sourceTree = "<group>"; };
+		194B428D2A12171D005FE25C /* train.usd */ = {isa = PBXFileReference; lastKnownFileType = file; path = train.usd; sourceTree = "<group>"; };
 		196311812A0CD5F400DED30D /* Shaders.metal */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.metal; path = Shaders.metal; sourceTree = "<group>"; };
 		196830872983D26F002232A7 /* ChordRecogniser.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChordRecogniser.swift; sourceTree = "<group>"; };
 		197CCB4B29A0D2A8005BFEC0 /* MetalView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MetalView.swift; sourceTree = "<group>"; };
@@ -57,7 +59,6 @@
 		19E456D429494AC00037DF4B /* Chord_Analyser.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = Chord_Analyser.xcdatamodel; sourceTree = "<group>"; };
 		19E456D629494AC00037DF4B /* Chord_Analyser.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = Chord_Analyser.entitlements; sourceTree = "<group>"; };
 		19EA6F382A1065BB00F3070E /* VertexDescriptor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VertexDescriptor.swift; sourceTree = "<group>"; };
-		19EA6F3A2A10667C00F3070E /* Common.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Common.h; sourceTree = "<group>"; };
 		19EA6F3D2A106ACE00F3070E /* lowpoly-house.mtl */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = "lowpoly-house.mtl"; sourceTree = "<group>"; };
 		19EA6F3E2A106ACE00F3070E /* lowpoly-house.obj */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = "lowpoly-house.obj"; sourceTree = "<group>"; };
 		19F12BF629A1BB380064B3E7 /* Renderer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Renderer.swift; sourceTree = "<group>"; };
@@ -88,7 +89,6 @@
 			children = (
 				19F12BF629A1BB380064B3E7 /* Renderer.swift */,
 				19EA6F382A1065BB00F3070E /* VertexDescriptor.swift */,
-				19EA6F3A2A10667C00F3070E /* Common.h */,
 			);
 			path = Metal;
 			sourceTree = "<group>";
@@ -183,6 +183,7 @@
 		19EA6F3B2A106A9900F3070E /* GraphicsModels */ = {
 			isa = PBXGroup;
 			children = (
+				194B428D2A12171D005FE25C /* train.usd */,
 				19EA6F3C2A106ABC00F3070E /* LowPolyHouse */,
 			);
 			path = GraphicsModels;
@@ -263,6 +264,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				19E456CD29494AC00037DF4B /* Assets.xcassets in Resources */,
+				194B428E2A121783005FE25C /* train.usd in Resources */,
 				19EA6F402A106ACE00F3070E /* lowpoly-house.obj in Resources */,
 				19EA6F3F2A106ACE00F3070E /* lowpoly-house.mtl in Resources */,
 			);

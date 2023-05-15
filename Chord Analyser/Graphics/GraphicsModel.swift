@@ -10,7 +10,8 @@ import MetalKit
 class GraphicsModel {
   public let name: String
   private let assetURL: URL
-  private var meshes: [GraphicsMesh]
+//  private var meshes: [GraphicsMesh]
+  private var meshes: [MTKMesh]
   
   init(name: String) {
     self.name = name
@@ -35,15 +36,17 @@ class GraphicsModel {
       vertexDescriptor: .defaultLayout,
       bufferAllocator: allocator
     )
-    let (mdlMeshes, mtkMeshes) = try! MTKMesh.newMeshes(
-      asset: asset,
-      device: device
-    )
-    for zippedMesh in zip(mdlMeshes, mtkMeshes) {
-      self.meshes.append(GraphicsMesh(
-        mdlMesh: zippedMesh.0,
-        mtkMesh: zippedMesh.1
-      ))
+    
+    if let mdlMesh =
+        asset.childObjects(of: MDLMesh.self).first as? MDLMesh {
+      do {
+        let newMesh = try MTKMesh(mesh: mdlMesh, device: device)
+        self.meshes.append(newMesh)
+      } catch {
+        fatalError("Failed to load mesh.")
+      }
+    } else {
+      fatalError("No mesh available.")
     }
     
     print("Configuration complete.")
@@ -54,10 +57,8 @@ class GraphicsModel {
 extension GraphicsModel : Renderable {
   func render(commandEncoder: MTLRenderCommandEncoder) {
     
-    print("Rendered!")
-    
-//    for mesh in self.meshes {
-//
+    for mesh in self.meshes {
+
 //      /*
 //       ! WARNING: BUG PRONE. The number of vertex buffers here doesn't
 //          seem to be fixed. Refer to GPU programming books to learn about
@@ -78,18 +79,24 @@ extension GraphicsModel : Renderable {
 //          offset: 0,
 //          index: index)
 //      }
-//
-//      for submesh in mesh.submeshes {
-//        commandEncoder.drawIndexedPrimitives(
-//          type: .triangle,
-//          indexCount: submesh.indexCount,
-//          indexType: submesh.indexType,
-//          indexBuffer: submesh.indexBuffer,
-//          indexBufferOffset: submesh.indexBufferOffset
-//        )
-//      }
-//
-//    }
+      
+      commandEncoder.setVertexBuffer(
+        mesh.vertexBuffers[0].buffer,
+        offset: 0,
+        index: 0
+      )
+
+      for submesh in mesh.submeshes {
+        commandEncoder.drawIndexedPrimitives(
+          type: .triangle,
+          indexCount: submesh.indexCount,
+          indexType: submesh.indexType,
+          indexBuffer: submesh.indexBuffer.buffer,
+          indexBufferOffset: submesh.indexBuffer.offset
+        )
+      }
+
+    }
     
   }
 }

@@ -7,30 +7,20 @@
 
 #include <metal_stdlib>
 using namespace metal;
-#import "../Metal/Common.h"
 
 struct VertexIn {
-  float4 position [[attribute(Position)]];
+  float4 position [[attribute(0)]];
 };
 
-struct VertexOut {
-  float4 position [[position]];
-};
-
-vertex VertexOut vertex_main(
+vertex float4 vertex_main(
   const VertexIn in [[stage_in]]
 ) {
   float4 position = in.position;
-  
-  VertexOut out {
-    .position = position,
-  };
-  
-  return out;
+  return position;
 }
 
-fragment float4 fragment_main(
-  VertexOut in [[stage_in]]
-) {
+fragment float4 fragment_main() {
   return float4(1, 1, 1, 1);
 }
+
+

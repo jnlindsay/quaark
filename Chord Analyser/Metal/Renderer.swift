@@ -15,19 +15,16 @@ class Renderer : NSObject {
   private let commandQueue: MTLCommandQueue
   private let library: MTLLibrary
   private let pipelineState: MTLRenderPipelineState
-//  private var world: GraphicsWorld
+  private var world: GraphicsWorld
 //  var timer: Float = 0
-  
-  // DODGY
-  private let mesh: MTKMesh
-  
-  init(mtkView: MTKView, world: GraphicsWorld) {
+
+  init(metalView: MTKView, world: GraphicsWorld) {
     print("--- Renderer initialisation has begun. ---")
     
     // device
     if let newDevice = MTLCreateSystemDefaultDevice() {
       self.device = newDevice
-      mtkView.device = newDevice
+      metalView.device = newDevice
     } else {
       fatalError("Renderer device could not be created.")
     }
@@ -39,7 +36,6 @@ class Renderer : NSObject {
       fatalError("Command queue could not be created.")
     }
 
-    /*
     // shader library
     if let newLibrary = self.device.makeDefaultLibrary() {
       self.library = newLibrary
@@ -48,79 +44,35 @@ class Renderer : NSObject {
     }
     let vertexFunction = self.library.makeFunction(name: "vertex_main")
     let fragmentFunction = self.library.makeFunction(name: "fragment_main")
-     */
-    
-    // DODGINESS --------------------------------------------------
-    
-    let allocator = MTKMeshBufferAllocator(device: self.device)
-    let mdlMesh = MDLMesh(
-      coneWithExtent: [1,1,1],
-      segments: [10, 10],
-      inwardNormals: false,
-      cap: true,
-      geometryType: .triangles,
-      allocator: allocator)
-    self.mesh = try! MTKMesh(mesh: mdlMesh, device: device)
-    // begin export code
-    // 1
-    let asset = MDLAsset()
-    asset.add(mdlMesh)
-
-    let shader = """
-    #include <metal_stdlib>
-    using namespace metal;
-
-    struct VertexIn {
-      float4 position [[attribute(0)]];
-    };
-
-    vertex float4
-      vertex_main(const VertexIn vertex_in [[stage_in]]) {
-      return vertex_in.position;
-    }
-
-    fragment float4 fragment_main() {
-      return float4(1, 1, 1, 1);
-    }
-    """
-
-    self.library =
-      try! device.makeLibrary(source: shader, options: nil)
-    let vertexFunction = library.makeFunction(name: "vertex_main")
-    let fragmentFunction =
-      library.makeFunction(name: "fragment_main")
-    
-    // END DODGINESS ----------------------------------------------
     
     // pipeline state
     let pipelineDescriptor = MTLRenderPipelineDescriptor()
     pipelineDescriptor.vertexFunction = vertexFunction
     pipelineDescriptor.fragmentFunction = fragmentFunction
-//    pipelineDescriptor.colorAttachments[0].pixelFormat =
-//      mtkView.colorPixelFormat
-//    do {
-//      pipelineDescriptor.vertexDescriptor =
-//        MTLVertexDescriptor.defaultLayout
-//      self.pipelineState =
-//        try self.device.makeRenderPipelineState(
-//          descriptor: pipelineDescriptor
-//        )
-//    } catch let error {
-//      fatalError(error.localizedDescription)
-//    }
-    
-    pipelineDescriptor.colorAttachments[0].pixelFormat = .bgra8Unorm
-    pipelineDescriptor.vertexDescriptor =
-        MTKMetalVertexDescriptorFromModelIO(mesh.vertexDescriptor)
-    self.pipelineState =
-      try! device.makeRenderPipelineState(
-        descriptor: pipelineDescriptor)
+    pipelineDescriptor.colorAttachments[0].pixelFormat =
+      metalView.colorPixelFormat
+    do {
+      pipelineDescriptor.vertexDescriptor =
+        MTLVertexDescriptor.defaultLayout
+      self.pipelineState =
+        try self.device.makeRenderPipelineState(
+          descriptor: pipelineDescriptor
+        )
+    } catch let error {
+      fatalError(error.localizedDescription)
+    }
     
     // configure GraphicsWorld meshes
-//    self.world = world
-//    for model in self.world.models {
-//      model.configureMeshes(device: self.device)
-//    }
+    self.world = world
+    for model in self.world.models {
+      model.configureMeshes(device: self.device)
+    }
+    
+    super.init()
+    mtkView(
+      metalView,
+      drawableSizeWillChange: metalView.bounds.size
+    )
 
     print("--- Renderer initialisation is complete. ---")
     
@@ -134,7 +86,7 @@ extension Renderer : MTKViewDelegate {
     drawableSizeWillChange size: CGSize
   ) {}
   
-  func draw(in mtkView: MTKView) {
+  func draw(in metalView: MTKView) {
       
     guard
       let commandBuffer = self.commandQueue.makeCommandBuffer()
@@ -142,27 +94,8 @@ extension Renderer : MTKViewDelegate {
       fatalError("Command buffer could not be created.")
     }
     
-//    if (mtkView.device == nil) {
-//      print("OMG NO DEVICE")
-//    } else {
-//      print("OK DEVICE FOUND...")
-//    }
-//
-//    if (mtkView.currentDrawable == nil) {
-//      print("OMG CURRENTDRAWABLE NIL")
-//    } else {
-//      print("OK CURRENTDRAWALBE NOT NIL...")
-//    }
-    
-//    let renderPassDescriptor = mtkView.currentRenderPassDescriptor
-//    if (renderPassDescriptor == nil) {
-//      print("OMG NIL!")
-//    } else {
-//      print("NOT NIL!")
-//    }
-    
     guard
-      let renderPassDescriptor = mtkView.currentRenderPassDescriptor
+      let renderPassDescriptor = metalView.currentRenderPassDescriptor
     else {
       fatalError("Render pass descriptor could not be obtained.")
     }
@@ -185,33 +118,13 @@ extension Renderer : MTKViewDelegate {
 //      index: 11
 //    )
     
-//    for model in self.world.models {
-//      model.render(commandEncoder: commandEncoder)
-//    }
-    
-    // DODGINESS ---------------------------------------
-    
-    commandEncoder.setVertexBuffer(
-      mesh.vertexBuffers[0].buffer,
-      offset: 0,
-      index: 0)
-
-    guard let submesh = mesh.submeshes.first else {
-     fatalError()
+    for model in self.world.models {
+      model.render(commandEncoder: commandEncoder)
     }
-    commandEncoder.setTriangleFillMode(.lines)
-    commandEncoder.drawIndexedPrimitives(
-      type: .triangle,
-      indexCount: submesh.indexCount,
-      indexType: submesh.indexType,
-      indexBuffer: submesh.indexBuffer.buffer,
-      indexBufferOffset: 0)
-    
-    // END DODGINESS
 
     commandEncoder.endEncoding()
 
-    guard let drawable = mtkView.currentDrawable else {
+    guard let drawable = metalView.currentDrawable else {
       print("Renderer.swift: drawable not obtained.")
       return
     }

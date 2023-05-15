@@ -9,34 +9,25 @@ import MetalKit
 
 extension MTLVertexDescriptor {
   static var defaultLayout: MTLVertexDescriptor? {
-    MTKMetalVertexDescriptorFromModelIO(.defaultLayout)
+    MTKMetalVertexDescriptorFromModelIO(MDLVertexDescriptor.defaultLayout)
   }
 }
 
 extension MDLVertexDescriptor {
   static var defaultLayout: MDLVertexDescriptor {
     let vertexDescriptor = MDLVertexDescriptor()
+    var offset = 0
 
-    vertexDescriptor.attributes[Position.index] =
+    vertexDescriptor.attributes[0] =
       MDLVertexAttribute(
         name: MDLVertexAttributePosition,
         format: .float3,
         offset: 0,
-        bufferIndex: VertexBuffer.index
+        bufferIndex: 0
       )
-
+    offset += MemoryLayout<simd_float3>.stride
+    vertexDescriptor.layouts[0] = MDLVertexBufferLayout(stride: offset)
+    
     return vertexDescriptor
-  }
-}
-
-extension Attributes {
-  var index: Int {
-    return Int(self.rawValue)
-  }
-}
-
-extension BufferIndices {
-  var index: Int {
-    return Int(self.rawValue)
   }
 }
