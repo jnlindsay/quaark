@@ -7,56 +7,30 @@
 
 #include <metal_stdlib>
 using namespace metal;
+#import "../Metal/Common.h"
 
-struct Colour {
-  float red;
-  float green;
-  float blue;
+struct VertexIn {
+  float4 position [[attribute(Position)]];
 };
 
 struct VertexOut {
   float4 position [[position]];
-  float red;
-  float green;
-  float blue;
 };
 
 vertex VertexOut vertex_main(
-  constant packed_float3 *vertices [[buffer(0)]],
-  constant ushort *indices [[buffer(1)]],
-  constant Colour *colour [[buffer(2)]],
-  constant float &timer [[buffer(11)]],
-  constant float4x4 &matrix [[buffer(12)]],
-  uint vertexID [[vertex_id]]
+  const VertexIn in [[stage_in]]
 ) {
-  ushort index = indices[vertexID];
-  float4 position = float4(vertices[index], 1);
+  float4 position = in.position;
   
-  // ! WARNING: HACKY CODE
-  if (colour->red == 1) {
-    position.y += timer;
-  }
-  
-  float4 translation = matrix * position;
-//  constant float4x4 &matrix [[buffer(12)]]
-//  position.x += 0.5;
-//  position.y -= 0.3;
-//  return position;
   VertexOut out {
-    .position = translation,
-//    .position = position,
-    .red = colour->red,
-    .green = colour->green,
-    .blue = colour->blue
+    .position = position,
   };
+  
   return out;
 }
 
 fragment float4 fragment_main(
   VertexOut in [[stage_in]]
 ) {
-//  float weight;
-//  in.position.x < 200 ? weight = 0 : weight = 1;
-  return float4(in.red, in.green, in.blue, 1);
-//  return float4(0, 0, 1, 1);
+  return float4(1, 1, 1, 1);
 }

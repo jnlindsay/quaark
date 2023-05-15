@@ -1,6 +1,6 @@
 //
 //  Common.h
-//  Chord Analyser
+//  Chord Analyserdoes
 //
 //  Created by Jeremy Lindsay on 14/5/2023.
 //

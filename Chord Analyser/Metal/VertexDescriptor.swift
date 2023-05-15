@@ -7,11 +7,16 @@
 
 import MetalKit
 
+extension MTLVertexDescriptor {
+  static var defaultLayout: MTLVertexDescriptor? {
+    MTKMetalVertexDescriptorFromModelIO(.defaultLayout)
+  }
+}
+
 extension MDLVertexDescriptor {
   static var defaultLayout: MDLVertexDescriptor {
     let vertexDescriptor = MDLVertexDescriptor()
-    var offset = 0
-    
+
     vertexDescriptor.attributes[Position.index] =
       MDLVertexAttribute(
         name: MDLVertexAttributePosition,
@@ -19,7 +24,7 @@ extension MDLVertexDescriptor {
         offset: 0,
         bufferIndex: VertexBuffer.index
       )
-    
+
     return vertexDescriptor
   }
 }

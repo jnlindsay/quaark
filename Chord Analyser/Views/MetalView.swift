@@ -16,15 +16,20 @@ class MetalViewController {
   init(world: GraphicsWorld) {
     
     // MTKView
-    self.view = MTKView()
+    self.view = MTKView(frame: CGRect(x: 0, y: 0, width: 100, height: 100))
+      /*
+        TODO: apparently setting the frame above is bad?
+        https://stackoverflow.com/questions/60737807/cametallayer-nextdrawable-returning-nil-because-allocation-failed
+       */
     self.view.isPaused = false
     self.view.enableSetNeedsDisplay = false
     self.view.clearColor = MTLClearColorMake(0.5, 0.5, 1.0, 1.0)
 
     self.renderer = Renderer(mtkView: view, world: world)
-    self.renderer.mtkView(self.view, drawableSizeWillChange: self.view.drawableSize)
-
     self.view.delegate = self.renderer
+//    self.view.device = self.renderer.device
+
+    self.renderer.mtkView(self.view, drawableSizeWillChange: self.view.drawableSize)
     
   }
 }
