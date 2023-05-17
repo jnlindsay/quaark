@@ -15,11 +15,13 @@ struct VertexIn {
 
 struct VertexOut {
   float4 position [[position]];
+  float4 colour;
 };
 
 vertex VertexOut vertex_main(
   VertexIn in [[stage_in]],
-  constant Uniforms &uniforms [[buffer(11)]]
+  constant Uniforms &uniforms [[buffer(11)]],
+  constant float4 &colour [[buffer(12)]]
 ) {
   float4 position =
       uniforms.projectionMatrix
@@ -27,7 +29,8 @@ vertex VertexOut vertex_main(
     * uniforms.modelMatrix
     * in.position;
   VertexOut out {
-    .position = position
+    .position = position,
+    .colour = colour
   };
   return out;
 }
@@ -35,5 +38,5 @@ vertex VertexOut vertex_main(
 fragment float4 fragment_main(
   VertexOut in [[stage_in]]
 ) {
-  return float4(0, 0, 0, 1);
+  return in.colour;
 }

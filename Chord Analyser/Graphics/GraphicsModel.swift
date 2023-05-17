@@ -13,6 +13,7 @@ class GraphicsModel {
   public var scale: Float
   public var position: simd_float3
   public var rotation: simd_float3
+  public var colour: simd_float4
   private let assetURL: URL
   private var meshes: [MTKMesh]
   
@@ -21,6 +22,7 @@ class GraphicsModel {
     self.scale = 1
     self.position = simd_float3(0.0, -0.6, 0.0)
     self.rotation = simd_float3(0.0,  0.0, 0.0)
+    self.colour   = simd_float4(0.0,  0.0, 0.0, 1.0)
     
     guard let newAssetURL = Bundle.main.url(
       forResource: name,
@@ -87,6 +89,12 @@ extension GraphicsModel : Renderable {
       &uniforms,
       length: MemoryLayout<Uniforms>.stride,
       index: 11
+    )
+    
+    commandEncoder.setVertexBytes(
+      &self.colour,
+      length: MemoryLayout<simd_float4>.stride,
+      index: 12
     )
     
     for mesh in self.meshes {
