@@ -17,12 +17,9 @@ public class CoreMIDIConnection : ObservableObject {
   private var port: MIDIPortRef
   private var source: MIDIEndpointRef?
   private var keyboardModel: KeyboardModel
-  private var midiEventHandler: MIDIEventHandler
   private var timer: Timer?
   
-  init(
-    midiEventHandler: MIDIEventHandler
-  ) {
+  init() {
       
     print("--- CoreMIDIConnection initialisation has begun. ---")
     
@@ -30,7 +27,6 @@ public class CoreMIDIConnection : ObservableObject {
     self.client = MIDIClientRef()
     self.port = MIDIPortRef()
     self.keyboardModel = KeyboardModel()
-    self.midiEventHandler = midiEventHandler
     self.createMIDIClient()
     self.listMIDIDevices()
     self.listMIDISources()
@@ -119,10 +115,7 @@ public class CoreMIDIConnection : ObservableObject {
       
       self.realTime.popMIDIWords() { word in
         let note = toNote(word)
-        
-        // ! WARNING: DUPLICATION. The MIDI event handler should be the only function below.
         self.keyboardModel.updateKeyboardState(note)
-        self.midiEventHandler.propagateEvent(note)
       }
     }
   }

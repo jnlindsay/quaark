@@ -15,13 +15,11 @@ struct VertexIn {
 
 struct VertexOut {
   float4 position [[position]];
-  bool keyPressed;
 };
 
 vertex VertexOut vertex_main(
   VertexIn in [[stage_in]],
-  constant Uniforms &uniforms [[buffer(11)]],
-  constant bool &keyPressed [[buffer(12)]]
+  constant Uniforms &uniforms [[buffer(11)]]
 ) {
   float4 position =
       uniforms.projectionMatrix
@@ -29,8 +27,7 @@ vertex VertexOut vertex_main(
     * uniforms.modelMatrix
     * in.position;
   VertexOut out {
-    .position = position,
-    .keyPressed = keyPressed
+    .position = position
   };
   return out;
 }
@@ -38,6 +35,5 @@ vertex VertexOut vertex_main(
 fragment float4 fragment_main(
   VertexOut in [[stage_in]]
 ) {
-  float weight = in.keyPressed ? 1 : 0;
-  return float4(weight, weight, weight, 1);
+  return float4(0, 0, 0, 1);
 }

@@ -12,7 +12,6 @@ import Foundation
 struct Chord_AnalyserApp: App {
     
   private var midiConnection: CoreMIDIConnection
-  private var midiEventHandler: MIDIEventHandler
   private var metalView: MetalView
   private var world: GraphicsWorld
   
@@ -30,12 +29,10 @@ struct Chord_AnalyserApp: App {
   init() {
     print("Chord Analyser has started.")
     
-    self.midiEventHandler = MIDIEventHandler()
     self.world = GraphicsWorld()
     self.metalView = MetalView(world: self.world)
-//    self.midiEventHandler.addListener(midiListener: self.world)
-    self.midiEventHandler.addListener(midiListener: self.metalView.controller.renderer)
-    self.midiConnection = CoreMIDIConnection(midiEventHandler: self.midiEventHandler) // TODO: listener wrong way around
+    self.midiConnection = CoreMIDIConnection()
+    
     self.midiConnection.startMIDIListener()
   }
     

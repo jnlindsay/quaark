@@ -16,7 +16,6 @@
 		1982433C29BC9692001B7B0D /* KeyboardModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1982433B29BC9692001B7B0D /* KeyboardModel.swift */; };
 		1982433E29BEE562001B7B0D /* DissonanceMeasure.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1982433D29BEE562001B7B0D /* DissonanceMeasure.swift */; };
 		19D46D962A0DE2AB009F6E2F /* GraphicsWorld.swift in Sources */ = {isa = PBXBuildFile; fileRef = 19D46D952A0DE2AB009F6E2F /* GraphicsWorld.swift */; };
-		19D46D9A2A0E50DC009F6E2F /* MIDIEventHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = 19D46D992A0E50DC009F6E2F /* MIDIEventHandler.swift */; };
 		19D46D9C2A0FA59D009F6E2F /* GraphicsModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 19D46D9B2A0FA59D009F6E2F /* GraphicsModel.swift */; };
 		19D46D9E2A0FA627009F6E2F /* GraphicsMesh.swift in Sources */ = {isa = PBXBuildFile; fileRef = 19D46D9D2A0FA627009F6E2F /* GraphicsMesh.swift */; };
 		19D46DA02A0FA929009F6E2F /* GraphicsSubmesh.swift in Sources */ = {isa = PBXBuildFile; fileRef = 19D46D9F2A0FA929009F6E2F /* GraphicsSubmesh.swift */; };
@@ -45,7 +44,6 @@
 		1982433B29BC9692001B7B0D /* KeyboardModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KeyboardModel.swift; sourceTree = "<group>"; };
 		1982433D29BEE562001B7B0D /* DissonanceMeasure.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DissonanceMeasure.swift; sourceTree = "<group>"; };
 		19D46D952A0DE2AB009F6E2F /* GraphicsWorld.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GraphicsWorld.swift; sourceTree = "<group>"; };
-		19D46D992A0E50DC009F6E2F /* MIDIEventHandler.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MIDIEventHandler.swift; sourceTree = "<group>"; };
 		19D46D9B2A0FA59D009F6E2F /* GraphicsModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GraphicsModel.swift; sourceTree = "<group>"; };
 		19D46D9D2A0FA627009F6E2F /* GraphicsMesh.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GraphicsMesh.swift; sourceTree = "<group>"; };
 		19D46D9F2A0FA929009F6E2F /* GraphicsSubmesh.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GraphicsSubmesh.swift; sourceTree = "<group>"; };
@@ -131,7 +129,6 @@
 				196830872983D26F002232A7 /* ChordRecogniser.swift */,
 				19E2CC7A294DDC1F00DFE7F9 /* CoreMIDIConnection.swift */,
 				1982433D29BEE562001B7B0D /* DissonanceMeasure.swift */,
-				19D46D992A0E50DC009F6E2F /* MIDIEventHandler.swift */,
 				19D8E2A2298605880003B5EC /* Miscellaneous.swift */,
 				19E2CC62294AB74400DFE7F9 /* Pitch.swift */,
 			);
@@ -300,7 +297,6 @@
 				19EA6F392A1065BB00F3070E /* VertexDescriptor.swift in Sources */,
 				197CCB4C29A0D2A8005BFEC0 /* MetalView.swift in Sources */,
 				19D46DA02A0FA929009F6E2F /* GraphicsSubmesh.swift in Sources */,
-				19D46D9A2A0E50DC009F6E2F /* MIDIEventHandler.swift in Sources */,
 				1982433C29BC9692001B7B0D /* KeyboardModel.swift in Sources */,
 				19D8E2A3298605880003B5EC /* Miscellaneous.swift in Sources */,
 				194B42922A12600C005FE25C /* GraphicsMathematics.swift in Sources */,
