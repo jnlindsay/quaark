@@ -20,9 +20,9 @@ class GraphicsModel {
   init(name: String) {
     self.name = name
     self.scale = 1
-    self.position = simd_float3(0.0, -0.6, 0.0)
-    self.rotation = simd_float3(0.0,  0.0, 0.0)
-    self.colour   = simd_float4(0.0,  0.0, 0.0, 1.0)
+    self.position = simd_float3(0.0, 0.0, 0.0)
+    self.rotation = simd_float3(0.0, 0.0, 0.0)
+    self.colour   = simd_float4(0.0, 0.0, 0.0, 1.0)
     
     guard let newAssetURL = Bundle.main.url(
       forResource: name,
@@ -87,7 +87,7 @@ extension GraphicsModel : Renderable {
     )
     uniforms.modelMatrix = translationMatrix * rotationMatrix
     uniforms.viewMatrix =
-      createTranslationMatrix(x: 0.0, y: 0.0, z: -3.0).inverse
+      createTranslationMatrix(x: 0.0, y: 0.0, z: -4.0).inverse
     
     commandEncoder.setVertexBytes(
       &uniforms,
