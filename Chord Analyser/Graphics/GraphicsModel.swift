@@ -13,7 +13,7 @@ class GraphicsModel {
   public var scale: Float
   public var position: simd_float3
   public var rotation: simd_float3
-  public var colour: simd_float4
+  private var colour: simd_float4
   private let assetURL: URL
   private var meshes: [MTKMesh]
   
@@ -59,6 +59,10 @@ class GraphicsModel {
     }
     
     print("Configuration complete.")
+  }
+  
+  func setColour(colour: simd_float4) {
+    self.colour = colour
   }
   
 }

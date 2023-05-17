@@ -23,7 +23,7 @@ class MetalViewController {
        */
     self.view.isPaused = false
     self.view.enableSetNeedsDisplay = false
-    self.view.clearColor = MTLClearColorMake(0.5, 0.5, 1.0, 1.0)
+    self.view.clearColor = MTLClearColorMake(1.0, 1.0, 1.0, 1.0)
 
     self.renderer = Renderer(metalView: view, world: world)
     self.view.delegate = self.renderer

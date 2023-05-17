@@ -34,6 +34,7 @@ struct Chord_AnalyserApp: App {
     self.midiConnection = CoreMIDIConnection()
     
     self.midiConnection.startMIDIListener()
+    self.midiConnection.getKeyboardModel().addListener(listener: world)
   }
     
 }

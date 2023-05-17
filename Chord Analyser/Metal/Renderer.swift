@@ -132,7 +132,7 @@ extension Renderer : MTKViewDelegate {
     }
     
     commandEncoder.setRenderPipelineState(self.pipelineState)
-    commandEncoder.setTriangleFillMode(.lines)
+//    commandEncoder.setTriangleFillMode(.lines)
     
     // update world
     self.world.update(deltaTime: timer)
