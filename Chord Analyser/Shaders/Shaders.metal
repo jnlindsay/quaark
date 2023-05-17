@@ -41,5 +41,3 @@ fragment float4 fragment_main(
   float weight = in.keyPressed ? 1 : 0;
   return float4(weight, weight, weight, 1);
 }
-
-

@@ -80,9 +80,6 @@ class Renderer : NSObject, MIDIListener {
     // must be called after all variables have been initialised
     super.init()
     
-    // configure uniforms
-    self.configureUniforms()
-    
     mtkView(
       metalView,
       drawableSizeWillChange: metalView.bounds.size
@@ -90,22 +87,6 @@ class Renderer : NSObject, MIDIListener {
 
     print("--- Renderer initialisation is complete. ---")
     
-  }
-  
-  func configureUniforms() {
-    let translationMatrix = createTranslationMatrix(
-      x:  0.5,
-      y: -0.4,
-      z:  0.0
-    )
-    let rotationMatrix = createRotationMatrix(
-      angleX: 0.0,
-      angleY: 0.0,
-      angleZ: Float(45).degreesToRadians
-    )
-    self.uniforms.modelMatrix = translationMatrix * rotationMatrix
-    self.uniforms.viewMatrix =
-      createTranslationMatrix(x: 0.5, y: 0.0, z: 0.0).inverse
   }
   
   func handleMIDIEvent() {
@@ -121,6 +102,7 @@ extension Renderer : MTKViewDelegate {
   ) {
     
     // update projection matrix
+    // TODO: in future, replace with camera class
     let aspectRatio =
       Float(mtkView.bounds.width) / Float(mtkView.bounds.height)
     let projectionMatrix = createProjectionMatrix(
@@ -156,44 +138,27 @@ extension Renderer : MTKViewDelegate {
     }
     
     commandEncoder.setRenderPipelineState(self.pipelineState)
-//    commandEncoder.setTriangleFillMode(.lines)
-    commandEncoder.setVertexBytes(
-      &uniforms,
-      length: MemoryLayout<Uniforms>.stride,
-      index: 11
-    )
-//    var keyPressed: Bool = true
+    commandEncoder.setTriangleFillMode(.lines)
+  
+    // HACKY CODE START -----------------------
+    
     commandEncoder.setVertexBytes(
       &self.keyPressed,
       length: MemoryLayout<Bool>.stride,
       index: 12
     )
     
-    // timer
-    timer += 0.005
-  
-    // HACKY CODE START -----------------------
-    
-    // rotate model around z axis
-    let translationMatrix = createTranslationMatrix(
-      x:  0.0,
-      y: -0.6, // NOTE: manually made to match initialisation value
-      z:  0.0
-    )
-    let rotationMatrix = createRotationMatrix(
-      angleX: 0.0,
-      angleY: sin(timer),
-      angleZ: 0.0
-    )
-    uniforms.modelMatrix = translationMatrix * rotationMatrix
-    uniforms.viewMatrix = createTranslationMatrix(
-      x: 0.0, y: 0.0, z: -3
-    ).inverse
-    
     // HACKY CODE END ----------------------------
     
+    // update world
+    self.world.update(deltaTime: timer)
+    
+    // render world
     for model in self.world.models {
-      model.render(commandEncoder: commandEncoder)
+      model.render(
+        commandEncoder: commandEncoder,
+        uniforms: self.uniforms
+      )
     }
     
     commandEncoder.endEncoding()
@@ -205,10 +170,15 @@ extension Renderer : MTKViewDelegate {
     
     commandBuffer.present(drawable)
     commandBuffer.commit()
+    
+    self.timer += 0.005
       
   }
 }
 
 protocol Renderable {
-  func render(commandEncoder: MTLRenderCommandEncoder)
+  func render(
+    commandEncoder: MTLRenderCommandEncoder,
+    uniforms: Uniforms
+  )
 }

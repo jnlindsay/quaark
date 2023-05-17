@@ -8,13 +8,19 @@
 import MetalKit
 
 class GraphicsModel {
+  
   public let name: String
+  public var scale: Float
+  public var position: simd_float3
+  public var rotation: simd_float3
   private let assetURL: URL
-//  private var meshes: [GraphicsMesh]
   private var meshes: [MTKMesh]
   
   init(name: String) {
     self.name = name
+    self.scale = 1
+    self.position = simd_float3(0.0, -0.6, 0.0)
+    self.rotation = simd_float3(0.0,  0.0, 0.0)
     
     guard let newAssetURL = Bundle.main.url(
       forResource: name,
@@ -25,6 +31,7 @@ class GraphicsModel {
     self.assetURL = newAssetURL
     
     self.meshes = []
+    
   }
   
   func configureMeshes(device: MTLDevice) {
@@ -55,7 +62,32 @@ class GraphicsModel {
 }
 
 extension GraphicsModel : Renderable {
-  func render(commandEncoder: MTLRenderCommandEncoder) {
+  func render(
+    commandEncoder: MTLRenderCommandEncoder,
+    uniforms vertex: Uniforms
+  ) {
+    
+    var uniforms = vertex
+    
+    let translationMatrix = createTranslationMatrix(
+      x: self.position.x,
+      y: self.position.y,
+      z: self.position.z
+    )
+    let rotationMatrix = createRotationMatrix(
+      angleX: self.rotation.x,
+      angleY: self.rotation.y,
+      angleZ: self.rotation.z
+    )
+    uniforms.modelMatrix = translationMatrix * rotationMatrix
+    uniforms.viewMatrix =
+      createTranslationMatrix(x: 0.0, y: 0.0, z: -3.0).inverse
+    
+    commandEncoder.setVertexBytes(
+      &uniforms,
+      length: MemoryLayout<Uniforms>.stride,
+      index: 11
+    )
     
     for mesh in self.meshes {
 
@@ -85,7 +117,7 @@ extension GraphicsModel : Renderable {
         offset: 0,
         index: 0
       )
-
+      
       for submesh in mesh.submeshes {
         commandEncoder.drawIndexedPrimitives(
           type: .triangle,

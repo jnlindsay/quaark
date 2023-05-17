@@ -116,11 +116,11 @@
 		19D46D942A0DE29F009F6E2F /* Graphics */ = {
 			isa = PBXGroup;
 			children = (
-				19D46D952A0DE2AB009F6E2F /* GraphicsWorld.swift */,
-				19D46D9B2A0FA59D009F6E2F /* GraphicsModel.swift */,
-				19D46D9D2A0FA627009F6E2F /* GraphicsMesh.swift */,
-				19D46D9F2A0FA929009F6E2F /* GraphicsSubmesh.swift */,
 				194B42912A12600C005FE25C /* GraphicsMathematics.swift */,
+				19D46D9D2A0FA627009F6E2F /* GraphicsMesh.swift */,
+				19D46D9B2A0FA59D009F6E2F /* GraphicsModel.swift */,
+				19D46D9F2A0FA929009F6E2F /* GraphicsSubmesh.swift */,
+				19D46D952A0DE2AB009F6E2F /* GraphicsWorld.swift */,
 			);
 			path = Graphics;
 			sourceTree = "<group>";

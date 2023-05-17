@@ -7,17 +7,20 @@
 
 import MetalKit
 
-class GraphicsWorld : MIDIListener {
+class GraphicsWorld {
   
   var models: [GraphicsModel]
   
   init() {
-//    let tempModel = GraphicsModel(name: "lowpoly-house.obj")
     let tempModel = GraphicsModel(name: "train.usd")
     self.models = [tempModel]
   }
   
-  func handleMIDIEvent() {
+  func update(deltaTime: Float) {
+    for model in models {
+      model.rotation.y = sin(deltaTime)
+    }
   }
 
 }
+

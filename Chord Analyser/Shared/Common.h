@@ -15,7 +15,8 @@
  the mathematics of 3D graphics transformations.
  
  This struct is called `Uniforms` because these
- values are always constant.
+ values are always constant throughout an entire
+ shader process.
  */
 typedef struct {
   simd_float4x4 modelMatrix;      // object space -> world space
