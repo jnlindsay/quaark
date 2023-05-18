@@ -15,6 +15,7 @@ class Renderer : NSObject {
   private let commandQueue: MTLCommandQueue
   private let library: MTLLibrary
   private let pipelineState: MTLRenderPipelineState
+  private var depthStencilState: MTLDepthStencilState
   private var world: GraphicsWorld
   private var uniforms: Uniforms
   private var parameters: Parameters
@@ -22,6 +23,8 @@ class Renderer : NSObject {
 
   init(metalView: MTKView, world: GraphicsWorld) {
     print("--- Renderer initialisation has begun. ---")
+    
+    // TODO: abstract each section into separate method
     
     // device
     if let newDevice = MTLCreateSystemDefaultDevice() {
@@ -53,6 +56,7 @@ class Renderer : NSObject {
     pipelineDescriptor.fragmentFunction = fragmentFunction
     pipelineDescriptor.colorAttachments[0].pixelFormat =
       metalView.colorPixelFormat
+    pipelineDescriptor.depthAttachmentPixelFormat = .depth32Float
     do {
       pipelineDescriptor.vertexDescriptor =
         MTLVertexDescriptor.defaultLayout
@@ -64,6 +68,19 @@ class Renderer : NSObject {
       fatalError(error.localizedDescription)
     }
     
+    // depth stencil state
+    let depthStencilDescriptor = MTLDepthStencilDescriptor()
+    depthStencilDescriptor.depthCompareFunction = .less
+    depthStencilDescriptor.isDepthWriteEnabled = true
+    if let depthStencilState = self.device.makeDepthStencilState(
+      descriptor: depthStencilDescriptor
+    ) {
+      self.depthStencilState = depthStencilState
+    } else {
+      fatalError("Depth stencil state could not be created.")
+    }
+    
+    // uniforms and parameters
     self.uniforms = Uniforms()
     self.parameters = Parameters()
     
@@ -121,7 +138,8 @@ extension Renderer : MTKViewDelegate {
     }
     
     commandEncoder.setRenderPipelineState(self.pipelineState)
-    commandEncoder.setTriangleFillMode(.lines)
+    commandEncoder.setDepthStencilState(self.depthStencilState)
+//    commandEncoder.setTriangleFillMode(.lines)
     
     // update world
     self.world.update(deltaTime: timer)

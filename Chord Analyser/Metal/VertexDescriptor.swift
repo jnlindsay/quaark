@@ -27,8 +27,18 @@ extension MDLVertexDescriptor {
         bufferIndex: 0
       )
     offset += MemoryLayout<simd_float3>.stride
-    vertexDescriptor.layouts[0] = MDLVertexBufferLayout(stride: offset)
     
+    // attribute 1: normal
+    vertexDescriptor.attributes[1] =
+      MDLVertexAttribute(
+        name: MDLVertexAttributeNormal,
+        format: .float3,
+        offset: offset,
+        bufferIndex: 0
+      )
+    offset += MemoryLayout<simd_float3>.stride
+    
+    vertexDescriptor.layouts[0] = MDLVertexBufferLayout(stride: offset)    
     return vertexDescriptor
   }
 }

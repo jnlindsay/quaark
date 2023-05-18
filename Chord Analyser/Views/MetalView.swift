@@ -24,8 +24,9 @@ class MetalViewController {
     self.view.isPaused = false
     self.view.enableSetNeedsDisplay = false
     self.view.clearColor = MTLClearColorMake(1.0, 1.0, 1.0, 1.0)
-
-    self.renderer = Renderer(metalView: view, world: world)
+    self.view.depthStencilPixelFormat = .depth32Float
+    
+    self.renderer = Renderer(metalView: self.view, world: world)
     self.view.delegate = self.renderer
 //    self.view.device = self.renderer.device
 

@@ -11,11 +11,12 @@ using namespace metal;
 
 struct VertexIn {
   float4 position [[attribute(Position)]];
-//  float3 normal [[attribute(1)]];
+  float3 normal [[attribute(1)]];
 };
 
 struct VertexOut {
   float4 position [[position]];
+  float3 normal [[attribute(1)]];
   float4 colour;
   float3 worldPosition;
   float3 worldNormal;
@@ -31,8 +32,10 @@ vertex VertexOut vertex_main(
     * uniforms.viewMatrix
     * uniforms.modelMatrix
     * in.position;
+  float3 normal = in.normal;
   VertexOut out {
     .position = position,
+    .normal = normal,
     .colour = colour,
     .worldPosition = (uniforms.modelMatrix * in.position).xyz
 //    .worldNormal = uniforms.normalMatrix * in.normal
@@ -43,5 +46,5 @@ vertex VertexOut vertex_main(
 fragment float4 fragment_main(
   VertexOut in [[stage_in]]
 ) {
-  return in.colour;
+  return float4(in.normal, 1);
 }
