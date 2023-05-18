@@ -94,19 +94,7 @@ extension Renderer : MTKViewDelegate {
     _ mtkView: MTKView,
     drawableSizeWillChange size: CGSize
   ) {
-    
-    // update projection matrix
-    // TODO: in future, replace with camera class
-    let aspectRatio =
-      Float(mtkView.bounds.width) / Float(mtkView.bounds.height)
-    let projectionMatrix = createProjectionMatrix(
-      projectionFOV: Float(45).degreesToRadians,
-      nearPlane: 0.1,
-      farPlane: 100,
-      aspectRatio: aspectRatio
-    )
-    self.uniforms.projectionMatrix = projectionMatrix
-    
+    self.world.update(size: size)
   }
   
   func draw(in metalView: MTKView) {
@@ -132,12 +120,16 @@ extension Renderer : MTKViewDelegate {
     }
     
     commandEncoder.setRenderPipelineState(self.pipelineState)
-//    commandEncoder.setTriangleFillMode(.lines)
+    commandEncoder.setTriangleFillMode(.lines)
     
     // update world
     self.world.update(deltaTime: timer)
     
-    // render world
+    // set main camera matrix uniforms
+    self.uniforms.viewMatrix = self.world.mainCamera.viewMatrix
+    self.uniforms.projectionMatrix = self.world.mainCamera.projectionMatrix
+    
+    // render models
     for model in self.world.models {
       model.render(
         commandEncoder: commandEncoder,

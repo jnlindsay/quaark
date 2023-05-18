@@ -9,12 +9,16 @@ import MetalKit
 
 class GraphicsWorld {
   
+  var mainCamera: MainCamera
   var models: [GraphicsModel]
   private var keyboardModels: [KeyboardModel]
   
   init() {
+    self.mainCamera = MainCamera()
+    self.mainCamera.transform.position = [0.0, 0.0, -3.0]
+    
 //    let trainModel = GraphicsModel(name: "train.usd")
-    let monkeyModel = GraphicsModel(name: "monkey.usd")  
+    let monkeyModel = GraphicsModel(name: "monkey.usd")
     monkeyModel.transform.rotation = simd_float3(
       Float(90).degreesToRadians,
       Float(180).degreesToRadians,
@@ -25,9 +29,14 @@ class GraphicsWorld {
   }
   
   func update(deltaTime: Float) {
-    for model in models {
-      model.transform.rotation.z = sin(deltaTime)
-    }
+//    for model in models {
+//      model.transform.rotation.z = sin(deltaTime)
+//    }
+    self.mainCamera.rotation.y = sin(deltaTime)
+  }
+  
+  func update(size: CGSize) {
+    mainCamera.update(size: size)
   }
   
   func addKeyboardModel(keyboardModel: KeyboardModel) {

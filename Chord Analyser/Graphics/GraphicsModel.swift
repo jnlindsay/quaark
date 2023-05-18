@@ -70,10 +70,7 @@ extension GraphicsModel : Renderable {
   ) {
     
     var uniforms = vertex
-    
     uniforms.modelMatrix = self.transform.modelMatrix
-    uniforms.viewMatrix =
-      createTranslationMatrix(x: 0.0, y: 0.0, z: -4.0).inverse
     
     commandEncoder.setVertexBytes(
       &uniforms,
