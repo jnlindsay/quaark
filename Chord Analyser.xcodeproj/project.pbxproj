@@ -27,6 +27,7 @@
 		19E428E62A15EA3E0061D610 /* Transform.swift in Sources */ = {isa = PBXBuildFile; fileRef = 19E428E52A15EA3E0061D610 /* Transform.swift */; };
 		19E428E82A15F0690061D610 /* Camera.swift in Sources */ = {isa = PBXBuildFile; fileRef = 19E428E72A15F0690061D610 /* Camera.swift */; };
 		19E428EA2A1612E70061D610 /* GraphicsLighting.swift in Sources */ = {isa = PBXBuildFile; fileRef = 19E428E92A1612E70061D610 /* GraphicsLighting.swift */; };
+		19E428EE2A163D3B0061D610 /* monkey.obj in Resources */ = {isa = PBXBuildFile; fileRef = 19E428ED2A163D3B0061D610 /* monkey.obj */; };
 		19E456C929494ABF0037DF4B /* Chord_AnalyserApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 19E456C829494ABF0037DF4B /* Chord_AnalyserApp.swift */; };
 		19E456CB29494ABF0037DF4B /* KeyboardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 19E456CA29494ABF0037DF4B /* KeyboardView.swift */; };
 		19E456CD29494AC00037DF4B /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 19E456CC29494AC00037DF4B /* Assets.xcassets */; };
@@ -61,6 +62,7 @@
 		19E428E52A15EA3E0061D610 /* Transform.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Transform.swift; sourceTree = "<group>"; };
 		19E428E72A15F0690061D610 /* Camera.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Camera.swift; sourceTree = "<group>"; };
 		19E428E92A1612E70061D610 /* GraphicsLighting.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GraphicsLighting.swift; sourceTree = "<group>"; };
+		19E428ED2A163D3B0061D610 /* monkey.obj */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = monkey.obj; sourceTree = "<group>"; };
 		19E456C529494ABF0037DF4B /* Chord Analyser.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Chord Analyser.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		19E456C829494ABF0037DF4B /* Chord_AnalyserApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Chord_AnalyserApp.swift; sourceTree = "<group>"; };
 		19E456CA29494ABF0037DF4B /* KeyboardView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KeyboardView.swift; sourceTree = "<group>"; };
@@ -204,6 +206,7 @@
 		19EA6F3B2A106A9900F3070E /* GraphicsModels */ = {
 			isa = PBXGroup;
 			children = (
+				19E428ED2A163D3B0061D610 /* monkey.obj */,
 				19E428E32A158D1B0061D610 /* monkey.usd */,
 				194B428D2A12171D005FE25C /* train.usd */,
 				19EA6F3C2A106ABC00F3070E /* LowPolyHouse */,
@@ -289,6 +292,7 @@
 				194B428E2A121783005FE25C /* train.usd in Resources */,
 				19E428E42A158D1B0061D610 /* monkey.usd in Resources */,
 				19EA6F402A106ACE00F3070E /* lowpoly-house.obj in Resources */,
+				19E428EE2A163D3B0061D610 /* monkey.obj in Resources */,
 				19EA6F3F2A106ACE00F3070E /* lowpoly-house.mtl in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

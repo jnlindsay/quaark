@@ -18,12 +18,7 @@ class GraphicsWorld {
     self.mainCamera = MainCamera()
     self.mainCamera.transform.position = [0.0, 0.0, -3.0]
 
-    let monkeyModel = GraphicsModel(name: "monkey.usd")
-    monkeyModel.transform.rotation = simd_float3(
-      Float(90).degreesToRadians,
-      Float(180).degreesToRadians,
-      Float(180).degreesToRadians
-    )
+    let monkeyModel = GraphicsModel(name: "monkey.obj")
     self.models = [monkeyModel]
     self.keyboardModels = []
     self.lighting = GraphicsLighting()
@@ -31,7 +26,7 @@ class GraphicsWorld {
   
   func update(deltaTime: Float) {
     for model in models {
-      model.transform.rotation.z = sin(deltaTime)
+      model.transform.rotation.y = sin(deltaTime) + Float(180).degreesToRadians
     }
 //    self.mainCamera.rotation.y = sin(deltaTime)
   }

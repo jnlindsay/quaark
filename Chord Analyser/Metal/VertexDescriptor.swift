@@ -18,6 +18,7 @@ extension MDLVertexDescriptor {
     let vertexDescriptor = MDLVertexDescriptor()
     var offset = 0
 
+    // attribute 0: position
     vertexDescriptor.attributes[0] =
       MDLVertexAttribute(
         name: MDLVertexAttributePosition,

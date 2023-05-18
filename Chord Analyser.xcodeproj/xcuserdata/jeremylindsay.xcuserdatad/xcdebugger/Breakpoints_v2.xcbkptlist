@@ -3,4 +3,22 @@
    uuid = "85D75A7D-587E-4FAF-B410-238A9D3CE880"
    type = "1"
    version = "2.0">
+   <Breakpoints>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "FFDF207E-002C-4607-B3B5-5B4A89C8A811"
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "Chord Analyser/Shaders/Shaders.metal"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "41"
+            endingLineNumber = "41"
+            landmarkName = "vertex_main( VertexIn in [[stage_in]], constant Uniforms &amp;uniforms [[buffer(UniformsBuffer)]], constant float4 &amp;colour [[buffer(ColourBuffer)]] )"
+            landmarkType = "9">
+         </BreakpointContent>
+      </BreakpointProxy>
+   </Breakpoints>
 </Bucket>

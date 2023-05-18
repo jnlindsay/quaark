@@ -29,7 +29,6 @@ class GraphicsModel {
     self.assetURL = newAssetURL
     
     self.meshes = []
-    
   }
   
   func configureMeshes(device: MTLDevice) {
