@@ -14,17 +14,19 @@ class GraphicsWorld {
   
   init() {
 //    let trainModel = GraphicsModel(name: "train.usd")
-    let monkeyModel = GraphicsModel(name: "monkey.usd")
-    monkeyModel.rotation.z = Float(180).degreesToRadians
-    monkeyModel.rotation.y = Float(180).degreesToRadians
-    monkeyModel.rotation.x = Float(90).degreesToRadians
+    let monkeyModel = GraphicsModel(name: "monkey.usd")  
+    monkeyModel.transform.rotation = simd_float3(
+      Float(90).degreesToRadians,
+      Float(180).degreesToRadians,
+      Float(180).degreesToRadians
+    )
     self.models = [monkeyModel]
     self.keyboardModels = []
   }
   
   func update(deltaTime: Float) {
     for model in models {
-      model.rotation.z = sin(deltaTime)
+      model.transform.rotation.z = sin(deltaTime)
     }
   }
   

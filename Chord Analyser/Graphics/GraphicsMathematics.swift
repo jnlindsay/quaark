@@ -6,17 +6,13 @@
 //
 
 import simd
-  
-func createTranslationMatrix(
-  x: Float,
-  y: Float,
-  z: Float) -> simd_float4x4 {
-    
+
+func createScaleMatrix(factor: Float) -> simd_float4x4 {
   return simd_float4x4(rows: [
-    [1, 0, 0, x],
-    [0, 1, 0, y],
-    [0, 0, 1, z],
-    [0, 0, 0, 1]
+    [factor, 0, 0, 0],
+    [0, factor, 0, 0],
+    [0, 0, factor, 0],
+    [0, 0, 0,      1]
   ])
 }
 
@@ -48,6 +44,19 @@ func createRotationMatrix(
   
   return rotationMatrixX * rotationMatrixY * rotationMatrixZ
 }
+  
+func createTranslationMatrix(
+  x: Float,
+  y: Float,
+  z: Float) -> simd_float4x4 {
+    
+  return simd_float4x4(rows: [
+    [1, 0, 0, x],
+    [0, 1, 0, y],
+    [0, 0, 1, z],
+    [0, 0, 0, 1]
+  ])
+}
 
 func createProjectionMatrix(
   projectionFOV: Float,
@@ -66,7 +75,6 @@ func createProjectionMatrix(
     [0, 0, z, z * -nearPlane],
     [0, 0, 1, 0]
   ])
-  
 }
 
 let π = Float.pi
