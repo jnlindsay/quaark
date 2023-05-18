@@ -148,6 +148,7 @@ extension Renderer : MTKViewDelegate {
     self.uniforms.viewMatrix = self.world.mainCamera.viewMatrix
     self.uniforms.projectionMatrix = self.world.mainCamera.projectionMatrix
     self.parameters.lightCount = UInt32(self.world.lighting.lights.count)
+    self.parameters.cameraPosition = self.world.mainCamera.position
       // Q: querying lightCount each time is inefficient?
     
     // lighting
@@ -162,7 +163,8 @@ extension Renderer : MTKViewDelegate {
     for model in self.world.models {
       model.render(
         commandEncoder: commandEncoder,
-        uniforms: self.uniforms
+        uniforms: self.uniforms,
+        parameters: self.parameters
       )
     }
     
@@ -172,7 +174,7 @@ extension Renderer : MTKViewDelegate {
       print("Renderer.swift: drawable not obtained.")
       return
     }
-    
+
     commandBuffer.present(drawable)
     commandBuffer.commit()
     
@@ -184,6 +186,7 @@ extension Renderer : MTKViewDelegate {
 protocol Renderable {
   func render(
     commandEncoder: MTLRenderCommandEncoder,
-    uniforms: Uniforms
+    uniforms: Uniforms,
+    parameters: Parameters
   )
 }

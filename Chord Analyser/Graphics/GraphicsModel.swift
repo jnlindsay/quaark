@@ -65,12 +65,21 @@ class GraphicsModel {
 extension GraphicsModel : Renderable {
   func render(
     commandEncoder: MTLRenderCommandEncoder,
-    uniforms vertex: Uniforms
+    uniforms vertex: Uniforms,
+    parameters fragment: Parameters
   ) {
     
     var uniforms = vertex
     uniforms.modelMatrix = self.transform.modelMatrix
     uniforms.normalMatrix = upperLeft(matrix: uniforms.modelMatrix)
+    
+    var parameters = fragment
+    
+    commandEncoder.setVertexBytes(
+      &self.colour,
+      length: MemoryLayout<simd_float4>.stride,
+      index: ColourBuffer.index
+    )
     
     commandEncoder.setVertexBytes(
       &uniforms,
@@ -78,10 +87,10 @@ extension GraphicsModel : Renderable {
       index: UniformsBuffer.index
     )
     
-    commandEncoder.setVertexBytes(
-      &self.colour,
-      length: MemoryLayout<simd_float4>.stride,
-      index: ColourBuffer.index
+    commandEncoder.setFragmentBytes(
+      &parameters,
+      length: MemoryLayout<Parameters>.stride,
+      index: ParametersBuffer.index
     )
     
     for mesh in self.meshes {
