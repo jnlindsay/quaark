@@ -29,14 +29,14 @@ class GraphicsWorld {
   }
   
   func update(deltaTime: Float) {
-//    for model in models {
-//      model.transform.rotation.z = sin(deltaTime)
-//    }
-    self.mainCamera.rotation.y = sin(deltaTime)
+    for model in models {
+      model.transform.rotation.z = sin(deltaTime)
+    }
+//    self.mainCamera.rotation.y = sin(deltaTime)
   }
   
-  func update(size: CGSize) {
-    mainCamera.update(size: size)
+  func update(windowSize: CGSize) {
+    mainCamera.update(windowSize: windowSize)
   }
   
   func addKeyboardModel(keyboardModel: KeyboardModel) {

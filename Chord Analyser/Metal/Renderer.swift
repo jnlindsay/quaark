@@ -94,7 +94,7 @@ extension Renderer : MTKViewDelegate {
     _ mtkView: MTKView,
     drawableSizeWillChange size: CGSize
   ) {
-    self.world.update(size: size)
+    self.world.update(windowSize: size)
   }
   
   func draw(in metalView: MTKView) {

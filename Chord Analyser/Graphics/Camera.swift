@@ -18,7 +18,7 @@ protocol Camera : Transformable {
   var projectionMatrix: simd_float4x4 { get }
   var viewMatrix:       simd_float4x4 { get }
   
-  mutating func update(size: CGSize)
+  mutating func update(windowSize: CGSize)
   mutating func update(deltaTime: Float)
 }
 
@@ -66,8 +66,8 @@ struct MainCamera : Camera {
     self.aspectRatio = 1.0
   }
   
-  mutating func update(size: CGSize) {
-    self.aspectRatio = Float(size.width / size.height)
+  mutating func update(windowSize: CGSize) {
+    self.aspectRatio = Float(windowSize.width / windowSize.height)
   }
   
   mutating func update(deltaTime: Float) { }
