@@ -24,7 +24,7 @@ class GraphicsWorld {
   
   func update(deltaTime: Float) {
     for model in models {
-//      model.rotation.y = sin(deltaTime)
+      model.rotation.z = sin(deltaTime)
     }
   }
   
