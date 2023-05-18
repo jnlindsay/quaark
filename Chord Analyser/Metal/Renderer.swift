@@ -137,7 +137,7 @@ extension Renderer : MTKViewDelegate {
     commandEncoder.setFragmentBytes(
       &lights,
       length: MemoryLayout<Light>.stride * lights.count,
-      index: 13
+      index: LightBuffer.index
     )
     
     // render models

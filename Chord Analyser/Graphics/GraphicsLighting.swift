@@ -25,7 +25,7 @@ struct GraphicsLighting {
     light.colour = [1, 1, 1]
     light.specularColour = [0.6, 0.6, 0.6]
     light.attenutation = [1, 0, 0]
-    light.type = Sun
+    light.type = SunLight
     return light
   }
   

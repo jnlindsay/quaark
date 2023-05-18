@@ -30,14 +30,30 @@ typedef struct {
   simd_float3 cameraPosition;
 } Parameters;
 
+typedef enum {
+  Position = 0,
+  Normal = 1,
+  UV = 2,
+  Colour = 3
+} MetalAttributes;
+
+typedef enum {
+  VertexBuffer = 0,
+  UVBuffer = 1,
+  ColourBuffer = 2,
+  UniformsBuffer = 11,
+  ParametersBuffer = 12,
+  LightBuffer = 13
+} BufferIndices;
+
 // LIGHTING
 
 typedef enum {
-  LightUnused = 0,
-  LightSun = 1,
-  LightSpot = 2,
-  LightPoint = 3,
-  LightAmbient = 4
+  UnusedLight = 0,
+  SunLight = 1,
+  SpotLight = 2,
+  PointLight = 3,
+  AmbientLight = 4
 } LightType;
 
 typedef struct {

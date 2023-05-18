@@ -76,20 +76,20 @@ extension GraphicsModel : Renderable {
     commandEncoder.setVertexBytes(
       &uniforms,
       length: MemoryLayout<Uniforms>.stride,
-      index: 11
+      index: UniformsBuffer.index
     )
     
     commandEncoder.setVertexBytes(
       &self.colour,
       length: MemoryLayout<simd_float4>.stride,
-      index: 12
+      index: ColourBuffer.index
     )
     
     for mesh in self.meshes {
       commandEncoder.setVertexBuffer(
         mesh.vertexBuffers[0].buffer,
         offset: 0,
-        index: 0
+        index: VertexBuffer.index
       )
       
       for submesh in mesh.submeshes {

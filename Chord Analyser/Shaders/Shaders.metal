@@ -10,7 +10,7 @@
 using namespace metal;
 
 struct VertexIn {
-  float4 position [[attribute(0)]];
+  float4 position [[attribute(Position)]];
 //  float3 normal [[attribute(1)]];
 };
 
@@ -23,8 +23,8 @@ struct VertexOut {
 
 vertex VertexOut vertex_main(
   VertexIn in [[stage_in]],
-  constant Uniforms &uniforms [[buffer(11)]],
-  constant float4 &colour [[buffer(12)]]
+  constant Uniforms &uniforms [[buffer(UniformsBuffer)]],
+  constant float4 &colour [[buffer(ColourBuffer)]]
 ) {
   float4 position =
       uniforms.projectionMatrix

@@ -31,3 +31,9 @@ extension MDLVertexDescriptor {
     return vertexDescriptor
   }
 }
+
+extension BufferIndices {
+  var index: Int {
+    return Int(rawValue)
+  }
+}
