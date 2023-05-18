@@ -26,6 +26,7 @@
 		19E428E42A158D1B0061D610 /* monkey.usd in Resources */ = {isa = PBXBuildFile; fileRef = 19E428E32A158D1B0061D610 /* monkey.usd */; };
 		19E428E62A15EA3E0061D610 /* Transform.swift in Sources */ = {isa = PBXBuildFile; fileRef = 19E428E52A15EA3E0061D610 /* Transform.swift */; };
 		19E428E82A15F0690061D610 /* Camera.swift in Sources */ = {isa = PBXBuildFile; fileRef = 19E428E72A15F0690061D610 /* Camera.swift */; };
+		19E428EA2A1612E70061D610 /* GraphicsLighting.swift in Sources */ = {isa = PBXBuildFile; fileRef = 19E428E92A1612E70061D610 /* GraphicsLighting.swift */; };
 		19E456C929494ABF0037DF4B /* Chord_AnalyserApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 19E456C829494ABF0037DF4B /* Chord_AnalyserApp.swift */; };
 		19E456CB29494ABF0037DF4B /* KeyboardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 19E456CA29494ABF0037DF4B /* KeyboardView.swift */; };
 		19E456CD29494AC00037DF4B /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 19E456CC29494AC00037DF4B /* Assets.xcassets */; };
@@ -59,6 +60,7 @@
 		19E428E32A158D1B0061D610 /* monkey.usd */ = {isa = PBXFileReference; lastKnownFileType = file; path = monkey.usd; sourceTree = "<group>"; };
 		19E428E52A15EA3E0061D610 /* Transform.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Transform.swift; sourceTree = "<group>"; };
 		19E428E72A15F0690061D610 /* Camera.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Camera.swift; sourceTree = "<group>"; };
+		19E428E92A1612E70061D610 /* GraphicsLighting.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GraphicsLighting.swift; sourceTree = "<group>"; };
 		19E456C529494ABF0037DF4B /* Chord Analyser.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Chord Analyser.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		19E456C829494ABF0037DF4B /* Chord_AnalyserApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Chord_AnalyserApp.swift; sourceTree = "<group>"; };
 		19E456CA29494ABF0037DF4B /* KeyboardView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KeyboardView.swift; sourceTree = "<group>"; };
@@ -121,6 +123,7 @@
 			isa = PBXGroup;
 			children = (
 				19E428E72A15F0690061D610 /* Camera.swift */,
+				19E428E92A1612E70061D610 /* GraphicsLighting.swift */,
 				194B42912A12600C005FE25C /* GraphicsMathematics.swift */,
 				19D46D9D2A0FA627009F6E2F /* GraphicsMesh.swift */,
 				19D46D9B2A0FA59D009F6E2F /* GraphicsModel.swift */,
@@ -301,6 +304,7 @@
 				19D46D9C2A0FA59D009F6E2F /* GraphicsModel.swift in Sources */,
 				19E456D529494AC00037DF4B /* Chord_Analyser.xcdatamodeld in Sources */,
 				19E2CC7B294DDC1F00DFE7F9 /* CoreMIDIConnection.swift in Sources */,
+				19E428EA2A1612E70061D610 /* GraphicsLighting.swift in Sources */,
 				19E456CB29494ABF0037DF4B /* KeyboardView.swift in Sources */,
 				19E428E82A15F0690061D610 /* Camera.swift in Sources */,
 				19D46D962A0DE2AB009F6E2F /* GraphicsWorld.swift in Sources */,

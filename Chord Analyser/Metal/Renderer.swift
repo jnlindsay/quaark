@@ -17,6 +17,7 @@ class Renderer : NSObject {
   private let pipelineState: MTLRenderPipelineState
   private var world: GraphicsWorld
   private var uniforms: Uniforms
+  private var parameters: Parameters
   var timer: Float
 
   init(metalView: MTKView, world: GraphicsWorld) {
@@ -63,8 +64,8 @@ class Renderer : NSObject {
       fatalError(error.localizedDescription)
     }
     
-    // uniforms
     self.uniforms = Uniforms()
+    self.parameters = Parameters()
     
     // configure GraphicsWorld meshes
     self.world = world
@@ -125,9 +126,19 @@ extension Renderer : MTKViewDelegate {
     // update world
     self.world.update(deltaTime: timer)
     
-    // set main camera matrix uniforms
+    // set uniforms
     self.uniforms.viewMatrix = self.world.mainCamera.viewMatrix
     self.uniforms.projectionMatrix = self.world.mainCamera.projectionMatrix
+    self.parameters.lightCount = UInt32(self.world.lighting.lights.count)
+      // Q: querying lightCount each time is inefficient?
+    
+    // lighting
+    var lights = world.lighting.lights
+    commandEncoder.setFragmentBytes(
+      &lights,
+      length: MemoryLayout<Light>.stride * lights.count,
+      index: 13
+    )
     
     // render models
     for model in self.world.models {

@@ -11,11 +11,14 @@ using namespace metal;
 
 struct VertexIn {
   float4 position [[attribute(0)]];
+//  float3 normal [[attribute(1)]];
 };
 
 struct VertexOut {
   float4 position [[position]];
   float4 colour;
+  float3 worldPosition;
+  float3 worldNormal;
 };
 
 vertex VertexOut vertex_main(
@@ -30,7 +33,9 @@ vertex VertexOut vertex_main(
     * in.position;
   VertexOut out {
     .position = position,
-    .colour = colour
+    .colour = colour,
+    .worldPosition = (uniforms.modelMatrix * in.position).xyz
+//    .worldNormal = uniforms.normalMatrix * in.normal
   };
   return out;
 }

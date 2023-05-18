@@ -71,6 +71,7 @@ extension GraphicsModel : Renderable {
     
     var uniforms = vertex
     uniforms.modelMatrix = self.transform.modelMatrix
+    uniforms.normalMatrix = upperLeft(matrix: uniforms.modelMatrix)
     
     commandEncoder.setVertexBytes(
       &uniforms,
