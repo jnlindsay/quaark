@@ -92,6 +92,7 @@ struct MainCamera : Camera {
       )
     }
     
+    // NOTE: crucial that this is YXZ and not XYZ
     let rotationMatrix = createYXZRotationMatrix(
       angleX: -self.rotation.x,
       angleY: -self.rotation.y,
