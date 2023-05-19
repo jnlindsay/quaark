@@ -39,6 +39,7 @@ float3 phongLighting(
         break;
       }
       case AmbientLight: {
+        ambientColour += light.colour;
         break;
       }
       case UnusedLight: {

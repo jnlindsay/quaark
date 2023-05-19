@@ -19,7 +19,8 @@ class GraphicsWorld {
     self.mainCamera.transform.position = [0.0, 0.0, -3.0]
 
     let monkeyModel = GraphicsModel(name: "monkey.obj")
-    monkeyModel.setColour(colour: simd_float4(0.5, 0, 0.5, 1))
+//    monkeyModel.setColour(colour: simd_float4(0.5, 0, 0.5, 1))
+    monkeyModel.setColour(colour: simd_float4(0.5, 0.5, 0.5, 1))
     self.models = [monkeyModel]
     self.keyboardModels = []
     self.lighting = GraphicsLighting()
