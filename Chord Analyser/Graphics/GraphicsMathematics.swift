@@ -16,7 +16,7 @@ func createScaleMatrix(factor: Float) -> simd_float4x4 {
   ])
 }
 
-func createRotationMatrix(
+func createXYZRotationMatrix(
   angleX: Float,
   angleY: Float,
   angleZ: Float) -> simd_float4x4 {
@@ -43,6 +43,35 @@ func createRotationMatrix(
   ])
   
   return rotationMatrixX * rotationMatrixY * rotationMatrixZ
+}
+
+func createYXZRotationMatrix(
+  angleX: Float,
+  angleY: Float,
+  angleZ: Float) -> simd_float4x4 {
+    
+  let rotationMatrixX = simd_float4x4(rows: [
+    [1, 0, 0, 0],
+    [0, cos(angleX), -sin(angleX), 0],
+    [0, sin(angleX),  cos(angleX), 0],
+    [0, 0, 0, 1]
+  ])
+    
+  let rotationMatrixY = simd_float4x4(rows: [
+    [ cos(angleY), 0, sin(angleY), 0],
+    [0, 1, 0, 0],
+    [-sin(angleY), 0, cos(angleY), 0],
+    [0, 0, 0, 1]
+  ])
+    
+  let rotationMatrixZ = simd_float4x4(rows: [
+    [cos(angleZ), -sin(angleZ), 0, 0],
+    [sin(angleZ),  cos(angleZ), 0, 0],
+    [0, 0, 1, 0],
+    [0, 0, 0, 1]
+  ])
+  
+  return rotationMatrixY * rotationMatrixX * rotationMatrixZ
 }
   
 func createTranslationMatrix(

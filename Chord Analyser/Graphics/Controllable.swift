@@ -49,8 +49,8 @@ extension Controllable {
     // x rotation
     var rotationX: Float = 0
     if (self.controlState.wKeyDown || self.controlState.sKeyDown) {
-      if (!self.controlState.wKeyDown) { rotationX = -Settings.rotationSpeed }
-      if (!self.controlState.sKeyDown) { rotationX =  Settings.rotationSpeed }
+      if (!self.controlState.wKeyDown) { rotationX =  Settings.rotationSpeed }
+      if (!self.controlState.sKeyDown) { rotationX = -Settings.rotationSpeed }
     }
     self.deltaTransform.rotation.x = rotationX
   

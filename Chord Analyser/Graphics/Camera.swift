@@ -85,14 +85,19 @@ struct MainCamera : Camera {
   mutating func update(deltaTime: Float) {
     if self.controlState.rotating {
       self.transform.rotation += self.deltaTransform.rotation * deltaTime
+      
+      self.transform.rotation.x = max(
+        -.pi / 2,
+         min(self.transform.rotation.x, .pi / 2)
+      )
     }
     
-    let rotationMatrix = createRotationMatrix(
+    let rotationMatrix = createYXZRotationMatrix(
       angleX: -self.rotation.x,
       angleY: -self.rotation.y,
       angleZ: 0
     )
-    let distanceVector = simd_float4(0, 0, -3, 0)
+    let distanceVector = simd_float4(0, 0, -4, 0)
     let rotatedVector = rotationMatrix * distanceVector
     self.transform.position = simd_float3(
       rotatedVector.x,

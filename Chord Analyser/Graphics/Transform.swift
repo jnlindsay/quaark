@@ -22,7 +22,7 @@ struct Transform {
   var modelMatrix: simd_float4x4 {
     let scaleMatrix = createScaleMatrix(factor: self.scale)
     
-    let rotationMatrix = createRotationMatrix(
+    let rotationMatrix = createXYZRotationMatrix(
       angleX: self.rotation.x,
       angleY: self.rotation.y,
       angleZ: self.rotation.z
