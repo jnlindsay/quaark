@@ -29,6 +29,8 @@
 		19E428EA2A1612E70061D610 /* GraphicsLighting.swift in Sources */ = {isa = PBXBuildFile; fileRef = 19E428E92A1612E70061D610 /* GraphicsLighting.swift */; };
 		19E428EE2A163D3B0061D610 /* monkey.obj in Resources */ = {isa = PBXBuildFile; fileRef = 19E428ED2A163D3B0061D610 /* monkey.obj */; };
 		19E428F12A1653930061D610 /* Lighting.metal in Sources */ = {isa = PBXBuildFile; fileRef = 19E428F02A1653930061D610 /* Lighting.metal */; };
+		19E428F32A1743AB0061D610 /* Controllable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 19E428F22A1743AB0061D610 /* Controllable.swift */; };
+		19E428F72A175C410061D610 /* UserInput.swift in Sources */ = {isa = PBXBuildFile; fileRef = 19E428F62A175C410061D610 /* UserInput.swift */; };
 		19E456C929494ABF0037DF4B /* Chord_AnalyserApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 19E456C829494ABF0037DF4B /* Chord_AnalyserApp.swift */; };
 		19E456CB29494ABF0037DF4B /* KeyboardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 19E456CA29494ABF0037DF4B /* KeyboardView.swift */; };
 		19E456CD29494AC00037DF4B /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 19E456CC29494AC00037DF4B /* Assets.xcassets */; };
@@ -66,6 +68,8 @@
 		19E428ED2A163D3B0061D610 /* monkey.obj */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = monkey.obj; sourceTree = "<group>"; };
 		19E428EF2A16533D0061D610 /* Lighting.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Lighting.h; sourceTree = "<group>"; };
 		19E428F02A1653930061D610 /* Lighting.metal */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.metal; path = Lighting.metal; sourceTree = "<group>"; };
+		19E428F22A1743AB0061D610 /* Controllable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Controllable.swift; sourceTree = "<group>"; };
+		19E428F62A175C410061D610 /* UserInput.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserInput.swift; sourceTree = "<group>"; };
 		19E456C529494ABF0037DF4B /* Chord Analyser.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Chord Analyser.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		19E456C829494ABF0037DF4B /* Chord_AnalyserApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Chord_AnalyserApp.swift; sourceTree = "<group>"; };
 		19E456CA29494ABF0037DF4B /* KeyboardView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KeyboardView.swift; sourceTree = "<group>"; };
@@ -115,6 +119,7 @@
 			children = (
 				19E456CA29494ABF0037DF4B /* KeyboardView.swift */,
 				197CCB4B29A0D2A8005BFEC0 /* MetalView.swift */,
+				19E428F62A175C410061D610 /* UserInput.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -123,6 +128,7 @@
 			isa = PBXGroup;
 			children = (
 				19E428E72A15F0690061D610 /* Camera.swift */,
+				19E428F22A1743AB0061D610 /* Controllable.swift */,
 				19E428E92A1612E70061D610 /* GraphicsLighting.swift */,
 				194B42912A12600C005FE25C /* GraphicsMathematics.swift */,
 				19D46D9D2A0FA627009F6E2F /* GraphicsMesh.swift */,
@@ -321,6 +327,8 @@
 				19E2CC69294DCB2100DFE7F9 /* CoreMIDIRealTime.mm in Sources */,
 				19E2CC63294AB74400DFE7F9 /* Pitch.swift in Sources */,
 				196830882983D26F002232A7 /* ChordRecogniser.swift in Sources */,
+				19E428F32A1743AB0061D610 /* Controllable.swift in Sources */,
+				19E428F72A175C410061D610 /* UserInput.swift in Sources */,
 				19D46D9E2A0FA627009F6E2F /* GraphicsMesh.swift in Sources */,
 				19E428E62A15EA3E0061D610 /* Transform.swift in Sources */,
 				19F12BF729A1BB380064B3E7 /* Renderer.swift in Sources */,

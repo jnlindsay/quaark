@@ -21,24 +21,26 @@ class GraphicsWorld {
     let monkeyModel = GraphicsModel(name: "monkey.obj")
 //    monkeyModel.setColour(colour: simd_float4(0.5, 0, 0.5, 1))
     monkeyModel.setColour(colour: simd_float4(0.5, 0.5, 0.5, 1))
+    monkeyModel.transform.rotation.y = Float(180).degreesToRadians
     self.models = [monkeyModel]
     self.keyboardModels = []
     self.lighting = GraphicsLighting()
   }
   
   func update(deltaTime: Float) {
-    for model in models {
-      model.transform.rotation.y = sin(deltaTime) / 2 + Float(180).degreesToRadians
-    }
-//    self.mainCamera.rotation.y = sin(deltaTime)
+    self.mainCamera.update(deltaTime: deltaTime)
   }
   
   func update(windowSize: CGSize) {
-    mainCamera.update(windowSize: windowSize)
+    self.mainCamera.update(windowSize: windowSize)
   }
   
   func addKeyboardModel(keyboardModel: KeyboardModel) {
     self.keyboardModels.append(keyboardModel)
+  }
+  
+  func handleNSEvent(event: NSEvent, type: NSEventType) {
+    self.mainCamera.handleNSEvent(event: event, type: type)
   }
 
 }

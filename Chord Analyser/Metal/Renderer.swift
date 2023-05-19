@@ -19,7 +19,7 @@ class Renderer : NSObject {
   private var world: GraphicsWorld
   private var uniforms: Uniforms
   private var parameters: Parameters
-  var timer: Float
+  var prevTime: Double
 
   init(metalView: MTKView, world: GraphicsWorld) {
     print("--- Renderer initialisation has begun. ---")
@@ -91,7 +91,7 @@ class Renderer : NSObject {
     }
     
     // timer
-    self.timer = 0
+    self.prevTime = CFAbsoluteTimeGetCurrent()
     
     // must be called after all variables have been initialised
     super.init()
@@ -142,7 +142,10 @@ extension Renderer : MTKViewDelegate {
 //    commandEncoder.setTriangleFillMode(.lines)
     
     // update world
-    self.world.update(deltaTime: timer)
+    let currentTime = CFAbsoluteTimeGetCurrent()
+    let deltaTime = Float(currentTime - self.prevTime)
+    self.prevTime = currentTime
+    self.world.update(deltaTime: deltaTime)
     
     // set uniforms
     self.uniforms.viewMatrix = self.world.mainCamera.viewMatrix
@@ -177,8 +180,6 @@ extension Renderer : MTKViewDelegate {
 
     commandBuffer.present(drawable)
     commandBuffer.commit()
-    
-    self.timer += 0.005
       
   }
 }

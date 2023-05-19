@@ -15,16 +15,35 @@ class MetalViewController {
     
   init(world: GraphicsWorld) {
     
-    // this subclass allows for user input via NSEvent
-    class MTKViewWithEvents : MTKView {
+    // this hacky subclass allows for user input via NSEvent
+    class MTKViewOverriden : MTKView {
+      weak var world: GraphicsWorld?
+      
+      init(frame frameRect: CGRect, world: GraphicsWorld) {
+        self.world = world
+        super.init(frame: frameRect, device: nil)
+      }
+      
+      required init(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+      }
+      
       override var acceptsFirstResponder: Bool { true }
       override func keyDown(with event: NSEvent) {
-        print(">> key \(event.charactersIgnoringModifiers ?? "")")
+//        print(">> keyDown \(event.charactersIgnoringModifiers ?? "")")
+        self.world?.handleNSEvent(event: event, type: .keyDown)
+      }
+      override func keyUp(with event: NSEvent) {
+//        print(">> keyUp \(event.charactersIgnoringModifiers ?? "")")
+        self.world?.handleNSEvent(event: event, type: .keyUp)
       }
     }
     
     // MTKViewWithEvents
-    self.view = MTKViewWithEvents(frame: CGRect(x: 0, y: 0, width: 100, height: 100))
+    self.view = MTKViewOverriden(
+      frame: CGRect(x: 0, y: 0, width: 100, height: 100),
+      world: world
+    )
       /*
         TODO: apparently setting the frame above is bad?
         https://stackoverflow.com/questions/60737807/cametallayer-nextdrawable-returning-nil-because-allocation-failed
@@ -38,9 +57,7 @@ class MetalViewController {
     self.view.delegate = self.renderer
 
     self.renderer.mtkView(self.view, drawableSizeWillChange: self.view.drawableSize)
-
   }
-  
 }
 
 struct MetalView : NSViewRepresentable {

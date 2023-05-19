@@ -95,3 +95,20 @@ func upperLeft(matrix: float4x4) -> simd_float3x3 {
     [matrix[2][0], matrix[2][1], matrix[2][2]]
   ])
 }
+
+func createLookAtMatrix(
+  eye: simd_float3,
+  center: simd_float3,
+  up: simd_float3
+) -> simd_float4x4 {
+  let z = normalize(center - eye)
+  let x = normalize(cross(up, z))
+  let y = cross(z, x)
+
+  return simd_float4x4(rows: [
+    [x.x, x.y, x.z, -dot(x, eye)],
+    [y.x, y.y, y.z, -dot(y, eye)],
+    [z.x, z.y, z.z, -dot(z, eye)],
+    [  0,   0,   0,            1]
+  ])
+}

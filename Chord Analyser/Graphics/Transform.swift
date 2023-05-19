@@ -59,3 +59,7 @@ extension Transformable {
     set { transform.scale = newValue }
   }
 }
+
+protocol DeltaTransformable where Self : Transformable {
+  var deltaTransform: Transform { get set }
+}
