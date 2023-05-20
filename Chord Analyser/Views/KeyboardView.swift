@@ -41,7 +41,7 @@ struct KeyboardView : View {
       Spacer()
       ImportModelView(midiConnection: midiConnection, world: world)
       Spacer()
-      MIDISelectorView(midiConnection: self.midiConnection)
+      MIDIInputPickerView(midiConnection: self.midiConnection)
       Spacer()
       PhantomKeyboardView(
         keyboardModel: keyboardModel
@@ -82,7 +82,7 @@ struct ImportModelView : View {
   }
 }
 
-struct MIDISelectorView : View {
+struct MIDIInputPickerView : View {
   
   @State private var selection: MIDIEndpointRef?
   @ObservedObject var midiConnection: CoreMIDIConnection
