@@ -19,6 +19,7 @@ struct Chord_AnalyserApp: App {
     WindowGroup {
       KeyboardView(
         keyboardModel: self.midiConnection.getKeyboardModel(),
+        midiConnection: midiConnection,
         world: self.world
       )
     }

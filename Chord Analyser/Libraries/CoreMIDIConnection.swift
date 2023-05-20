@@ -15,10 +15,11 @@ public class CoreMIDIConnection : ObservableObject {
   private var realTime: CoreMIDIRealTime
   private var client: MIDIClientRef
   private var port: MIDIPortRef
-  private var source: MIDIEndpointRef?
+  @Published var source: MIDIEndpointRef?
+  @Published var sources: [MIDIEndpointRef : String]
   private var keyboardModel: KeyboardModel
   private var timer: Timer?
-  
+ 
   init() {
       
     print("--- CoreMIDIConnection initialisation has begun. ---")
@@ -27,21 +28,38 @@ public class CoreMIDIConnection : ObservableObject {
     self.client = MIDIClientRef()
     self.port = MIDIPortRef()
     self.keyboardModel = KeyboardModel()
+    self.sources = [:]
     self.createMIDIClient()
     self.listMIDIDevices()
-    self.listMIDISources()
+    self.addMIDISources()
     if MIDIGetNumberOfSources() > 0 {
         self.source = MIDIGetSource(0)
     }
     self.createMIDIInputPort()
     self.connectPortToSource(self.port, self.source)
-    
+
     print("--- CoreMIDI initialisation is complete. ---")
           
   }
-  
+
   private func createMIDIClient() {
-    let status = MIDIClientCreateWithBlock("Chord Analyser MIDI Client" as CFString, &self.client) { _ in }
+    
+    let notificationCallback: MIDINotifyBlock = { notificationPointer in
+      let notification = notificationPointer.pointee
+      
+      if notification.messageID == .msgObjectAdded {
+        print("MIDI device added.")
+        self.reAddMIDISources()
+      } else if notification.messageID == .msgObjectRemoved {
+        print("MIDI device removed.")
+        self.reAddMIDISources()
+      }
+    }
+    
+    let status = MIDIClientCreateWithBlock(
+      "Chord Analyser MIDI Client" as CFString,
+      &self.client,
+      notificationCallback)
     if status == noErr { print("MIDI Client successfully created.") }
     else { print("Failed to create the MIDI client.") }
   }
@@ -61,7 +79,7 @@ public class CoreMIDIConnection : ObservableObject {
     }
   }
   
-  private func listMIDISources() {
+  private func addMIDISources() {
     let numSources = MIDIGetNumberOfSources()
     print("Number of MIDI sources found: \(numSources)")
     for i in 0..<numSources {
@@ -69,10 +87,25 @@ public class CoreMIDIConnection : ObservableObject {
       var maybeSourceName: Unmanaged<CFString>?
       MIDIObjectGetStringProperty(source, kMIDIPropertyName, &maybeSourceName)
       if let sourceName = maybeSourceName {
-        print("    Name of source \(i): \(sourceName.takeRetainedValue() as String)")
-        print("    GET RID: source \(source)")
+        let sourceNameString = sourceName.takeRetainedValue() as String
+        self.sources[source] = sourceNameString
+        print("Sources: \(self.sources)")
       } else {
         print("    Name of source \(i) not found.")
+      }
+    }
+  }
+  
+  private func reAddMIDISources() {
+    // ! WARNING: wiping sources is potentially inefficient?
+    //            probably doesn't matter
+    
+    self.sources = [:]
+    self.addMIDISources()
+    
+    if let source = self.source {
+      if (!self.sources.keys.contains(source)) {
+        self.disconnectSource()
       }
     }
   }
@@ -106,6 +139,21 @@ public class CoreMIDIConnection : ObservableObject {
     }
   }
   
+  private func disconnectPortFromSource() {
+    if let uSource = self.source {
+      let status = MIDIPortDisconnectSource(self.port, uSource)
+      if status == noErr {
+        self.source = nil
+        print("Port successfully disconnected to source \(uSource).")
+      } else {
+        print("Failed disconnecting port from source (ERR: \(status))")
+      }
+    } else {
+      print("Port not connected to source.")
+        // NOTE: sometimes self.source is deliberately nil; maybe this `else` is pointless
+    }
+  }
+  
   func startMIDIListener() {
     print("MIDI listener has been started.")
 
@@ -118,6 +166,16 @@ public class CoreMIDIConnection : ObservableObject {
         self.keyboardModel.updateKeyboardState(note)
       }
     }
+  }
+  
+  func disconnectSource() {
+    disconnectPortFromSource()
+  }
+  
+  func changeSourceTo(source: MIDIEndpointRef) {
+    disconnectPortFromSource()
+    connectPortToSource(self.port, source) // TODO: HANDLE ERRORS!
+    self.source = source
   }
   
   func getKeyboardModel() -> KeyboardModel {
