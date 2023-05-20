@@ -20,9 +20,8 @@ class GraphicsWorld {
     self.mainCamera.transform.position = [0.0, 0.0, -3.0]
 
     let monkeyModel = GraphicsModel(name: "monkey-left-handed.obj")
-//    let monkeyModel = GraphicsModel(url: "/Users/jeremylindsay/Documents/Xcode/monkey.obj")
-//    let monkeyModel = GraphicsModel(url: "/Users/jeremylindsay/Documents/Xcode/Chord Analyser/Chord Analyser/GraphicsModels/monkey.obj")
     self.models = [monkeyModel]
+
     self.keyboardModels = []
     self.lighting = GraphicsLighting()
   }
