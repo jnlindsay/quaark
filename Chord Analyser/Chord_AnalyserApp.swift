@@ -18,7 +18,8 @@ struct Chord_AnalyserApp: App {
   var body: some Scene {
     WindowGroup {
       KeyboardView(
-         keyboardModel: self.midiConnection.getKeyboardModel()
+        keyboardModel: self.midiConnection.getKeyboardModel(),
+        world: self.world
       )
     }
     Window("MetalView", id: "metalView") {

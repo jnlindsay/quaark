@@ -84,17 +84,17 @@ class Renderer : NSObject {
     self.uniforms = Uniforms()
     self.parameters = Parameters()
     
-    // configure GraphicsWorld meshes
+    // world
     self.world = world
-    for model in self.world.models {
-      model.configureMeshes(device: self.device)
-    }
     
     // timer
     self.prevTime = CFAbsoluteTimeGetCurrent()
     
     // must be called after all variables have been initialised
     super.init()
+    
+    self.configureMeshes()
+    self.world.renderer = self
     
     mtkView(
       metalView,
@@ -103,6 +103,12 @@ class Renderer : NSObject {
 
     print("--- Renderer initialisation is complete. ---")
     
+  }
+  
+  func configureMeshes() {
+    for model in self.world.models {
+      model.configureMeshes(device: self.device)
+    }
   }
     
 }

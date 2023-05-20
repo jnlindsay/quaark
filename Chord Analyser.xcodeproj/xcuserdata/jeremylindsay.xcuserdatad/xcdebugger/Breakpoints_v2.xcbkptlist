@@ -3,4 +3,54 @@
    uuid = "85D75A7D-587E-4FAF-B410-238A9D3CE880"
    type = "1"
    version = "2.0">
+   <Breakpoints>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "CA7A8107-6E95-4C3D-B204-D4120443819D"
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "Chord Analyser/Graphics/GraphicsModel.swift"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "111"
+            endingLineNumber = "111"
+            landmarkName = "configureMeshes(device:)"
+            landmarkType = "7">
+            <Locations>
+               <Location
+                  uuid = "CA7A8107-6E95-4C3D-B204-D4120443819D - fb5d9a6d512fde50"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "Chord_Analyser.GraphicsModel.configureMeshes(device: __C.MTLDevice) -&gt; ()"
+                  moduleName = "Chord Analyser"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/jeremylindsay/Documents/Xcode/Chord%20Analyser/Chord%20Analyser/Graphics/GraphicsModel.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "131"
+                  endingLineNumber = "131"
+                  offsetFromSymbolStart = "4452">
+               </Location>
+               <Location
+                  uuid = "CA7A8107-6E95-4C3D-B204-D4120443819D - fb5d9a6d512fdfb1"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "Chord_Analyser.GraphicsModel.configureMeshes(device: __C.MTLDevice) -&gt; ()"
+                  moduleName = "Chord Analyser"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/jeremylindsay/Documents/Xcode/Chord%20Analyser/Chord%20Analyser/Graphics/GraphicsModel.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "132"
+                  endingLineNumber = "132"
+                  offsetFromSymbolStart = "4460">
+               </Location>
+            </Locations>
+         </BreakpointContent>
+      </BreakpointProxy>
+   </Breakpoints>
 </Bucket>

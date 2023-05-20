@@ -16,7 +16,7 @@ struct GraphicsLighting {
   
   let ambientLight: Light = {
     var light = Self.buildDefaultLight()
-    light.colour = [0.05, 0.1, 0]
+    light.colour = [0.1, 0.1, 0.1]
     light.type = AmbientLight
     return light
   }()

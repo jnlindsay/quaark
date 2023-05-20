@@ -6,30 +6,56 @@
 //
 
 import SwiftUI
+import UniformTypeIdentifiers
 
 struct KeyboardView : View {
-    
-    @Environment(\.openWindow) private var openWindow
-    @ObservedObject var keyboardModel: KeyboardModel
-    
-    var body: some View {
-        VStack {
-            Spacer()
-            Text(String(keyboardModel.getChordName()))
-                .font(.largeTitle)
-            Spacer()
-            Text("Dissonance: " + String(keyboardModel.getDissonance()))
-            Spacer()
-            Button("MetalView") {
-                openWindow(id: "metalView")
-            }
-            Spacer()
-            PhantomKeyboardView(
-                keyboardModel: keyboardModel
-            )
-            Spacer()
+
+  @Environment(\.openWindow) private var openWindow
+  @ObservedObject var keyboardModel: KeyboardModel
+  @State private var importing = false
+  var world: GraphicsWorld // TODO: it makes sense for KeyboardView to directly operate the metal view controller, instead of touching the graphics world
+  
+  init(keyboardModel: KeyboardModel, world: GraphicsWorld) {
+    self.keyboardModel = keyboardModel
+    self.world = world
+  }
+  
+  var body: some View {
+    VStack {
+      Spacer()
+      Text(String(keyboardModel.getChordName()))
+        .font(.largeTitle)
+//      Spacer()
+//      Text("Dissonance: " + String(keyboardModel.getDissonance()))
+      Spacer()
+      Button("MetalView") {
+        openWindow(id: "metalView")
+      }
+      Spacer()
+      Button("Import .obj model") { importing = true }
+        .fileImporter(
+          isPresented: $importing,
+          allowedContentTypes: [UTType(filenameExtension: "obj")]
+            .compactMap{ $0 },
+          allowsMultipleSelection: false
+        ) { result in
+          switch result {
+          case .success(let files):
+            print(files[0].path)
+            self.world.models =
+              [GraphicsModel(url: files[0].path)]
+            self.world.reconfigureMeshes()
+          case .failure(let error):
+            print(error.localizedDescription)
+          }
         }
+      Spacer()
+      PhantomKeyboardView(
+        keyboardModel: keyboardModel
+      )
+      Spacer()
     }
+  }
 }
 
 // The word "phantom" indicates the "missing" black keys on the

@@ -30,11 +30,9 @@ class MetalViewController {
       
       override var acceptsFirstResponder: Bool { true }
       override func keyDown(with event: NSEvent) {
-//        print(">> keyDown \(event.charactersIgnoringModifiers ?? "")")
         self.world?.handleNSEvent(event: event, type: .keyDown)
       }
       override func keyUp(with event: NSEvent) {
-//        print(">> keyUp \(event.charactersIgnoringModifiers ?? "")")
         self.world?.handleNSEvent(event: event, type: .keyUp)
       }
     }

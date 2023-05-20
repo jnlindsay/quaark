@@ -13,15 +13,15 @@ class GraphicsWorld {
   var models: [GraphicsModel]
   private var keyboardModels: [KeyboardModel]
   let lighting: GraphicsLighting
+  weak var renderer: Renderer?
   
   init() {
     self.mainCamera = MainCamera()
     self.mainCamera.transform.position = [0.0, 0.0, -3.0]
 
-    let monkeyModel = GraphicsModel(name: "monkey.obj")
-//    monkeyModel.setColour(colour: simd_float4(0.5, 0, 0.5, 1))
-    monkeyModel.setColour(colour: simd_float4(0.5, 0.5, 0.5, 1))
-    monkeyModel.transform.rotation.y = Float(180).degreesToRadians
+    let monkeyModel = GraphicsModel(name: "monkey-left-handed.obj")
+//    let monkeyModel = GraphicsModel(url: "/Users/jeremylindsay/Documents/Xcode/monkey.obj")
+//    let monkeyModel = GraphicsModel(url: "/Users/jeremylindsay/Documents/Xcode/Chord Analyser/Chord Analyser/GraphicsModels/monkey.obj")
     self.models = [monkeyModel]
     self.keyboardModels = []
     self.lighting = GraphicsLighting()
@@ -41,6 +41,13 @@ class GraphicsWorld {
   
   func handleNSEvent(event: NSEvent, type: NSEventType) {
     self.mainCamera.handleNSEvent(event: event, type: type)
+  }
+  
+  func reconfigureMeshes() {
+    // TODO: MOVE TO METAL VIEW
+    if let renderer = self.renderer {
+      renderer.configureMeshes()
+    }
   }
 
 }
