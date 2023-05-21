@@ -14,17 +14,17 @@ struct GraphicsLighting {
     return light
   }()
   
-//  let ambientLight: Light = {
-//    var light = Self.buildDefaultLight()
-//    light.colour = [0.1, 0.1, 0.1]
-//    light.type = AmbientLight
-//    return light
-//  }()
+  let ambientLight: Light = {
+    var light = Self.buildDefaultLight()
+    light.colour = [0.1, 0.1, 0.1]
+    light.type = AmbientLight
+    return light
+  }()
   
   init() {
     self.lights = []
     self.lights.append(self.sunLight)
-//    self.lights.append(self.ambientLight)
+    self.lights.append(self.ambientLight)
   }
   
   static func buildDefaultLight() -> Light {
