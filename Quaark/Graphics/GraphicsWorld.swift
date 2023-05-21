@@ -7,16 +7,16 @@
 
 import MetalKit
 
-class GraphicsWorld {
+class GraphicsWorld : NSEventListener {
   
-  var mainCamera: MainCamera
+  var mainCamera: ArcballCamera
   var models: [GraphicsModel]
   private var keyboardModels: [KeyboardModel]
   let lighting: GraphicsLighting
   weak var renderer: Renderer?
   
   init() {
-    self.mainCamera = MainCamera()
+    self.mainCamera = ArcballCamera()
     self.mainCamera.transform.position = [0.0, 0.0, -3.0]
 
     let monkeyModel = GraphicsModel(name: "monkey-left-handed.obj")
@@ -38,8 +38,8 @@ class GraphicsWorld {
     self.keyboardModels.append(keyboardModel)
   }
   
-  func handleNSEvent(event: NSEvent, type: NSEventType) {
-    self.mainCamera.handleNSEvent(event: event, type: type)
+  func handleNSEvent(event: NSEvent, broadcaster: MTKViewWithNSEventBroadcaster) {
+    self.mainCamera.handleNSEvent(event: event, broadcaster: broadcaster)
   }
   
   func reconfigureMeshes() {
