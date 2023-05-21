@@ -64,39 +64,6 @@ class GraphicsModel {
       bufferAllocator: allocator
     )
     
-//    func describeFile(at url: URL) {
-//        do {
-//            let resourceKeys: [URLResourceKey] = [
-//                .creationDateKey,
-//                .contentModificationDateKey,
-//                .fileSizeKey,
-//                .isReadableKey,
-//                .isWritableKey,
-//                .isExecutableKey,
-//                .typeIdentifierKey
-//                // Add any additional resource keys you're interested in
-//            ]
-//
-//            let resourceValues = try url.resourceValues(forKeys: Set(resourceKeys))
-//
-//            print("URL: \(url)")
-//            print("Creation Date: \(resourceValues.creationDate ?? Date())")
-//            print("Modification Date: \(resourceValues.contentModificationDate ?? Date())")
-//            print("File Size: \(resourceValues.fileSize ?? 0) bytes")
-//            print("Is Readable: \(resourceValues.isReadable)")
-//            print("Is Writable: \(resourceValues.isWritable)")
-//            print("Is Executable: \(resourceValues.isExecutable)")
-//            print("Type Identifier: \(resourceValues.typeIdentifier ?? "")")
-//            // Add additional properties you want to describe
-//
-//        } catch {
-//            print("Error describing file at \(url): \(error)")
-//        }
-//    }
-//
-//    describeFile(at: self.assetURL)
-//    describeFile(at: path2)
-    
     if let mdlMesh =
         asset.childObjects(of: MDLMesh.self).first as? MDLMesh {
       do {

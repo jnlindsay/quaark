@@ -102,6 +102,8 @@ struct ArcballCamera : Camera {
         rotatedVector.y,
         rotatedVector.z
       )
+    
+    print("Camera position: (\(self.transform.position.x), \(self.transform.position.y), \(self.transform.position.z))")
   }
   
   mutating func handleNSEvent(

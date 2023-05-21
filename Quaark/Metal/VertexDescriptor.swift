@@ -19,7 +19,7 @@ extension MDLVertexDescriptor {
     var offset = 0
 
     // attribute 0: position
-    vertexDescriptor.attributes[0] =
+    vertexDescriptor.attributes[Position.index] =
       MDLVertexAttribute(
         name: MDLVertexAttributePosition,
         format: .float3,
@@ -29,7 +29,7 @@ extension MDLVertexDescriptor {
     offset += MemoryLayout<simd_float3>.stride
     
     // attribute 1: normal
-    vertexDescriptor.attributes[1] =
+    vertexDescriptor.attributes[Normal.index] =
       MDLVertexAttribute(
         name: MDLVertexAttributeNormal,
         format: .float3,
@@ -40,6 +40,12 @@ extension MDLVertexDescriptor {
     
     vertexDescriptor.layouts[0] = MDLVertexBufferLayout(stride: offset)    
     return vertexDescriptor
+  }
+}
+
+extension MetalAttributes {
+  var index: Int {
+    return Int(rawValue)
   }
 }
 

@@ -11,12 +11,12 @@ using namespace metal;
 
 struct VertexIn {
   float4 position [[attribute(Position)]];
-  float3 normal [[attribute(1)]];
+  float3 normal [[attribute(Normal)]];
 };
 
 struct VertexOut {
   float4 position [[position]];
-  float3 normal [[attribute(1)]];
+  float3 normal [[attribute(Normal)]];
   float4 colour;
   float3 worldPosition;
   float3 worldNormal;

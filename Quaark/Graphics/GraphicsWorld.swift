@@ -20,7 +20,10 @@ class GraphicsWorld : NSEventListener {
     self.mainCamera.transform.position = [0.0, 0.0, -3.0]
 
     let monkeyModel = GraphicsModel(name: "monkey-left-handed.obj")
-    self.models = [monkeyModel]
+    let torusModel  = GraphicsModel(name: "torus.obj")
+    torusModel.transform.scale = 1.2
+    torusModel.transform.rotation.x = π / 2
+    self.models = [monkeyModel, torusModel]
 
     self.keyboardModels = []
     self.lighting = GraphicsLighting()
@@ -28,6 +31,7 @@ class GraphicsWorld : NSEventListener {
   
   func update(deltaTime: Float) {
     self.mainCamera.update(deltaTime: deltaTime)
+    self.models[0].transform.rotation.y += 0.01
   }
   
   func update(windowSize: CGSize) {

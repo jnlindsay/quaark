@@ -62,5 +62,6 @@ float3 phongLighting(
       }
     }
   }
-  return diffuseColour + specularColour + ambientColour;
+//  return diffuseColour + specularColour + ambientColour;
+  return diffuseColour + ambientColour;
 }
