@@ -9,7 +9,7 @@ import SwiftUI
 import Foundation
 
 @main
-struct Chord_AnalyserApp: App {
+struct Quaark : App {
     
   private var midiConnection: CoreMIDIConnection
   private var metalView: MetalView
