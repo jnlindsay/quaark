@@ -10,7 +10,11 @@ import MetalKit
 class GraphicsWorld : NSEventListener {
   
   var mainCamera: ArcballCamera
+  
   var models: [GraphicsModel]
+  private var modelIndex: Int
+  private let maxModels: Int
+  
   private var keyboardModels: [KeyboardModel]
   var lighting: GraphicsLighting
   weak var renderer: Renderer?
@@ -23,12 +27,10 @@ class GraphicsWorld : NSEventListener {
     self.mainCamera.transform.position = [0.0, 0.0, -3.0]
 
     let monkeyModel = GraphicsModel(name: "monkey-left-handed.obj")
-    let torusModel  = GraphicsModel(name: "torus.obj")
-    torusModel.transform.scale = 1.2
-    torusModel.transform.rotation.x = π / 2
-//    self.models = [monkeyModel, torusModel]
     self.models = [monkeyModel]
-
+    self.modelIndex = 1
+    self.maxModels = 5
+    
     self.keyboardModels = []
     self.lighting = GraphicsLighting()
   }
@@ -37,10 +39,9 @@ class GraphicsWorld : NSEventListener {
     self.totalTime += deltaTime
     
     self.mainCamera.update(deltaTime: deltaTime)
-//    self.models[0].transform.rotation.y += 0.01
-
-    self.lighting.lights[1].position.y = sin(self.totalTime)
-    self.lighting.lights[2].position.y = sin(self.totalTime + Float.pi)
+    for model in self.models {
+      model.transform.rotation.y += 0.02
+    }
   }
   
   func update(windowSize: CGSize) {
@@ -61,6 +62,24 @@ class GraphicsWorld : NSEventListener {
       renderer.configureMeshes()
     }
   }
+  
+  func addSphere(position: simd_float3, colour: simd_float4) {
+    // ! WARNING: inefficient. The array should be a fixed size n, and n should be sent to the vertex (?) buffer. Difficulty: the shader must somehow know when to ignore `nil` models if models are optional.
+    
+    let newSphere = GraphicsModel(name: "sphere.obj")
+    newSphere.transform.position = position
+    newSphere.colour = colour
+      
+    if self.models.count < self.maxModels {
+      self.models.append(newSphere)
+    } else {
+      if self.modelIndex >= self.maxModels {
+        self.modelIndex = 1
+      }
+      self.models[modelIndex] = newSphere
+      self.modelIndex += 1
+    }
+  }
 
 }
 
@@ -68,17 +87,21 @@ extension GraphicsWorld : KeyboardListener {
   func handleKeyboardEvent(keyboardModel: KeyboardModel) {
     
     if (!keyboardModel.allNotesOff) {
-      self.lighting.lights[1].colour = simd_float3(
-        Float.random(in: 0.0 ... 1.0),
-        Float.random(in: 0.0 ... 1.0),
-        Float.random(in: 0.0 ... 1.0)
+      let newPosition = simd_float3(
+        Float.random(in: -5 ... 5),
+        Float.random(in: -5 ... 5),
+        Float.random(in: -5 ... 5)
+      )
+      let newColour = simd_float4(
+        Float.random(in: 0 ... 1),
+        Float.random(in: 0 ... 1),
+        Float.random(in: 0 ... 1),
+        1
       )
       
-      self.lighting.lights[2].colour = simd_float3(
-        Float.random(in: 0.0 ... 1.0),
-        Float.random(in: 0.0 ... 1.0),
-        Float.random(in: 0.0 ... 1.0)
-      )
+      self.lighting.addPointLight(position: newPosition, colour: newColour.xyz)
+      self.addSphere(position: newPosition, colour: newColour)
+      self.reconfigureMeshes()
     }
     
   }

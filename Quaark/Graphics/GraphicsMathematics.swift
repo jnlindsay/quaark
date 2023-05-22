@@ -117,6 +117,12 @@ extension Float {
   }
 }
 
+extension simd_float4 {
+  var xyz: simd_float3 {
+    return simd_float3(self.x, self.y, self.z)
+  }
+}
+
 func upperLeft(matrix: float4x4) -> simd_float3x3 {
   return simd_float3x3(columns: (
     [matrix[0][0], matrix[0][1], matrix[0][2]],

@@ -10,7 +10,7 @@ import MetalKit
 class GraphicsModel {
   
   public let name: String
-  private var colour: simd_float4
+  var colour: simd_float4
   public var transform: Transform
   private let assetURL: URL
   private var meshes: [MTKMesh]

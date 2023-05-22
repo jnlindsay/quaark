@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		193E1AE72A1AD1D600D7BA0D /* torus.obj in Resources */ = {isa = PBXBuildFile; fileRef = 193E1AE62A1AD1D600D7BA0D /* torus.obj */; };
+		193E1AF32A1B25A600D7BA0D /* sphere.obj in Resources */ = {isa = PBXBuildFile; fileRef = 193E1AF22A1B25A600D7BA0D /* sphere.obj */; };
 		194B428B2A11EDF2005FE25C /* Shaders.metal in Sources */ = {isa = PBXBuildFile; fileRef = 196311812A0CD5F400DED30D /* Shaders.metal */; };
 		194B42922A12600C005FE25C /* GraphicsMathematics.swift in Sources */ = {isa = PBXBuildFile; fileRef = 194B42912A12600C005FE25C /* GraphicsMathematics.swift */; };
 		196830882983D26F002232A7 /* ChordRecogniser.swift in Sources */ = {isa = PBXBuildFile; fileRef = 196830872983D26F002232A7 /* ChordRecogniser.swift */; };
@@ -39,6 +40,7 @@
 /* Begin PBXFileReference section */
 		191830362982A970002D8FAB /* Quaark-Bridging-Header.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "Quaark-Bridging-Header.h"; sourceTree = "<group>"; };
 		193E1AE62A1AD1D600D7BA0D /* torus.obj */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = torus.obj; sourceTree = "<group>"; };
+		193E1AF22A1B25A600D7BA0D /* sphere.obj */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = sphere.obj; sourceTree = "<group>"; };
 		194B42902A125852005FE25C /* Common.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Common.h; sourceTree = "<group>"; };
 		194B42912A12600C005FE25C /* GraphicsMathematics.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GraphicsMathematics.swift; sourceTree = "<group>"; };
 		196311812A0CD5F400DED30D /* Shaders.metal */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.metal; path = Shaders.metal; sourceTree = "<group>"; };
@@ -199,6 +201,7 @@
 				19E428ED2A163D3B0061D610 /* monkey-right-handed.obj */,
 				19E428F92A189F1A0061D610 /* monkey-left-handed.obj */,
 				193E1AE62A1AD1D600D7BA0D /* torus.obj */,
+				193E1AF22A1B25A600D7BA0D /* sphere.obj */,
 			);
 			path = GraphicsModels;
 			sourceTree = "<group>";
@@ -270,6 +273,7 @@
 			files = (
 				19E428EE2A163D3B0061D610 /* monkey-right-handed.obj in Resources */,
 				19E428FA2A189F1B0061D610 /* monkey-left-handed.obj in Resources */,
+				193E1AF32A1B25A600D7BA0D /* sphere.obj in Resources */,
 				193E1AE72A1AD1D600D7BA0D /* torus.obj in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
