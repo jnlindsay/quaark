@@ -62,10 +62,13 @@ typedef struct {
   simd_float3 colour;
   simd_float3 specularColour;
   float radius;
-  simd_float3 attenutation;
+  simd_float3 attenuation;
   float coneAngle;
   simd_float3 coneDirection;
   simd_float3 coneAttenuation;
+    // suppose coneAttenuation = [x, y, z]
+    // The attenuation formula is:
+    // 1 / (x + y * distance + z * distance^2)
 } Light;
 
 #endif /* Shared_h */

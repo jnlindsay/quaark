@@ -12,8 +12,11 @@ class GraphicsWorld : NSEventListener {
   var mainCamera: ArcballCamera
   var models: [GraphicsModel]
   private var keyboardModels: [KeyboardModel]
-  let lighting: GraphicsLighting
+  var lighting: GraphicsLighting
   weak var renderer: Renderer?
+  
+  // ! TODO: do this a better way
+  var totalTime: Float = 0
   
   init() {
     self.mainCamera = ArcballCamera()
@@ -23,15 +26,21 @@ class GraphicsWorld : NSEventListener {
     let torusModel  = GraphicsModel(name: "torus.obj")
     torusModel.transform.scale = 1.2
     torusModel.transform.rotation.x = π / 2
-    self.models = [monkeyModel, torusModel]
+//    self.models = [monkeyModel, torusModel]
+    self.models = [monkeyModel]
 
     self.keyboardModels = []
     self.lighting = GraphicsLighting()
   }
   
   func update(deltaTime: Float) {
+    self.totalTime += deltaTime
+    
     self.mainCamera.update(deltaTime: deltaTime)
-    self.models[0].transform.rotation.y += 0.01
+//    self.models[0].transform.rotation.y += 0.01
+
+    self.lighting.lights[1].position.y = sin(self.totalTime)
+    self.lighting.lights[2].position.y = sin(self.totalTime + Float.pi)
   }
   
   func update(windowSize: CGSize) {
@@ -58,15 +67,18 @@ class GraphicsWorld : NSEventListener {
 extension GraphicsWorld : KeyboardListener {
   func handleKeyboardEvent(keyboardModel: KeyboardModel) {
     
-    for model in models {
-      if (!keyboardModel.allNotesOff) {
-        model.setColour(colour: simd_float4(
-          Float.random(in: 0.0 ... 1.0),
-          Float.random(in: 0.0 ... 1.0),
-          Float.random(in: 0.0 ... 1.0),
-          1.0
-        ))
-      }
+    if (!keyboardModel.allNotesOff) {
+      self.lighting.lights[1].colour = simd_float3(
+        Float.random(in: 0.0 ... 1.0),
+        Float.random(in: 0.0 ... 1.0),
+        Float.random(in: 0.0 ... 1.0)
+      )
+      
+      self.lighting.lights[2].colour = simd_float3(
+        Float.random(in: 0.0 ... 1.0),
+        Float.random(in: 0.0 ... 1.0),
+        Float.random(in: 0.0 ... 1.0)
+      )
     }
     
   }
