@@ -10,7 +10,7 @@
 struct GraphicsLighting {
   var lights: [Light]
   private var lightIndex: Int
-  private let maxLights: Int
+  private let maxLights: Int // ! TODO: be careful about default lights; they might get overwritten
   
   let sunLight: Light = {
     var light = Self.buildDefaultLight()

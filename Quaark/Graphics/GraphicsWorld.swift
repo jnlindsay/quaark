@@ -13,7 +13,7 @@ class GraphicsWorld : NSEventListener {
   
   var models: [GraphicsModel]
   private var modelIndex: Int
-  private let maxModels: Int
+  private let maxModels: Int // ! TODO: be careful about default models; they might get overwritten
   
   private var keyboardModels: [KeyboardModel]
   var lighting: GraphicsLighting
