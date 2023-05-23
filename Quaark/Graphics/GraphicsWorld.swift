@@ -18,10 +18,7 @@ class GraphicsWorld : NSEventListener {
   private var keyboardModels: [KeyboardModel]
   var lighting: GraphicsLighting
   weak var renderer: Renderer?
-  
-  // ! TODO: do this a better way
-  var totalTime: Float = 0
-  
+
   init() {
     self.mainCamera = ArcballCamera()
     self.mainCamera.transform.position = [0.0, 0.0, -3.0]
@@ -35,9 +32,7 @@ class GraphicsWorld : NSEventListener {
     self.lighting = GraphicsLighting()
   }
   
-  func update(deltaTime: Float) {
-    self.totalTime += deltaTime
-    
+  func update(deltaTime: Float) {   
     self.mainCamera.update(deltaTime: deltaTime)
     for model in self.models {
       model.transform.rotation.y += 0.02
