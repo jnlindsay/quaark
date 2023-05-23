@@ -54,6 +54,7 @@ class GraphicsModel : Transformable {
 //    self.meshes = []
 //  }
   
+  // ! TODO: this should be static
   func configureMeshes(device: MTLDevice) {
     print("Meshes for \(self.name) being configured...")
     

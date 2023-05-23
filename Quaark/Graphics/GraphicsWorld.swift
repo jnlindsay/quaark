@@ -25,7 +25,7 @@ class GraphicsWorld : NSEventListener {
     self.mainCamera.transform.position = [0.0, 0.0, -3.0]
     self.models = []
     self.modelIndex = 1
-    self.maxModels = 5
+    self.maxModels = 20
     
     let monkeyModel = GraphicsModel(name: "monkey-left-handed.obj")
     self.models.append(monkeyModel)
@@ -33,6 +33,24 @@ class GraphicsWorld : NSEventListener {
     self.keyboardModels = []
     
     self.lighting = GraphicsLighting()
+    
+    for _ in 1...4 {
+      let newPosition = simd_float3(
+        Float.random(in: -2 ... 2),
+        Float.random(in: -2 ... 2),
+        Float.random(in: -2 ... 2)
+      )
+      let newColour = simd_float4(
+        Float.random(in: 0 ... 1),
+        Float.random(in: 0 ... 1),
+        Float.random(in: 0 ... 1),
+        1
+      )
+      
+      self.lighting.addPointLight(position: newPosition, colour: newColour.xyz)
+      self.addSphere(position: newPosition, colour: newColour)
+    }
+    
   }
   
   func update(deltaTime: Float) {   
@@ -66,6 +84,7 @@ class GraphicsWorld : NSEventListener {
     
     let newSphere = GraphicsModel(name: "sphere.obj")
     newSphere.transform.position = position
+    newSphere.transform.scale = 0.2
     newSphere.colour = colour
       
     if self.models.count < self.maxModels {
@@ -84,23 +103,23 @@ class GraphicsWorld : NSEventListener {
 extension GraphicsWorld : KeyboardListener {
   func handleKeyboardEvent(keyboardModel: KeyboardModel) {
     
-    if (!keyboardModel.allNotesOff) {
-      let newPosition = simd_float3(
-        Float.random(in: -5 ... 5),
-        Float.random(in: -5 ... 5),
-        Float.random(in: -5 ... 5)
-      )
-      let newColour = simd_float4(
-        Float.random(in: 0 ... 1),
-        Float.random(in: 0 ... 1),
-        Float.random(in: 0 ... 1),
-        1
-      )
-      
-      self.lighting.addPointLight(position: newPosition, colour: newColour.xyz)
-      self.addSphere(position: newPosition, colour: newColour)
-      self.reconfigureMeshes()
-    }
+//    if (!keyboardModel.allNotesOff) {
+//      let newPosition = simd_float3(
+//        Float.random(in: -5 ... 5),
+//        Float.random(in: -5 ... 5),
+//        Float.random(in: -5 ... 5)
+//      )
+//      let newColour = simd_float4(
+//        Float.random(in: 0 ... 1),
+//        Float.random(in: 0 ... 1),
+//        Float.random(in: 0 ... 1),
+//        1
+//      )
+//
+//      self.lighting.addPointLight(position: newPosition, colour: newColour.xyz)
+//      self.addSphere(position: newPosition, colour: newColour)
+//      self.reconfigureMeshes()
+//    }
     
   }
 }

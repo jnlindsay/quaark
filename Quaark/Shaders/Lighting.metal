@@ -9,6 +9,27 @@
 using namespace metal;
 #import "Lighting.h"
 
+float3 calculatePointLight(
+  Light light,
+  float3 position,
+  float3 normal,
+  vector_float3 baseColour
+) {
+  float d = distance(light.position, position);
+  float3 lightDirection = normalize(light.position - position);
+  float attenuation = 1.0 / (
+    light.attenuation.x +
+    light.attenuation.y * d +
+    light.attenuation.z * d * d
+  );
+
+  float diffuseIntensity =
+      saturate(dot(lightDirection, normal));
+  float3 colour = light.colour * baseColour * diffuseIntensity;
+  colour *= attenuation;
+  return colour;
+}
+
 float3 phongLighting(
   float3 normal,
   float3 position,

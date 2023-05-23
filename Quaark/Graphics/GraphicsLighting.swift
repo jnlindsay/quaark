@@ -34,16 +34,14 @@ struct GraphicsLighting {
   mutating func initAfterDeviceSet(device: MTLDevice) {
     // NOTE: this should be called by the Renderer init()
     
-    print(self.sunLights)
-    
     self.sunLightsBuffer = Self.createBuffer(
       device: device,
       lights: self.sunLights
     )
-//    self.pointLightsBuffer = Self.createBuffer(
-//      device: device,
-//      lights: self.pointLights
-//    )
+    self.pointLightsBuffer = Self.createBuffer(
+      device: device,
+      lights: self.pointLights
+    )
     self.lightsBuffer = Self.createBuffer(
       device: device,
       lights: self.lights
@@ -70,7 +68,8 @@ struct GraphicsLighting {
     light.type = PointLight
     light.position = position
     light.colour = colour
-    light.attenuation = [0.5, 0.5, 0.5]
+//    light.attenuation = [0.2, 10, 50]
+      light.attenuation = [1, 0, 0]
     return light
   }
   
@@ -101,12 +100,16 @@ struct GraphicsLighting {
     
     let newLight = self.pointLight(position, colour)
     
-    if self.lights.count < self.maxLights {
+    // ! TODO: DODGIEST CODE EVER: new point lights are appended to BOTH the `pointLights` as well as the `lights` arrays
+    
+    if self.pointLights.count < self.maxLights {
       self.lights.append(newLight)
+      self.pointLights.append(newLight)
     } else {
       if self.lightIndex >= self.maxLights {
         self.lightIndex = 0
       }
+      self.pointLights[lightIndex] = newLight
       self.lights[lightIndex] = newLight
       self.lightIndex += 1
     }

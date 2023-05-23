@@ -18,4 +18,11 @@ float3 phongLighting(
   float3 baseColour
 );
 
+float3 calculatePointLight(
+  Light light,
+  float3 position,
+  float3 normal,
+  vector_float3 baseColour
+);
+
 #endif /* Lighting_h */

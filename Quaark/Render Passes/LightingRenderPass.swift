@@ -13,7 +13,7 @@ struct LightingRenderPass : RenderPass {
   var renderPassDescriptor: MTLRenderPassDescriptor?
   
   var sunLightPipelineState: MTLRenderPipelineState
-//  var pointLightPipelineState: MTLRenderPipelineState
+  var pointLightPipelineState: MTLRenderPipelineState
   let depthStencilState: MTLDepthStencilState?
   
   weak var albedoTexture: MTLTexture?
@@ -29,12 +29,24 @@ struct LightingRenderPass : RenderPass {
       renderer: renderer,
       colourPixelFormat: metalView.colorPixelFormat
     )
-//    self.pointLightPipelineState = PipelineStates.createPointLightPipelineState(
-//      renderer: renderer,
-//      colourPixelFormat: metalView.colorPixelFormat
-//    )
+    self.pointLightPipelineState = PipelineStates.createPointLightPipelineState(
+      renderer: renderer,
+      colourPixelFormat: metalView.colorPixelFormat
+    )
     self.depthStencilState = Self.buildDepthStencilState(device: renderer.device)
     self.icosphere = GraphicsModel(name: "icosphere.obj")
+    self.icosphere.transform.scale = 10
+    self.icosphere.configureMeshes(device: renderer.device)
+      // TODO: above needs to be fixed
+  }
+  
+  static func buildDepthStencilState(
+    device: MTLDevice
+  ) -> MTLDepthStencilState? {
+    let stencilDescriptor = MTLDepthStencilDescriptor()
+    stencilDescriptor.isDepthWriteEnabled = false
+      // CRUCIAL: setting `.isDepthWriteEnabled` to `false` is what makes this stencil different from the 'usual' stencil state builder
+    return device.makeDepthStencilState(descriptor: stencilDescriptor)
   }
   
   func resize(metalView: MTKView, size: CGSize) { }
@@ -88,6 +100,12 @@ struct LightingRenderPass : RenderPass {
       parameters: parameters
     )
     
+    drawPointLight(
+      commandEncoder: commandEncoder,
+      world: world,
+      parameters: parameters
+    )
+    
     commandEncoder.endEncoding()
   }
   
@@ -119,46 +137,52 @@ struct LightingRenderPass : RenderPass {
     commandEncoder.popDebugGroup()
   }
   
-//  func drawPointLight(
-//    commandEncoder: MTLRenderCommandEncoder,
-//    world: GraphicsWorld,
-//    parameters: Parameters
-//  ) {
-//    commandEncoder.pushDebugGroup("Point lights")
-//    commandEncoder.setRenderPipelineState(self.pointLightPipelineState)
-//    commandEncoder.setVertexBuffer(
-//      world.lighting.pointLightsBuffer,
-//      offset: 0,
-//      index: LightBuffer.index
-//    )
-//    commandEncoder.setFragmentBuffer(
-//      world.lighting.pointLightsBuffer,
-//      offset: 0,
-//      index: LightBuffer.index
-//    )
-//
-//    guard
-//      let mesh = icosphere.meshes.first,
-//      let submesh = mesh.submeshes.first
-//    else { return }
-//
-//    for (index, vertexBuffer) in mesh.vertexBuffers.enumerated() {
-//      commandEncoder.setVertexBuffer(
-//        vertexBuffer,
-//        offset: 0,
-//        index: index
-//      )
-//    }
-//
-//    commandEncoder.drawIndexedPrimitives(
-//      type: .triangle,
-//      indexCount: submesh.indexCount,
-//      indexType: submesh.indexType,
-//      indexBuffer: submesh.indexBuffer,
-//      indexBufferOffset: submesh.indexBufferOffset,
-//      instanceCount: world.lighting.pointLights.count
-//    )
-//
-//    commandEncoder.popDebugGroup()
-//  }
+  func drawPointLight(
+    commandEncoder: MTLRenderCommandEncoder,
+    world: GraphicsWorld,
+    parameters: Parameters
+  ) {
+    commandEncoder.pushDebugGroup("Point lights")
+    commandEncoder.setRenderPipelineState(self.pointLightPipelineState)
+    commandEncoder.setVertexBuffer(
+      world.lighting.pointLightsBuffer,
+      offset: 0,
+      index: LightBuffer.index
+    )
+    commandEncoder.setFragmentBuffer(
+      world.lighting.pointLightsBuffer,
+      offset: 0,
+      index: LightBuffer.index
+    )
+
+    guard let mesh = self.icosphere.meshes.first
+    else {
+      print("MESH NOT OBTAINED")
+      return
+    }
+    guard let submesh = mesh.submeshes.first
+    else {
+      print("SUBMESH NOT OBTAINED")
+      return
+    }
+
+    for (index, vertexBuffer) in mesh.vertexBuffers.enumerated() {
+      commandEncoder.setVertexBuffer(
+        vertexBuffer,
+        offset: 0,
+        index: index
+      )
+    }
+
+    commandEncoder.drawIndexedPrimitives(
+      type: .triangle,
+      indexCount: submesh.indexCount,
+      indexType: submesh.indexType,
+      indexBuffer: submesh.indexBuffer,
+      indexBufferOffset: submesh.indexBufferOffset,
+      instanceCount: world.lighting.pointLights.count
+    )
+    
+    commandEncoder.popDebugGroup()
+  }
 }
