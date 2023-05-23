@@ -31,6 +31,8 @@ class MetalViewController {
     
     self.renderer = Renderer(metalView: self.view, world: world)
     self.view.delegate = self.renderer
+    self.view.framebufferOnly = false
+      // only affects performance slightly
 
     self.renderer.mtkView(self.view, drawableSizeWillChange: self.view.drawableSize)
   }

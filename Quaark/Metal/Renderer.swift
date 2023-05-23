@@ -12,8 +12,6 @@ class Renderer : NSObject {
           var device: MTLDevice
   private let commandQueue: MTLCommandQueue
           let library: MTLLibrary
-//  private let pipelineState: MTLRenderPipelineState
-//  private var depthStencilState: MTLDepthStencilState
   private var world: GraphicsWorld
   private var uniforms: Uniforms
   private var parameters: Parameters
@@ -79,8 +77,6 @@ class Renderer : NSObject {
       metalView,
       drawableSizeWillChange: metalView.bounds.size
     )
-    
-    metalView.framebufferOnly = false
 
     print("--- Renderer initialisation is complete. ---")
     
