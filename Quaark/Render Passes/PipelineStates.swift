@@ -53,7 +53,7 @@ enum PipelineStates {
     pipelineDescriptor.setGBufferPixelFormats()
     pipelineDescriptor.depthAttachmentPixelFormat = .depth32Float
     pipelineDescriptor.vertexDescriptor =
-      MTLVertexDescriptor.defaultLayout
+    MTLVertexDescriptor.defaultLayout
     return createPipelineState(
       device: renderer.device,
       pipelineDescriptor: pipelineDescriptor
@@ -71,6 +71,35 @@ enum PipelineStates {
     pipelineDescriptor.fragmentFunction = fragmentFunction
     pipelineDescriptor.colorAttachments[0].pixelFormat = colourPixelFormat
     pipelineDescriptor.depthAttachmentPixelFormat = .depth32Float
+    return createPipelineState(
+      device: renderer.device,
+      pipelineDescriptor: pipelineDescriptor
+    )
+  }
+  
+  static func createPointLightPipelineState(
+    renderer: Renderer,
+    colourPixelFormat: MTLPixelFormat
+  ) -> MTLRenderPipelineState {
+    let vertexFunction = renderer.library.makeFunction(name: "vertex_pointLight")
+    let fragmentFunction = renderer.library.makeFunction(name: "fragment_pointLight")
+    let pipelineDescriptor = MTLRenderPipelineDescriptor()
+    pipelineDescriptor.vertexFunction = vertexFunction
+    pipelineDescriptor.fragmentFunction = fragmentFunction
+    pipelineDescriptor.colorAttachments[0].pixelFormat = colourPixelFormat
+    pipelineDescriptor.depthAttachmentPixelFormat = .depth32Float
+    pipelineDescriptor.vertexDescriptor =
+      MTLVertexDescriptor.defaultLayout
+    let attachment = pipelineDescriptor.colorAttachments[0]
+    attachment?.isBlendingEnabled = true
+    attachment?.rgbBlendOperation = .add
+    attachment?.alphaBlendOperation = .add
+    attachment?.sourceRGBBlendFactor = .one
+    attachment?.sourceAlphaBlendFactor = .one
+    attachment?.destinationRGBBlendFactor = .one
+    attachment?.destinationAlphaBlendFactor = .zero
+    attachment?.sourceRGBBlendFactor = .one
+    attachment?.sourceAlphaBlendFactor = .one
     return createPipelineState(
       device: renderer.device,
       pipelineDescriptor: pipelineDescriptor

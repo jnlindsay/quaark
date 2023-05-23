@@ -13,7 +13,7 @@ class GraphicsModel {
   var colour: simd_float4
   public var transform: Transform
   private let assetURL: URL
-  private var meshes: [MTKMesh]
+          var meshes: [MTKMesh]
   
   init(name: String) {
     self.name = name

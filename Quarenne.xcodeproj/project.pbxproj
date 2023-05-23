@@ -16,6 +16,7 @@
 		191423992A1CDB3400FC3332 /* RenderPass.swift in Sources */ = {isa = PBXBuildFile; fileRef = 191423982A1CDB3400FC3332 /* RenderPass.swift */; };
 		1914239B2A1CE75500FC3332 /* Deferred.metal in Sources */ = {isa = PBXBuildFile; fileRef = 1914239A2A1CE75500FC3332 /* Deferred.metal */; };
 		1914239E2A1CEDB400FC3332 /* LightingRenderPass.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1914239D2A1CEDB400FC3332 /* LightingRenderPass.swift */; };
+		191423A02A1D2E7200FC3332 /* icosphere.obj in Resources */ = {isa = PBXBuildFile; fileRef = 1914239F2A1D2E7200FC3332 /* icosphere.obj */; };
 		193E1AE72A1AD1D600D7BA0D /* torus.obj in Resources */ = {isa = PBXBuildFile; fileRef = 193E1AE62A1AD1D600D7BA0D /* torus.obj */; };
 		193E1AF32A1B25A600D7BA0D /* sphere.obj in Resources */ = {isa = PBXBuildFile; fileRef = 193E1AF22A1B25A600D7BA0D /* sphere.obj */; };
 		194B428B2A11EDF2005FE25C /* Shaders.metal in Sources */ = {isa = PBXBuildFile; fileRef = 196311812A0CD5F400DED30D /* Shaders.metal */; };
@@ -57,6 +58,7 @@
 		1914239A2A1CE75500FC3332 /* Deferred.metal */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.metal; path = Deferred.metal; sourceTree = "<group>"; };
 		1914239C2A1CE7C500FC3332 /* Vertex.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Vertex.h; sourceTree = "<group>"; };
 		1914239D2A1CEDB400FC3332 /* LightingRenderPass.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LightingRenderPass.swift; sourceTree = "<group>"; };
+		1914239F2A1D2E7200FC3332 /* icosphere.obj */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = icosphere.obj; sourceTree = "<group>"; };
 		191830362982A970002D8FAB /* Quaark-Bridging-Header.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "Quaark-Bridging-Header.h"; sourceTree = "<group>"; };
 		193E1AE62A1AD1D600D7BA0D /* torus.obj */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = torus.obj; sourceTree = "<group>"; };
 		193E1AF22A1B25A600D7BA0D /* sphere.obj */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = sphere.obj; sourceTree = "<group>"; };
@@ -255,6 +257,7 @@
 				19E428F92A189F1A0061D610 /* monkey-left-handed.obj */,
 				193E1AE62A1AD1D600D7BA0D /* torus.obj */,
 				193E1AF22A1B25A600D7BA0D /* sphere.obj */,
+				1914239F2A1D2E7200FC3332 /* icosphere.obj */,
 			);
 			path = GraphicsModels;
 			sourceTree = "<group>";
@@ -324,6 +327,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				191423A02A1D2E7200FC3332 /* icosphere.obj in Resources */,
 				19E428EE2A163D3B0061D610 /* monkey-right-handed.obj in Resources */,
 				19E428FA2A189F1B0061D610 /* monkey-left-handed.obj in Resources */,
 				191423952A1CBDDF00FC3332 /* README.md in Resources */,

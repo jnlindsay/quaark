@@ -13,11 +13,14 @@ struct LightingRenderPass : RenderPass {
   var renderPassDescriptor: MTLRenderPassDescriptor?
   
   var sunLightPipelineState: MTLRenderPipelineState
+//  var pointLightPipelineState: MTLRenderPipelineState
   let depthStencilState: MTLDepthStencilState?
   
   weak var albedoTexture: MTLTexture?
   weak var normalTexture: MTLTexture?
   weak var positionTexture: MTLTexture?
+  
+  var icosphere: GraphicsModel
   
   init(renderer: Renderer, metalView: MTKView) {
     self.label = "Lighting Render Pass"
@@ -26,7 +29,12 @@ struct LightingRenderPass : RenderPass {
       renderer: renderer,
       colourPixelFormat: metalView.colorPixelFormat
     )
+//    self.pointLightPipelineState = PipelineStates.createPointLightPipelineState(
+//      renderer: renderer,
+//      colourPixelFormat: metalView.colorPixelFormat
+//    )
     self.depthStencilState = Self.buildDepthStencilState(device: renderer.device)
+    self.icosphere = GraphicsModel(name: "icosphere.obj")
   }
   
   func resize(metalView: MTKView, size: CGSize) { }
@@ -110,4 +118,47 @@ struct LightingRenderPass : RenderPass {
     
     commandEncoder.popDebugGroup()
   }
+  
+//  func drawPointLight(
+//    commandEncoder: MTLRenderCommandEncoder,
+//    world: GraphicsWorld,
+//    parameters: Parameters
+//  ) {
+//    commandEncoder.pushDebugGroup("Point lights")
+//    commandEncoder.setRenderPipelineState(self.pointLightPipelineState)
+//    commandEncoder.setVertexBuffer(
+//      world.lighting.pointLightsBuffer,
+//      offset: 0,
+//      index: LightBuffer.index
+//    )
+//    commandEncoder.setFragmentBuffer(
+//      world.lighting.pointLightsBuffer,
+//      offset: 0,
+//      index: LightBuffer.index
+//    )
+//
+//    guard
+//      let mesh = icosphere.meshes.first,
+//      let submesh = mesh.submeshes.first
+//    else { return }
+//
+//    for (index, vertexBuffer) in mesh.vertexBuffers.enumerated() {
+//      commandEncoder.setVertexBuffer(
+//        vertexBuffer,
+//        offset: 0,
+//        index: index
+//      )
+//    }
+//
+//    commandEncoder.drawIndexedPrimitives(
+//      type: .triangle,
+//      indexCount: submesh.indexCount,
+//      indexType: submesh.indexType,
+//      indexBuffer: submesh.indexBuffer,
+//      indexBufferOffset: submesh.indexBufferOffset,
+//      instanceCount: world.lighting.pointLights.count
+//    )
+//
+//    commandEncoder.popDebugGroup()
+//  }
 }
