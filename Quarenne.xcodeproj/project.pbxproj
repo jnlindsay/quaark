@@ -199,6 +199,7 @@
 		19E456BC29494ABF0037DF4B = {
 			isa = PBXGroup;
 			children = (
+				191423942A1CBDB600FC3332 /* README.md */,
 				19E456C729494ABF0037DF4B /* Quaark */,
 				19E456C629494ABF0037DF4B /* Products */,
 			);
@@ -216,7 +217,6 @@
 			isa = PBXGroup;
 			children = (
 				19E456C829494ABF0037DF4B /* Quaark.swift */,
-				191423942A1CBDB600FC3332 /* README.md */,
 				19D46D942A0DE29F009F6E2F /* Graphics */,
 				19EA6F3B2A106A9900F3070E /* GraphicsModels */,
 				19E2CC6A294DD13200DFE7F9 /* Models */,
