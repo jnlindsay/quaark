@@ -171,7 +171,7 @@ extension Renderer : MTKViewDelegate {
     }
 
     // bloom effect
-//    self.bloom.postProcess(view: metalView, commandBuffer: commandBuffer)
+    self.bloom.postProcess(view: metalView, commandBuffer: commandBuffer)
     
     guard let drawable = metalView.currentDrawable else {
       print("Renderer.swift: drawable not obtained.")
