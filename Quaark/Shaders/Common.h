@@ -44,7 +44,24 @@ typedef enum {
   UniformsBuffer = 11,
   ParametersBuffer = 12,
   LightBuffer = 13
+//  MaterialBuffer = 14
 } BufferIndices;
+
+typedef enum {
+  BaseColourTexture = 0,
+  NormalTexture = 1,
+  PositionTexture = 2,
+  RoughnessTexture = 3,
+  MetallicnessTexture = 4,
+  AmbientOcclusionTexture = 5,
+  ShadowTexture = 6
+} TextureIndices;
+
+typedef enum {
+  RenderTargetAlbedo = 1,
+  RenderTargetNormal = 2,
+  RenderTargetPosition = 3
+} RenderTargetIndices;
 
 // LIGHTING
 
@@ -70,5 +87,14 @@ typedef struct {
     // The attenuation formula is:
     // 1 / (x + y * distance + z * distance^2)
 } Light;
+
+//typedef struct {
+//  vector_float3 baseColour;
+//  vector_float3 specularColour;
+//  float roughness;
+//  float metallicness;
+//  float ambientOcclusion;
+//  float shininess;
+//} Material;
 
 #endif /* Shared_h */

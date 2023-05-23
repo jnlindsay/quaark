@@ -44,7 +44,8 @@ struct Bloom {
     brightness.encode(
       commandBuffer: commandBuffer,
       sourceTexture: drawableTexture,
-      destinationTexture: outputTexture)
+      destinationTexture: outputTexture
+    )
 
     // Gaussian Blur
     let blur = MPSImageGaussianBlur(

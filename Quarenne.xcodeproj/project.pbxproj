@@ -12,6 +12,10 @@
 		191423912A1CAF2600FC3332 /* ForwardRenderPass.swift in Sources */ = {isa = PBXBuildFile; fileRef = 191423902A1CAF2600FC3332 /* ForwardRenderPass.swift */; };
 		191423932A1CAFA200FC3332 /* PipelineStates.swift in Sources */ = {isa = PBXBuildFile; fileRef = 191423922A1CAFA200FC3332 /* PipelineStates.swift */; };
 		191423952A1CBDDF00FC3332 /* README.md in Resources */ = {isa = PBXBuildFile; fileRef = 191423942A1CBDB600FC3332 /* README.md */; };
+		191423972A1CDB0700FC3332 /* GBufferRenderPass.swift in Sources */ = {isa = PBXBuildFile; fileRef = 191423962A1CDB0700FC3332 /* GBufferRenderPass.swift */; };
+		191423992A1CDB3400FC3332 /* RenderPass.swift in Sources */ = {isa = PBXBuildFile; fileRef = 191423982A1CDB3400FC3332 /* RenderPass.swift */; };
+		1914239B2A1CE75500FC3332 /* Deferred.metal in Sources */ = {isa = PBXBuildFile; fileRef = 1914239A2A1CE75500FC3332 /* Deferred.metal */; };
+		1914239E2A1CEDB400FC3332 /* LightingRenderPass.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1914239D2A1CEDB400FC3332 /* LightingRenderPass.swift */; };
 		193E1AE72A1AD1D600D7BA0D /* torus.obj in Resources */ = {isa = PBXBuildFile; fileRef = 193E1AE62A1AD1D600D7BA0D /* torus.obj */; };
 		193E1AF32A1B25A600D7BA0D /* sphere.obj in Resources */ = {isa = PBXBuildFile; fileRef = 193E1AF22A1B25A600D7BA0D /* sphere.obj */; };
 		194B428B2A11EDF2005FE25C /* Shaders.metal in Sources */ = {isa = PBXBuildFile; fileRef = 196311812A0CD5F400DED30D /* Shaders.metal */; };
@@ -48,6 +52,11 @@
 		191423902A1CAF2600FC3332 /* ForwardRenderPass.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ForwardRenderPass.swift; sourceTree = "<group>"; };
 		191423922A1CAFA200FC3332 /* PipelineStates.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PipelineStates.swift; sourceTree = "<group>"; };
 		191423942A1CBDB600FC3332 /* README.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = "<group>"; };
+		191423962A1CDB0700FC3332 /* GBufferRenderPass.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GBufferRenderPass.swift; sourceTree = "<group>"; };
+		191423982A1CDB3400FC3332 /* RenderPass.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RenderPass.swift; sourceTree = "<group>"; };
+		1914239A2A1CE75500FC3332 /* Deferred.metal */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.metal; path = Deferred.metal; sourceTree = "<group>"; };
+		1914239C2A1CE7C500FC3332 /* Vertex.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Vertex.h; sourceTree = "<group>"; };
+		1914239D2A1CEDB400FC3332 /* LightingRenderPass.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LightingRenderPass.swift; sourceTree = "<group>"; };
 		191830362982A970002D8FAB /* Quaark-Bridging-Header.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "Quaark-Bridging-Header.h"; sourceTree = "<group>"; };
 		193E1AE62A1AD1D600D7BA0D /* torus.obj */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = torus.obj; sourceTree = "<group>"; };
 		193E1AF22A1B25A600D7BA0D /* sphere.obj */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = sphere.obj; sourceTree = "<group>"; };
@@ -115,7 +124,10 @@
 		1914238F2A1CAEE400FC3332 /* Render Passes */ = {
 			isa = PBXGroup;
 			children = (
+				191423982A1CDB3400FC3332 /* RenderPass.swift */,
 				191423902A1CAF2600FC3332 /* ForwardRenderPass.swift */,
+				191423962A1CDB0700FC3332 /* GBufferRenderPass.swift */,
+				1914239D2A1CEDB400FC3332 /* LightingRenderPass.swift */,
 				191423922A1CAFA200FC3332 /* PipelineStates.swift */,
 			);
 			path = "Render Passes";
@@ -126,6 +138,8 @@
 			children = (
 				194B42902A125852005FE25C /* Common.h */,
 				19E428EF2A16533D0061D610 /* Lighting.h */,
+				1914239C2A1CE7C500FC3332 /* Vertex.h */,
+				1914239A2A1CE75500FC3332 /* Deferred.metal */,
 				19E428F02A1653930061D610 /* Lighting.metal */,
 				196311812A0CD5F400DED30D /* Shaders.metal */,
 			);
@@ -328,10 +342,13 @@
 				194B428B2A11EDF2005FE25C /* Shaders.metal in Sources */,
 				19D46D9C2A0FA59D009F6E2F /* GraphicsModel.swift in Sources */,
 				191423912A1CAF2600FC3332 /* ForwardRenderPass.swift in Sources */,
+				191423992A1CDB3400FC3332 /* RenderPass.swift in Sources */,
 				19E2CC7B294DDC1F00DFE7F9 /* CoreMIDIConnection.swift in Sources */,
 				1914238E2A1C913900FC3332 /* TextureController.swift in Sources */,
 				19E428EA2A1612E70061D610 /* GraphicsLighting.swift in Sources */,
 				19E456CB29494ABF0037DF4B /* KeyboardView.swift in Sources */,
+				1914239B2A1CE75500FC3332 /* Deferred.metal in Sources */,
+				1914239E2A1CEDB400FC3332 /* LightingRenderPass.swift in Sources */,
 				19E428E82A15F0690061D610 /* Camera.swift in Sources */,
 				19D46D962A0DE2AB009F6E2F /* GraphicsWorld.swift in Sources */,
 				191423932A1CAFA200FC3332 /* PipelineStates.swift in Sources */,
@@ -343,6 +360,7 @@
 				1982433C29BC9692001B7B0D /* KeyboardModel.swift in Sources */,
 				19D8E2A3298605880003B5EC /* Miscellaneous.swift in Sources */,
 				194B42922A12600C005FE25C /* GraphicsMathematics.swift in Sources */,
+				191423972A1CDB0700FC3332 /* GBufferRenderPass.swift in Sources */,
 				19E428F12A1653930061D610 /* Lighting.metal in Sources */,
 				1982433E29BEE562001B7B0D /* DissonanceMeasure.swift in Sources */,
 				19E2CC69294DCB2100DFE7F9 /* CoreMIDIRealTime.mm in Sources */,

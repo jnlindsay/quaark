@@ -29,6 +29,7 @@ class GraphicsWorld : NSEventListener {
     self.maxModels = 5
     
     self.keyboardModels = []
+    
     self.lighting = GraphicsLighting()
   }
   

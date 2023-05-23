@@ -5,9 +5,9 @@
 //  Created by Jeremy Lindsay on 18/5/2023.
 //
 
-#import "Lighting.h"
 #include <metal_stdlib>
 using namespace metal;
+#import "Lighting.h"
 
 float3 phongLighting(
   float3 normal,

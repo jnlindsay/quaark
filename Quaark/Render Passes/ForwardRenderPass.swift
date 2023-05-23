@@ -7,7 +7,7 @@
 
 import MetalKit
 
-struct ForwardRenderPass {
+struct ForwardRenderPass : RenderPass {
   let label: String
   weak var renderer: Renderer?
   var renderPassDescriptor: MTLRenderPassDescriptor?
@@ -22,17 +22,6 @@ struct ForwardRenderPass {
       colourPixelFormat: metalView.colorPixelFormat
     )
     self.depthStencilState = Self.buildDepthStencilState(device: renderer.device)
-  }
-  
-  static func buildDepthStencilState(
-    device: MTLDevice
-  ) -> MTLDepthStencilState? {
-    let stencilDescriptor = MTLDepthStencilDescriptor()
-    stencilDescriptor.depthCompareFunction = .less
-    stencilDescriptor.isDepthWriteEnabled = true
-    return device.makeDepthStencilState(
-      descriptor: stencilDescriptor
-    )
   }
   
   mutating func resize(metalView: MTKView, size: CGSize) { }

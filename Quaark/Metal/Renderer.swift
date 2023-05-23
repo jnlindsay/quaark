@@ -17,7 +17,10 @@ class Renderer : NSObject {
   private var parameters: Parameters
   var prevTime: Double
   
+  // ! TODO: FIND A WAY TO MAKE RENDER PASSES MANDATORY
   var forwardRenderPass: ForwardRenderPass?
+  var gBufferRenderPass: GBufferRenderPass?
+  var lightingRenderPass: LightingRenderPass?
   
   var bloom: Bloom
   
@@ -64,14 +67,25 @@ class Renderer : NSObject {
     // must be called after all variables have been initialised
     super.init()
     
-    // render pass
-    forwardRenderPass = ForwardRenderPass(
+    // render passes
+    self.forwardRenderPass = ForwardRenderPass(
+      renderer: self,
+      metalView: metalView
+    )
+    self.gBufferRenderPass = GBufferRenderPass(
+      renderer: self,
+      metalView: metalView
+    )
+    self.lightingRenderPass = LightingRenderPass(
       renderer: self,
       metalView: metalView
     )
     
+    // configure world and lighting
     self.configureMeshes()
     self.world.renderer = self
+    self.world.lighting.device = self.device
+    self.world.lighting.initAfterDeviceSet(device: self.device)
     
     mtkView(
       metalView,
@@ -97,6 +111,8 @@ extension Renderer : MTKViewDelegate {
   ) {
     self.world.update(windowSize: size)
     self.forwardRenderPass?.resize(metalView: mtkView, size: size)
+    self.gBufferRenderPass?.resize(metalView: mtkView, size: size)
+    self.lightingRenderPass?.resize(metalView: mtkView, size: size)
     self.bloom.resize(view: mtkView, size: size)
   }
   
@@ -123,17 +139,39 @@ extension Renderer : MTKViewDelegate {
     // update uniforms and parameters
     self.updateUniformsAndParameters(world: self.world)
     
-    // set forward render pass
-    self.forwardRenderPass?.renderPassDescriptor = renderPassDescriptor
-    self.forwardRenderPass?.draw(
-      commandBuffer: commandBuffer,
-      world: self.world,
-      uniforms: self.uniforms,
-      parameters: self.parameters
-    )
+    if (true) {
+      // set G-buffer render pass
+      self.gBufferRenderPass?.draw(
+        commandBuffer: commandBuffer,
+        world: self.world,
+        uniforms: self.uniforms,
+        parameters: self.parameters
+      )
+      
+      // set lighting render pass
+      self.lightingRenderPass?.albedoTexture = gBufferRenderPass?.albedoTexture
+      self.lightingRenderPass?.normalTexture = gBufferRenderPass?.normalTexture
+      self.lightingRenderPass?.positionTexture = gBufferRenderPass?.positionTexture
+      self.lightingRenderPass?.renderPassDescriptor = renderPassDescriptor
+      self.lightingRenderPass?.draw(
+        commandBuffer: commandBuffer,
+        world: world,
+        uniforms: uniforms,
+        parameters: parameters
+      )
+    } else {
+      // set forward render pass
+      self.forwardRenderPass?.renderPassDescriptor = renderPassDescriptor
+      self.forwardRenderPass?.draw(
+        commandBuffer: commandBuffer,
+        world: self.world,
+        uniforms: self.uniforms,
+        parameters: self.parameters
+      )
+    }
 
     // bloom effect
-    self.bloom.postProcess(view: metalView, commandBuffer: commandBuffer)
+//    self.bloom.postProcess(view: metalView, commandBuffer: commandBuffer)
     
     guard let drawable = metalView.currentDrawable else {
       print("Renderer.swift: drawable not obtained.")

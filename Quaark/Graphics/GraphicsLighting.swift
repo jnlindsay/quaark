@@ -5,10 +5,50 @@
 //  Created by Jeremy Lindsay on 18/5/2023.
 //
 
+import MetalKit
+
 struct GraphicsLighting {
   var lights: [Light]
+  var sunLights: [Light]
+  var pointLights: [Light]
+  
+  var lightsBuffer: MTLBuffer?
+  var sunLightsBuffer: MTLBuffer?
+  var pointLightsBuffer: MTLBuffer?
+  
   private var lightIndex: Int
   private let maxLights: Int // ! TODO: be careful about default lights; they might get overwritten
+  
+  weak var device: MTLDevice?
+  
+  init() {
+    self.sunLights = [self.sunLight, self.ambientLight]
+    self.lights = self.sunLights
+    self.pointLights = []
+    self.lights += self.pointLights
+    
+    self.lightIndex = 0
+    self.maxLights = 10
+  }
+  
+  mutating func initAfterDeviceSet(device: MTLDevice) {
+    // NOTE: this should be called by the Renderer init()
+    
+    print(self.sunLights)
+    
+    self.sunLightsBuffer = Self.createBuffer(
+      device: device,
+      lights: self.sunLights
+    )
+//    self.pointLightsBuffer = Self.createBuffer(
+//      device: device,
+//      lights: self.pointLights
+//    )
+    self.lightsBuffer = Self.createBuffer(
+      device: device,
+      lights: self.lights
+    )
+  }
   
   let sunLight: Light = {
     var light = Self.buildDefaultLight()
@@ -34,15 +74,6 @@ struct GraphicsLighting {
     return light
   }
   
-  init() {
-    self.lights = []
-    self.lightIndex = 0
-    self.maxLights = 10
-    self.lights.append(self.sunLight)
-    self.lights.append(self.ambientLight)
-
-  }
-  
   static func buildDefaultLight() -> Light {
     var light = Light()
     light.position = [0, 0, 0]
@@ -51,6 +82,18 @@ struct GraphicsLighting {
     light.attenuation = [1, 0, 0]
     light.type = SunLight
     return light
+  }
+  
+  static func createBuffer(
+    device: MTLDevice,
+    lights: [Light]
+  ) -> MTLBuffer {
+    var lights = lights
+    return device.makeBuffer(
+      bytes: &lights,
+      length: MemoryLayout<Light>.stride * lights.count,
+      options: []
+    )!
   }
   
   mutating func addPointLight(position: simd_float3, colour: simd_float3) {
