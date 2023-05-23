@@ -7,13 +7,13 @@
 
 import MetalKit
 
-class GraphicsModel {
+class GraphicsModel : Transformable {
   
-  public let name: String
+  let name: String
   var colour: simd_float4
   public var transform: Transform
   private let assetURL: URL
-          var meshes: [MTKMesh]
+  var meshes: [GraphicsMesh]
   
   init(name: String) {
     self.name = name
@@ -46,7 +46,7 @@ class GraphicsModel {
 //    } catch {
 //      fatalError("Error accessing file \(url).")
 //    }
-//    
+//
 //    self.name = "DEFAULT NAME" // TODO: deal with this
 //    self.transform = Transform()
 //    self.colour = simd_float4(0.0, 0.0, 0.0, 1.0)
@@ -58,25 +58,30 @@ class GraphicsModel {
     print("Meshes for \(self.name) being configured...")
     
     let allocator = MTKMeshBufferAllocator(device: device)
+    let meshDescriptor = MDLVertexDescriptor.defaultLayout
     let asset = MDLAsset(
       url: self.assetURL,
-      vertexDescriptor: .defaultLayout,
+      vertexDescriptor: meshDescriptor,
       bufferAllocator: allocator
     )
     
-    if let mdlMesh =
-        asset.childObjects(of: MDLMesh.self).first as? MDLMesh {
-      do {
-        let newMesh = try MTKMesh(mesh: mdlMesh, device: device)
-        self.meshes.append(newMesh)
-      } catch {
-        fatalError("Failed to load mesh.")
-      }
-    } else {
-      fatalError("No mesh available.")
+    var mtkMeshes: [MTKMesh] = []
+    let mdlMeshes =
+      asset.childObjects(of: MDLMesh.self) as? [MDLMesh] ?? []
+    _ = mdlMeshes.map { mdlMesh in
+      mtkMeshes.append(
+        try! MTKMesh(
+          mesh: mdlMesh,
+          device: device
+        )
+      )
     }
     
-    print("Configuration complete.")
+    self.meshes = zip(mdlMeshes, mtkMeshes).map {
+      GraphicsMesh(mdlMesh: $0.0, mtkMesh: $0.1)
+    }
+    
+    print("Mesh configuration complete.")
   }
   
   func setColour(colour: simd_float4) {
@@ -91,6 +96,7 @@ extension GraphicsModel : Renderable {
     uniforms vertex: Uniforms,
     parameters fragment: Parameters
   ) {
+    commandEncoder.pushDebugGroup(self.name)
     
     var uniforms = vertex
     uniforms.modelMatrix = self.transform.modelMatrix
@@ -117,21 +123,27 @@ extension GraphicsModel : Renderable {
     )
     
     for mesh in self.meshes {
-      commandEncoder.setVertexBuffer(
-        mesh.vertexBuffers[0].buffer,
-        offset: 0,
-        index: VertexBuffer.index
-      )
+      for (index, vertexBuffer) in mesh.vertexBuffers.enumerated() {
+        commandEncoder.setVertexBuffer(
+          vertexBuffer,
+          offset: 0,
+          index: index)
+      }
       
       for submesh in mesh.submeshes {
+        
+        // FRAGMENT TEXTURE CONFIGURATION OMITTED
+      
         commandEncoder.drawIndexedPrimitives(
           type: .triangle,
           indexCount: submesh.indexCount,
           indexType: submesh.indexType,
-          indexBuffer: submesh.indexBuffer.buffer,
-          indexBufferOffset: submesh.indexBuffer.offset
+          indexBuffer: submesh.indexBuffer,
+          indexBufferOffset: submesh.indexBufferOffset
         )
       }
     }
+    
+    commandEncoder.popDebugGroup()
   }
 }

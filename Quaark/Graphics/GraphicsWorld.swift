@@ -19,14 +19,16 @@ class GraphicsWorld : NSEventListener {
   var lighting: GraphicsLighting
   weak var renderer: Renderer?
 
+  // ! TODO: initialise renderer immediately?
   init() {
     self.mainCamera = ArcballCamera()
     self.mainCamera.transform.position = [0.0, 0.0, -3.0]
-
-    let monkeyModel = GraphicsModel(name: "monkey-left-handed.obj")
-    self.models = [monkeyModel]
+    self.models = []
     self.modelIndex = 1
     self.maxModels = 5
+    
+    let monkeyModel = GraphicsModel(name: "monkey-left-handed.obj")
+    self.models.append(monkeyModel)
     
     self.keyboardModels = []
     
