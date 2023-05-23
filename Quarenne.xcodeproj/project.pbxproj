@@ -9,6 +9,9 @@
 /* Begin PBXBuildFile section */
 		1914238B2A1C907D00FC3332 /* Bloom.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1914238A2A1C907D00FC3332 /* Bloom.swift */; };
 		1914238E2A1C913900FC3332 /* TextureController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1914238D2A1C913900FC3332 /* TextureController.swift */; };
+		191423912A1CAF2600FC3332 /* ForwardRenderPass.swift in Sources */ = {isa = PBXBuildFile; fileRef = 191423902A1CAF2600FC3332 /* ForwardRenderPass.swift */; };
+		191423932A1CAFA200FC3332 /* PipelineStates.swift in Sources */ = {isa = PBXBuildFile; fileRef = 191423922A1CAFA200FC3332 /* PipelineStates.swift */; };
+		191423952A1CBDDF00FC3332 /* README.md in Resources */ = {isa = PBXBuildFile; fileRef = 191423942A1CBDB600FC3332 /* README.md */; };
 		193E1AE72A1AD1D600D7BA0D /* torus.obj in Resources */ = {isa = PBXBuildFile; fileRef = 193E1AE62A1AD1D600D7BA0D /* torus.obj */; };
 		193E1AF32A1B25A600D7BA0D /* sphere.obj in Resources */ = {isa = PBXBuildFile; fileRef = 193E1AF22A1B25A600D7BA0D /* sphere.obj */; };
 		194B428B2A11EDF2005FE25C /* Shaders.metal in Sources */ = {isa = PBXBuildFile; fileRef = 196311812A0CD5F400DED30D /* Shaders.metal */; };
@@ -42,6 +45,9 @@
 /* Begin PBXFileReference section */
 		1914238A2A1C907D00FC3332 /* Bloom.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Bloom.swift; sourceTree = "<group>"; };
 		1914238D2A1C913900FC3332 /* TextureController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TextureController.swift; sourceTree = "<group>"; };
+		191423902A1CAF2600FC3332 /* ForwardRenderPass.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ForwardRenderPass.swift; sourceTree = "<group>"; };
+		191423922A1CAFA200FC3332 /* PipelineStates.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PipelineStates.swift; sourceTree = "<group>"; };
+		191423942A1CBDB600FC3332 /* README.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = "<group>"; };
 		191830362982A970002D8FAB /* Quaark-Bridging-Header.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "Quaark-Bridging-Header.h"; sourceTree = "<group>"; };
 		193E1AE62A1AD1D600D7BA0D /* torus.obj */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = torus.obj; sourceTree = "<group>"; };
 		193E1AF22A1B25A600D7BA0D /* sphere.obj */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = sphere.obj; sourceTree = "<group>"; };
@@ -104,6 +110,15 @@
 				1914238D2A1C913900FC3332 /* TextureController.swift */,
 			);
 			path = Textures;
+			sourceTree = "<group>";
+		};
+		1914238F2A1CAEE400FC3332 /* Render Passes */ = {
+			isa = PBXGroup;
+			children = (
+				191423902A1CAF2600FC3332 /* ForwardRenderPass.swift */,
+				191423922A1CAFA200FC3332 /* PipelineStates.swift */,
+			);
+			path = "Render Passes";
 			sourceTree = "<group>";
 		};
 		196311802A0CD5D900DED30D /* Shaders */ = {
@@ -201,6 +216,7 @@
 			isa = PBXGroup;
 			children = (
 				19E456C829494ABF0037DF4B /* Quaark.swift */,
+				191423942A1CBDB600FC3332 /* README.md */,
 				19D46D942A0DE29F009F6E2F /* Graphics */,
 				19EA6F3B2A106A9900F3070E /* GraphicsModels */,
 				19E2CC6A294DD13200DFE7F9 /* Models */,
@@ -209,6 +225,7 @@
 				197CCB4829A0CCC6005BFEC0 /* Metal */,
 				191423892A1C906800FC3332 /* Post Processing */,
 				19E2CC64294DCAF000DFE7F9 /* Realtime */,
+				1914238F2A1CAEE400FC3332 /* Render Passes */,
 				196311802A0CD5D900DED30D /* Shaders */,
 				1914238C2A1C911B00FC3332 /* Textures */,
 				19E456D629494AC00037DF4B /* Quaark.entitlements */,
@@ -295,6 +312,7 @@
 			files = (
 				19E428EE2A163D3B0061D610 /* monkey-right-handed.obj in Resources */,
 				19E428FA2A189F1B0061D610 /* monkey-left-handed.obj in Resources */,
+				191423952A1CBDDF00FC3332 /* README.md in Resources */,
 				193E1AF32A1B25A600D7BA0D /* sphere.obj in Resources */,
 				193E1AE72A1AD1D600D7BA0D /* torus.obj in Resources */,
 			);
@@ -309,12 +327,14 @@
 			files = (
 				194B428B2A11EDF2005FE25C /* Shaders.metal in Sources */,
 				19D46D9C2A0FA59D009F6E2F /* GraphicsModel.swift in Sources */,
+				191423912A1CAF2600FC3332 /* ForwardRenderPass.swift in Sources */,
 				19E2CC7B294DDC1F00DFE7F9 /* CoreMIDIConnection.swift in Sources */,
 				1914238E2A1C913900FC3332 /* TextureController.swift in Sources */,
 				19E428EA2A1612E70061D610 /* GraphicsLighting.swift in Sources */,
 				19E456CB29494ABF0037DF4B /* KeyboardView.swift in Sources */,
 				19E428E82A15F0690061D610 /* Camera.swift in Sources */,
 				19D46D962A0DE2AB009F6E2F /* GraphicsWorld.swift in Sources */,
+				191423932A1CAFA200FC3332 /* PipelineStates.swift in Sources */,
 				1914238B2A1C907D00FC3332 /* Bloom.swift in Sources */,
 				19E456C929494ABF0037DF4B /* Quaark.swift in Sources */,
 				19EA6F392A1065BB00F3070E /* VertexDescriptor.swift in Sources */,
