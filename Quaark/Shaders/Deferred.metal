@@ -88,7 +88,12 @@ vertex PointLightOut vertex_pointLight(
   float4 position =
     uniforms.projectionMatrix *
     uniforms.viewMatrix *
-    (in.position + lightPosition);
+    uniforms.modelMatrix *
+    in.position +
+    uniforms.projectionMatrix *
+    uniforms.viewMatrix *
+    lightPosition;
+      // The reason this formula is needed is because the lights are generated as instances.
   PointLightOut out {
     .position = position,
     .instanceId = instanceId

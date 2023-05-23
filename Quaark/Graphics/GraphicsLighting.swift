@@ -68,8 +68,7 @@ struct GraphicsLighting {
     light.type = PointLight
     light.position = position
     light.colour = colour
-//    light.attenuation = [0.2, 10, 50]
-      light.attenuation = [1, 0, 0]
+      light.attenuation = [2, 0, 0]
     return light
   }
   

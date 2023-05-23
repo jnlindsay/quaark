@@ -34,11 +34,11 @@ class GraphicsWorld : NSEventListener {
     
     self.lighting = GraphicsLighting()
     
-    for _ in 1...4 {
+    for _ in 1...2 {
       let newPosition = simd_float3(
-        Float.random(in: -2 ... 2),
-        Float.random(in: -2 ... 2),
-        Float.random(in: -2 ... 2)
+        Float.random(in: -3 ... 3),
+        Float.random(in: -3 ... 3),
+        Float.random(in: -3 ... 3)
       )
       let newColour = simd_float4(
         Float.random(in: 0 ... 1),

@@ -103,6 +103,7 @@ struct LightingRenderPass : RenderPass {
     drawPointLight(
       commandEncoder: commandEncoder,
       world: world,
+      uniforms: uniforms,
       parameters: parameters
     )
     
@@ -140,14 +141,23 @@ struct LightingRenderPass : RenderPass {
   func drawPointLight(
     commandEncoder: MTLRenderCommandEncoder,
     world: GraphicsWorld,
+    uniforms vertex: Uniforms,
     parameters: Parameters
   ) {
+    var uniforms = vertex
+    uniforms.modelMatrix = self.icosphere.transform.modelMatrix
+    
     commandEncoder.pushDebugGroup("Point lights")
     commandEncoder.setRenderPipelineState(self.pointLightPipelineState)
     commandEncoder.setVertexBuffer(
       world.lighting.pointLightsBuffer,
       offset: 0,
       index: LightBuffer.index
+    )
+    commandEncoder.setVertexBytes(
+      &uniforms,
+      length: MemoryLayout<Uniforms>.stride,
+      index: UniformsBuffer.index
     )
     commandEncoder.setFragmentBuffer(
       world.lighting.pointLightsBuffer,
