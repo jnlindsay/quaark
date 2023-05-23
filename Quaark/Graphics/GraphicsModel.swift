@@ -31,28 +31,28 @@ class GraphicsModel {
     self.meshes = []
   }
   
-  init(url: String) {
-
-    let newAssetUrl = URL(fileURLWithPath: url)
-
-    guard FileManager.default.fileExists(atPath: newAssetUrl.path) else {
-      fatalError("File not found at \(newAssetUrl)")
-    }
-    do {
-        let fileExists = try newAssetUrl.checkResourceIsReachable()
-        if (!fileExists) {
-            fatalError("File \(url) not found.")
-        }
-    } catch {
-      fatalError("Error accessing file \(url).")
-    }
-    
-    self.name = "DEFAULT NAME" // TODO: deal with this
-    self.transform = Transform()
-    self.colour = simd_float4(0.0, 0.0, 0.0, 1.0)
-    self.assetURL = newAssetUrl
-    self.meshes = []
-  }
+//  init(url: String) {
+//
+//    let newAssetUrl = URL(fileURLWithPath: url)
+//
+//    guard FileManager.default.fileExists(atPath: newAssetUrl.path) else {
+//      fatalError("File not found at \(newAssetUrl)")
+//    }
+//    do {
+//        let fileExists = try newAssetUrl.checkResourceIsReachable()
+//        if (!fileExists) {
+//            fatalError("File \(url) not found.")
+//        }
+//    } catch {
+//      fatalError("Error accessing file \(url).")
+//    }
+//    
+//    self.name = "DEFAULT NAME" // TODO: deal with this
+//    self.transform = Transform()
+//    self.colour = simd_float4(0.0, 0.0, 0.0, 1.0)
+//    self.assetURL = newAssetUrl
+//    self.meshes = []
+//  }
   
   func configureMeshes(device: MTLDevice) {
     print("Meshes for \(self.name) being configured...")

@@ -38,8 +38,8 @@ struct KeyboardView : View {
       Button("MetalView") {
         openWindow(id: "metalView")
       }
-      Spacer()
-      ImportModelView(midiConnection: midiConnection, world: world)
+//      Spacer()
+//      ImportModelView(midiConnection: midiConnection, world: world)
       Spacer()
       MIDIInputPickerView(midiConnection: self.midiConnection)
       Spacer()
@@ -50,37 +50,37 @@ struct KeyboardView : View {
   }
 }
 
-struct ImportModelView : View {
-  
-  @State private var importing = false
-  var midiConnection: CoreMIDIConnection
-  var world: GraphicsWorld
-  
-  init(midiConnection: CoreMIDIConnection, world: GraphicsWorld) {
-    self.midiConnection = midiConnection
-    self.world = world
-  }
-  
-  var body: some View {
-    Button("Import .obj model") { importing = true }
-      .fileImporter(
-        isPresented: $importing,
-        allowedContentTypes: [UTType(filenameExtension: "obj")]
-          .compactMap{ $0 },
-        allowsMultipleSelection: false
-    ) { result in
-      switch result {
-      case .success(let files):
-        print(files[0].path)
-        self.world.models =
-        [GraphicsModel(url: files[0].path)]
-        self.world.reconfigureMeshes()
-      case .failure(let error):
-        print(error.localizedDescription)
-      }
-    }
-  }
-}
+//struct ImportModelView : View {
+//  
+//  @State private var importing = false
+//  var midiConnection: CoreMIDIConnection
+//  var world: GraphicsWorld
+//  
+//  init(midiConnection: CoreMIDIConnection, world: GraphicsWorld) {
+//    self.midiConnection = midiConnection
+//    self.world = world
+//  }
+//  
+//  var body: some View {
+//    Button("Import .obj model") { importing = true }
+//      .fileImporter(
+//        isPresented: $importing,
+//        allowedContentTypes: [UTType(filenameExtension: "obj")]
+//          .compactMap{ $0 },
+//        allowsMultipleSelection: false
+//    ) { result in
+//      switch result {
+//      case .success(let files):
+//        print(files[0].path)
+//        self.world.models =
+//        [GraphicsModel(url: files[0].path)]
+//        self.world.reconfigureMeshes()
+//      case .failure(let error):
+//        print(error.localizedDescription)
+//      }
+//    }
+//  }
+//}
 
 struct MIDIInputPickerView : View {
   
