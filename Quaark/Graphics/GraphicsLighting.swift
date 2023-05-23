@@ -5,8 +5,6 @@
 //  Created by Jeremy Lindsay on 18/5/2023.
 //
 
-
-
 struct GraphicsLighting {
   var lights: [Light]
   private var lightIndex: Int
@@ -40,7 +38,7 @@ struct GraphicsLighting {
     self.lights = []
     self.lightIndex = 0
     self.maxLights = 10
-//    self.lights.append(self.sunLight)
+    self.lights.append(self.sunLight)
     self.lights.append(self.ambientLight)
 
   }

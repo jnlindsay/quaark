@@ -20,7 +20,9 @@ class Renderer : NSObject {
   private var uniforms: Uniforms
   private var parameters: Parameters
   var prevTime: Double
-
+  
+  var bloom: Bloom
+  
   init(metalView: MTKView, world: GraphicsWorld) {
     print("--- Renderer initialisation has begun. ---")
     
@@ -90,6 +92,9 @@ class Renderer : NSObject {
     // timer
     self.prevTime = CFAbsoluteTimeGetCurrent()
     
+    // bloom
+    self.bloom = Bloom(device: self.device)
+    
     // must be called after all variables have been initialised
     super.init()
     
@@ -100,6 +105,8 @@ class Renderer : NSObject {
       metalView,
       drawableSizeWillChange: metalView.bounds.size
     )
+    
+    metalView.framebufferOnly = false
 
     print("--- Renderer initialisation is complete. ---")
     
@@ -119,6 +126,7 @@ extension Renderer : MTKViewDelegate {
     drawableSizeWillChange size: CGSize
   ) {
     self.world.update(windowSize: size)
+    bloom.resize(view: mtkView, size: size)
   }
   
   func draw(in metalView: MTKView) {
@@ -183,6 +191,8 @@ extension Renderer : MTKViewDelegate {
       print("Renderer.swift: drawable not obtained.")
       return
     }
+    
+    bloom.postProcess(view: metalView, commandBuffer: commandBuffer)
 
     commandBuffer.present(drawable)
     commandBuffer.commit()
