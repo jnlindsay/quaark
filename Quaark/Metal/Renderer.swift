@@ -153,6 +153,8 @@ extension Renderer : MTKViewDelegate {
         parameters: self.parameters
       )
       
+      // ! TODO: THIS SHOULD NOT BE CALLED EVERY FRAME!!!
+      // furthermore, the reconfiguration of lights should only reconfigure those lights that have been affected
       self.world.lighting.configureLights(device: self.device)
       
       // set lighting render pass
