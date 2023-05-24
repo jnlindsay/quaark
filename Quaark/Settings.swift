@@ -8,5 +8,7 @@
 import Foundation
 
 class Settings: ObservableObject {
-  @Published var lightIntensity: Float = 1
+  @Published var lightIntensity1: Float = 5
+  @Published var lightIntensity2: Float = 5
+  @Published var lightIntensity3: Float = 5
 }

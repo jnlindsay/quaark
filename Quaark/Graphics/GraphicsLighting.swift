@@ -85,7 +85,11 @@ struct GraphicsLighting {
     light.type = PointLight
     light.position = position
     light.colour = colour
-    light.attenuation = [self.settings.lightIntensity, 0, 0]
+    light.attenuation = [
+      self.settings.lightIntensity1,
+      self.settings.lightIntensity2,
+      self.settings.lightIntensity3
+    ]
     return light
   }
   

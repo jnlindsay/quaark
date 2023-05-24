@@ -53,12 +53,12 @@ class GraphicsWorld : NSEventListener {
 //      )
 //    }
       
-    let position1 = simd_float3(-1, 1, -2)
+    let position1 = simd_float3(-1, 1, -1)
     let colour1   = simd_float4(1, 0, 0, 1)
     self.lighting.addPointLight(position: position1, colour: colour1.xyz)
     self.addSphere(position: position1, colour: colour1)
   
-    let position2 = simd_float3(1, -1, -2)
+    let position2 = simd_float3(1, -1, -1)
     let colour2   = simd_float4(0, 0, 1, 1)
     self.lighting.addPointLight(position: position2, colour: colour2.xyz)
     self.addSphere(position: position2, colour: colour2)
@@ -66,8 +66,12 @@ class GraphicsWorld : NSEventListener {
   
   func update(deltaTime: Float) {   
     self.mainCamera.update(deltaTime: deltaTime)
-    self.lighting.pointLights[0].attenuation.x = settings.lightIntensity
-    self.lighting.pointLights[1].attenuation.x = settings.lightIntensity
+    self.lighting.pointLights[0].attenuation.x = settings.lightIntensity1
+    self.lighting.pointLights[0].attenuation.y = settings.lightIntensity2
+    self.lighting.pointLights[0].attenuation.z = settings.lightIntensity3
+    self.lighting.pointLights[1].attenuation.x = settings.lightIntensity1
+    self.lighting.pointLights[1].attenuation.y = settings.lightIntensity2
+    self.lighting.pointLights[1].attenuation.z = settings.lightIntensity3
     for model in self.models {
       model.transform.rotation.y += 0.02
     }

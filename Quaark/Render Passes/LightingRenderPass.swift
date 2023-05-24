@@ -35,7 +35,7 @@ struct LightingRenderPass : RenderPass {
     )
     self.depthStencilState = Self.buildDepthStencilState(device: renderer.device)
     self.icosphere = GraphicsModel(name: "icosphere.obj")
-    self.icosphere.transform.scale = 10
+    self.icosphere.transform.scale = 1
     self.icosphere.configureMeshes(device: renderer.device)
       // TODO: above needs to be fixed
   }

@@ -112,7 +112,7 @@ fragment float4 fragment_pointLight(
   float3 position = positionTexture.read(coords).xyz;
   
   // ! TODO: THIS COLOUR SHOULD NOT BE SET HERE!!!
-  vector_float3 baseColour = float3(1, 1, 1);
+  vector_float3 baseColour = float3(0.2, 0.1, 0.4);
   
   float3 lighting =
     calculatePointLight(light, position, normal, baseColour);

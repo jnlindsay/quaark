@@ -17,7 +17,7 @@ float3 calculatePointLight(
 ) {
   float d = distance(light.position, position);
   float3 lightDirection = normalize(light.position - position);
-  float attenuation = 1.0 / (
+  float attenuation = 10.0 / (
     light.attenuation.x +
     light.attenuation.y * d +
     light.attenuation.z * d * d
@@ -76,8 +76,7 @@ float3 phongLighting(
                                    light.attenuation.z * d * d);
         float diffuseIntensity =
           saturate(dot(lightDirection, normal));
-        float3 colour = light.colour * (float3(1, 1, 1) + baseColour) * diffuseIntensity;
-          // NOTE: the float3(...) added to baseColour above is to ensure there is a baseline level of glow even when the baseColour is completely black.
+        float3 colour = light.colour * baseColour * diffuseIntensity;
         colour *= attenuation;
         diffuseColour += colour;
         break;

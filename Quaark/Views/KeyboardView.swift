@@ -90,21 +90,33 @@ struct KeyboardView : View {
 struct LightIntensitySlider : View {
   
   @ObservedObject var settings: Settings
-//  @State private var speed = 50.0
-  @State private var isEditing = false
   
   var body: some View {
     VStack{
-      Slider(
-        value: $settings.lightIntensity,
-        in: 0...1,
-        onEditingChanged: { editing in
-          isEditing = editing
-        }
-      )
-      .frame(width: 200)
-      Text("\(settings.lightIntensity)")
-        .foregroundColor(isEditing ? .red : .blue)
+      HStack {
+        Slider(
+          value: $settings.lightIntensity1,
+          in: 0...10
+        )
+        .frame(width: 200)
+        Text("\(settings.lightIntensity1)")
+      }
+      HStack {
+        Slider(
+          value: $settings.lightIntensity2,
+          in: 0...10
+        )
+        .frame(width: 200)
+        Text("\(settings.lightIntensity2)")
+      }
+      HStack {
+        Slider(
+          value: $settings.lightIntensity3,
+          in: 0...10
+        )
+        .frame(width: 200)
+        Text("\(settings.lightIntensity3)")
+      }
     }
   }
 }
