@@ -22,7 +22,8 @@ struct GraphicsLighting {
   weak var device: MTLDevice?
   
   init() {
-    self.sunLights = [self.sunLight, self.ambientLight]
+//    self.sunLights = [self.sunLight, self.ambientLight]
+    self.sunLights = [self.ambientLight]
     self.lights = self.sunLights
     self.pointLights = []
     self.lights += self.pointLights
@@ -68,7 +69,7 @@ struct GraphicsLighting {
     light.type = PointLight
     light.position = position
     light.colour = colour
-      light.attenuation = [2, 0, 0]
+      light.attenuation = [1, 0.3, 1]
     return light
   }
   
