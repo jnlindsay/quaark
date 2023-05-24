@@ -5,9 +5,14 @@
 //  Created by Jeremy Lindsay on 18/5/2023.
 //
 
+import SwiftUI
 import MetalKit
 
+// TODO: I don't like the static business in this struct.
+
 struct GraphicsLighting {
+  @ObservedObject var settings: Settings
+  
   var lights: [Light]
   var sunLights: [Light]
   var pointLights: [Light]
@@ -19,9 +24,9 @@ struct GraphicsLighting {
   private var lightIndex: Int
   private let maxLights: Int // ! TODO: be careful about default lights; they might get overwritten
   
-  weak var device: MTLDevice?
-  
-  init() {
+  init(settings: Settings) {
+    self.settings = settings
+    
 //    self.sunLights = [self.sunLight, self.ambientLight]
     self.sunLights = [self.ambientLight]
     self.lights = self.sunLights
@@ -32,7 +37,7 @@ struct GraphicsLighting {
     self.maxLights = 10
   }
   
-  mutating func initAfterDeviceSet(device: MTLDevice) {
+  mutating func configureLights(device: MTLDevice) {
     // NOTE: this should be called by the Renderer init()
     
     self.sunLightsBuffer = Self.createBuffer(
@@ -62,17 +67,6 @@ struct GraphicsLighting {
     return light
   }()
   
-  let pointLight: (simd_float3, simd_float3)
-    -> Light = { position, colour in
-    
-    var light = Self.buildDefaultLight()
-    light.type = PointLight
-    light.position = position
-    light.colour = colour
-      light.attenuation = [1, 0.3, 1]
-    return light
-  }
-  
   static func buildDefaultLight() -> Light {
     var light = Light()
     light.position = [0, 0, 0]
@@ -80,6 +74,18 @@ struct GraphicsLighting {
     light.specularColour = [0.6, 0.6, 0.6]
     light.attenuation = [1, 0, 0]
     light.type = SunLight
+    return light
+  }
+  
+  func createPointLight(
+    position: simd_float3,
+    colour: simd_float3
+  ) -> Light {
+    var light = Self.buildDefaultLight()
+    light.type = PointLight
+    light.position = position
+    light.colour = colour
+    light.attenuation = [self.settings.lightIntensity, 0, 0]
     return light
   }
   
@@ -98,7 +104,7 @@ struct GraphicsLighting {
   mutating func addPointLight(position: simd_float3, colour: simd_float3) {
     // ! WARNING: inefficient. The array should be a fixed size n, and n should be sent to the lighting buffer. Difficulty: the lighting shader must somehow know when to ignore `nil` lights if lights are optional.
     
-    let newLight = self.pointLight(position, colour)
+    let newLight = self.createPointLight(position: position, colour: colour)
     
     // ! TODO: DODGIEST CODE EVER: new point lights are appended to BOTH the `pointLights` as well as the `lights` arrays
     

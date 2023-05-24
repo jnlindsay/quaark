@@ -6,9 +6,12 @@
 //
 
 import simd
+import SwiftUI
 import MetalKit
 
 class Renderer : NSObject {
+  @ObservedObject var settings: Settings
+  
           var device: MTLDevice
   private let commandQueue: MTLCommandQueue
           let library: MTLLibrary
@@ -24,7 +27,7 @@ class Renderer : NSObject {
   
   var bloom: Bloom
   
-  init(metalView: MTKView, world: GraphicsWorld) {
+  init(metalView: MTKView, world: GraphicsWorld, settings: Settings) {
     print("--- Renderer initialisation has begun. ---")
     
     // TODO: abstract each section into separate method
@@ -64,6 +67,9 @@ class Renderer : NSObject {
     // bloom
     self.bloom = Bloom(device: self.device)
     
+    // settings
+    self.settings = settings
+    
     // must be called after all variables have been initialised
     super.init()
     
@@ -83,9 +89,8 @@ class Renderer : NSObject {
     
     // configure world and lighting
     self.configureMeshes()
+    self.world.lighting.configureLights(device: self.device)
     self.world.renderer = self
-    self.world.lighting.device = self.device
-    self.world.lighting.initAfterDeviceSet(device: self.device)
     
     mtkView(
       metalView,
@@ -147,6 +152,8 @@ extension Renderer : MTKViewDelegate {
         uniforms: self.uniforms,
         parameters: self.parameters
       )
+      
+      self.world.lighting.configureLights(device: self.device)
       
       // set lighting render pass
       self.lightingRenderPass?.albedoTexture = gBufferRenderPass?.albedoTexture

@@ -149,15 +149,15 @@ struct LightingRenderPass : RenderPass {
     
     commandEncoder.pushDebugGroup("Point lights")
     commandEncoder.setRenderPipelineState(self.pointLightPipelineState)
-    commandEncoder.setVertexBuffer(
-      world.lighting.pointLightsBuffer,
-      offset: 0,
-      index: LightBuffer.index
-    )
     commandEncoder.setVertexBytes(
       &uniforms,
       length: MemoryLayout<Uniforms>.stride,
       index: UniformsBuffer.index
+    )
+    commandEncoder.setVertexBuffer(
+      world.lighting.pointLightsBuffer,
+      offset: 0,
+      index: LightBuffer.index
     )
     commandEncoder.setFragmentBuffer(
       world.lighting.pointLightsBuffer,

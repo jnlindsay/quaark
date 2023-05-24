@@ -21,7 +21,7 @@ protocol Camera : Transformable, DeltaTransformable {
   mutating func update(deltaTime: Float)
 }
 
-enum Settings {
+enum UserInputSettings {
   static var rotationSpeed: Float { 2.0 }
   static var translationSpeed: Float { 3.0 }
   static var mouseScrollSensitivity: Float { 0.005 }
@@ -127,7 +127,7 @@ struct ArcballCamera : Camera {
       if deltaY == 0 {
         break
       } else {
-        self.distance -= Float(deltaY) * Settings.mouseScrollSensitivity
+        self.distance -= Float(deltaY) * UserInputSettings.mouseScrollSensitivity
         self.distance = min(self.distance, self.maxDistance)
         self.distance = max(self.distance, self.minDistance)
       }
@@ -136,16 +136,16 @@ struct ArcballCamera : Camera {
       // x rotation
       var rotationX: Float = 0
       if (broadcaster.eventsState.wKeyDown || broadcaster.eventsState.sKeyDown) {
-        if (!broadcaster.eventsState.wKeyDown) { rotationX =  Settings.rotationSpeed }
-        if (!broadcaster.eventsState.sKeyDown) { rotationX = -Settings.rotationSpeed }
+        if (!broadcaster.eventsState.wKeyDown) { rotationX =  UserInputSettings.rotationSpeed }
+        if (!broadcaster.eventsState.sKeyDown) { rotationX = -UserInputSettings.rotationSpeed }
       }
       self.deltaTransform.rotation.x = rotationX
 
       // y rotation
       var rotationY: Float = 0
       if (broadcaster.eventsState.aKeyDown || broadcaster.eventsState.dKeyDown) {
-        if (!broadcaster.eventsState.aKeyDown) { rotationY =  Settings.rotationSpeed }
-        if (!broadcaster.eventsState.dKeyDown) { rotationY = -Settings.rotationSpeed }
+        if (!broadcaster.eventsState.aKeyDown) { rotationY =  UserInputSettings.rotationSpeed }
+        if (!broadcaster.eventsState.dKeyDown) { rotationY = -UserInputSettings.rotationSpeed }
       }
       self.deltaTransform.rotation.y = rotationY
     }

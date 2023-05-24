@@ -5,9 +5,12 @@
 //  Created by Jeremy Lindsay on 12/5/2023.
 //
 
+import SwiftUI
 import MetalKit
 
 class GraphicsWorld : NSEventListener {
+  
+  @ObservedObject var settings: Settings
   
   var mainCamera: ArcballCamera
   
@@ -20,7 +23,9 @@ class GraphicsWorld : NSEventListener {
   weak var renderer: Renderer?
 
   // ! TODO: initialise renderer immediately?
-  init() {
+  init(settings: Settings) {
+    self.settings = settings
+    
     self.mainCamera = ArcballCamera()
     self.mainCamera.transform.position = [0.0, 0.0, -3.0]
     self.models = []
@@ -32,29 +37,37 @@ class GraphicsWorld : NSEventListener {
     
     self.keyboardModels = []
     
-    self.lighting = GraphicsLighting()
+    self.lighting = GraphicsLighting(settings: settings)
     
-    for _ in 1...2 {
-      let newPosition = simd_float3(
-        Float.random(in: -3 ... 3),
-        Float.random(in: -3 ... 3),
-        Float.random(in: -3 ... 3)
-      )
-      let newColour = simd_float4(
-        Float.random(in: 0 ... 1),
-        Float.random(in: 0 ... 1),
-        Float.random(in: 0 ... 1),
-        1
-      )
+//    for _ in 1...2 {
+//      let newPosition = simd_float3(
+//        Float.random(in: -3 ... 3),
+//        Float.random(in: -3 ... 3),
+//        Float.random(in: -3 ... 3)
+//      )
+//      let newColour = simd_float4(
+//        Float.random(in: 0 ... 1),
+//        Float.random(in: 0 ... 1),
+//        Float.random(in: 0 ... 1),
+//        1
+//      )
+//    }
       
-      self.lighting.addPointLight(position: newPosition, colour: newColour.xyz)
-      self.addSphere(position: newPosition, colour: newColour)
-    }
-    
+    let position1 = simd_float3(-1, 1, -2)
+    let colour1   = simd_float4(1, 0, 0, 1)
+    self.lighting.addPointLight(position: position1, colour: colour1.xyz)
+    self.addSphere(position: position1, colour: colour1)
+  
+    let position2 = simd_float3(1, -1, -2)
+    let colour2   = simd_float4(0, 0, 1, 1)
+    self.lighting.addPointLight(position: position2, colour: colour2.xyz)
+    self.addSphere(position: position2, colour: colour2)
   }
   
   func update(deltaTime: Float) {   
     self.mainCamera.update(deltaTime: deltaTime)
+    self.lighting.pointLights[0].attenuation.x = settings.lightIntensity
+    self.lighting.pointLights[1].attenuation.x = settings.lightIntensity
     for model in self.models {
       model.transform.rotation.y += 0.02
     }
@@ -103,23 +116,23 @@ class GraphicsWorld : NSEventListener {
 extension GraphicsWorld : KeyboardListener {
   func handleKeyboardEvent(keyboardModel: KeyboardModel) {
     
-    if (!keyboardModel.allNotesOff) {
-      let newPosition = simd_float3(
-        Float.random(in: -5 ... 5),
-        Float.random(in: -5 ... 5),
-        Float.random(in: -5 ... 5)
-      )
-      let newColour = simd_float4(
-        Float.random(in: 0 ... 1),
-        Float.random(in: 0 ... 1),
-        Float.random(in: 0 ... 1),
-        1
-      )
-
-      self.lighting.addPointLight(position: newPosition, colour: newColour.xyz)
-      self.addSphere(position: newPosition, colour: newColour)
-      self.reconfigureMeshes()
-    }
+//    if (!keyboardModel.allNotesOff) {
+//      let newPosition = simd_float3(
+//        Float.random(in: -5 ... 5),
+//        Float.random(in: -5 ... 5),
+//        Float.random(in: -5 ... 5)
+//      )
+//      let newColour = simd_float4(
+//        Float.random(in: 0 ... 1),
+//        Float.random(in: 0 ... 1),
+//        Float.random(in: 0 ... 1),
+//        1
+//      )
+//
+//      self.lighting.addPointLight(position: newPosition, colour: newColour.xyz)
+//      self.addSphere(position: newPosition, colour: newColour)
+//      self.reconfigureMeshes()
+//    }
     
   }
 }

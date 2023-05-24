@@ -14,17 +14,20 @@ struct KeyboardView : View {
   
   @Environment(\.openWindow) private var openWindow
   @ObservedObject var keyboardModel: KeyboardModel
+  @ObservedObject var settings: Settings
   var midiConnection: CoreMIDIConnection
   private var world: GraphicsWorld // TODO: it makes sense for KeyboardView to directly operate the metal view controller, instead of touching the graphics world
   
   init(
     keyboardModel: KeyboardModel,
     midiConnection: CoreMIDIConnection,
-    world: GraphicsWorld
+    world: GraphicsWorld,
+    settings: Settings
   ) {
     self.keyboardModel = keyboardModel
     self.midiConnection = midiConnection
     self.world = world
+    self.settings = settings
   }
   
   var body: some View {
@@ -40,6 +43,8 @@ struct KeyboardView : View {
       }
 //      Spacer()
 //      ImportModelView(midiConnection: midiConnection, world: world)
+      Spacer()
+      LightIntensitySlider(settings: self.settings)
       Spacer()
       MIDIInputPickerView(midiConnection: self.midiConnection)
       Spacer()
@@ -81,6 +86,28 @@ struct KeyboardView : View {
 //    }
 //  }
 //}
+
+struct LightIntensitySlider : View {
+  
+  @ObservedObject var settings: Settings
+//  @State private var speed = 50.0
+  @State private var isEditing = false
+  
+  var body: some View {
+    VStack{
+      Slider(
+        value: $settings.lightIntensity,
+        in: 0...1,
+        onEditingChanged: { editing in
+          isEditing = editing
+        }
+      )
+      .frame(width: 200)
+      Text("\(settings.lightIntensity)")
+        .foregroundColor(isEditing ? .red : .blue)
+    }
+  }
+}
 
 struct MIDIInputPickerView : View {
   

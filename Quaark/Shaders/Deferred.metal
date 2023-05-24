@@ -66,7 +66,6 @@ fragment float4 fragment_deferredSun(
   );
   colour *= albedo.a;
   return float4(colour, 1);
-//  return float4(1, 0, 0, 1);
 }
 
 struct PointLightIn {
