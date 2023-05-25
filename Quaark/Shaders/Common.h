@@ -30,6 +30,10 @@ typedef struct {
   simd_float3 cameraPosition;
 } Parameters;
 
+typedef struct {
+  simd_float4x4 modelMatrix;
+} InstancesData;
+
 typedef enum {
   Position = 0,
   Normal = 1,
@@ -43,7 +47,8 @@ typedef enum {
   ColourBuffer = 2,
   UniformsBuffer = 11,
   ParametersBuffer = 12,
-  LightBuffer = 13
+  InstancesBuffer = 13,
+  LightBuffer = 14
 //  MaterialBuffer = 14
 } BufferIndices;
 
@@ -88,13 +93,9 @@ typedef struct {
     // 1 / (x + y * distance + z * distance^2)
 } Light;
 
-//typedef struct {
-//  vector_float3 baseColour;
-//  vector_float3 specularColour;
-//  float roughness;
-//  float metallicness;
-//  float ambientOcclusion;
-//  float shininess;
-//} Material;
+// TODO: make this struct more general?
+typedef struct {
+  vector_float3 position;
+} Sphere;
 
 #endif /* Shared_h */

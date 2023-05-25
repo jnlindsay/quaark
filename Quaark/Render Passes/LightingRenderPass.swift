@@ -20,8 +20,6 @@ struct LightingRenderPass : RenderPass {
   weak var normalTexture: MTLTexture?
   weak var positionTexture: MTLTexture?
   
-  var icosphere: GraphicsModel
-  
   init(renderer: Renderer, metalView: MTKView) {
     self.label = "Lighting Render Pass"
     self.renderer = renderer
@@ -34,10 +32,6 @@ struct LightingRenderPass : RenderPass {
       colourPixelFormat: metalView.colorPixelFormat
     )
     self.depthStencilState = Self.buildDepthStencilState(device: renderer.device)
-    self.icosphere = GraphicsModel(name: "icosphere.obj")
-    self.icosphere.transform.scale = 1
-    self.icosphere.configureMeshes(device: renderer.device)
-      // TODO: above needs to be fixed
   }
   
   static func buildDepthStencilState(
@@ -140,16 +134,17 @@ struct LightingRenderPass : RenderPass {
     commandEncoder.popDebugGroup()
   }
   
+  // TODO: should be plural `drawPointLights`
   func drawPointLight(
     commandEncoder: MTLRenderCommandEncoder,
     world: GraphicsWorld,
     uniforms vertex: Uniforms,
     parameters: Parameters
   ) {
-    var uniforms = vertex
-    uniforms.modelMatrix = self.icosphere.transform.modelMatrix
-    
     commandEncoder.pushDebugGroup("Point lights")
+    
+    var uniforms = vertex
+    
     commandEncoder.setRenderPipelineState(self.pointLightPipelineState)
     commandEncoder.setVertexBytes(
       &uniforms,

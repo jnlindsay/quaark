@@ -11,15 +11,10 @@ import MetalKit
 class GraphicsWorld : NSEventListener {
   
   @ObservedObject var settings: Settings
-  
   var mainCamera: ArcballCamera
-  
   var models: [GraphicsModel]
-  private var modelIndex: Int
-  private let maxModels: Int // ! TODO: be careful about default models; they might get overwritten
-  
-  private var keyboardModels: [KeyboardModel]
   var lighting: GraphicsLighting
+  var keyboardModels: [KeyboardModel]
   weak var renderer: Renderer?
 
   // ! TODO: initialise renderer immediately?
@@ -28,30 +23,16 @@ class GraphicsWorld : NSEventListener {
     
     self.mainCamera = ArcballCamera()
     self.mainCamera.transform.position = [0.0, 0.0, -3.0]
-    self.models = []
-    self.modelIndex = 1
-    self.maxModels = 4
     
     let monkeyModel = GraphicsModel(name: "monkey-left-handed.obj")
-    self.models.append(monkeyModel)
-    
-    self.keyboardModels = []
+    monkeyModel.transforms.append(Transform(position: [0, 1, 0]))
+    monkeyModel.transforms.append(Transform(position: [0, -1, 0]))
+    self.models = [monkeyModel]
+  
     
     self.lighting = GraphicsLighting(settings: settings)
     
-//    for _ in 1...2 {
-//      let newPosition = simd_float3(
-//        Float.random(in: -3 ... 3),
-//        Float.random(in: -3 ... 3),
-//        Float.random(in: -3 ... 3)
-//      )
-//      let newColour = simd_float4(
-//        Float.random(in: 0 ... 1),
-//        Float.random(in: 0 ... 1),
-//        Float.random(in: 0 ... 1),
-//        1
-//      )
-//    }
+    self.keyboardModels = []
       
     let position1 = simd_float3(-1, 1, -1)
     let colour1   = simd_float4(1, 0, 0, 1)
@@ -73,7 +54,7 @@ class GraphicsWorld : NSEventListener {
     self.lighting.pointLights[1].attenuation.y = settings.lightIntensity2
     self.lighting.pointLights[1].attenuation.z = settings.lightIntensity3
     for model in self.models {
-      model.transform.rotation.y += 0.02
+      model.transforms[0].rotation.y += 0.02
     }
   }
   
@@ -97,22 +78,14 @@ class GraphicsWorld : NSEventListener {
   }
   
   func addSphere(position: simd_float3, colour: simd_float4) {
-    // ! WARNING: inefficient. The array should be a fixed size n, and n should be sent to the vertex (?) buffer. Difficulty: the shader must somehow know when to ignore `nil` models if models are optional.
+    // ! WARNING: inefficient. The array should be a fixed size n, and n should be sent to the vertex (?) buffer. Difficulty: the shader must somehow know when to ignore `nil` models if models are optional. USE GPU INSTANCING?
     
     let newSphere = GraphicsModel(name: "sphere.obj")
-    newSphere.transform.position = position
-    newSphere.transform.scale = 0.2
+    newSphere.transforms[0].position = position
+    newSphere.transforms[0].scale = 0.2
     newSphere.colour = colour
-      
-    if self.models.count < self.maxModels {
-      self.models.append(newSphere)
-    } else {
-      if self.modelIndex >= self.maxModels {
-        self.modelIndex = 1
-      }
-      self.models[modelIndex] = newSphere
-      self.modelIndex += 1
-    }
+    
+//    self.models.append(newSphere)
   }
 
 }
@@ -120,23 +93,26 @@ class GraphicsWorld : NSEventListener {
 extension GraphicsWorld : KeyboardListener {
   func handleKeyboardEvent(keyboardModel: KeyboardModel) {
     
-//    if (!keyboardModel.allNotesOff) {
-//      let newPosition = simd_float3(
-//        Float.random(in: -5 ... 5),
-//        Float.random(in: -5 ... 5),
-//        Float.random(in: -5 ... 5)
-//      )
-//      let newColour = simd_float4(
-//        Float.random(in: 0 ... 1),
-//        Float.random(in: 0 ... 1),
-//        Float.random(in: 0 ... 1),
-//        1
-//      )
-//
+    if (!keyboardModel.allNotesOff) {
+      let newPosition = simd_float3(
+        Float.random(in: -5 ... 5),
+        Float.random(in: -5 ... 5),
+        Float.random(in: -5 ... 5)
+      )
+      let newColour = simd_float4(
+        Float.random(in: 0 ... 1),
+        Float.random(in: 0 ... 1),
+        Float.random(in: 0 ... 1),
+        1
+      )
+
 //      self.lighting.addPointLight(position: newPosition, colour: newColour.xyz)
-//      self.addSphere(position: newPosition, colour: newColour)
-//      self.reconfigureMeshes()
-//    }
-    
+      self.addSphere(position: newPosition, colour: newColour)
+      self.reconfigureMeshes()
+    }
   }
+}
+
+enum ModelType {
+  case imported, sphere
 }

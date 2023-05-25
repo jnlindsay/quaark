@@ -153,7 +153,7 @@ extension Renderer : MTKViewDelegate {
         parameters: self.parameters
       )
       
-      // ! TODO: THIS SHOULD NOT BE CALLED EVERY FRAME!!!
+      // ! TODO: THESE SHOULD NOT BE CALLED EVERY FRAME!!!
       // furthermore, the reconfiguration of lights should only reconfigure those lights that have been affected
       self.world.lighting.configureLights(device: self.device)
       
@@ -195,6 +195,8 @@ extension Renderer : MTKViewDelegate {
   func updateUniformsAndParameters(world: GraphicsWorld) {
     self.uniforms.viewMatrix = self.world.mainCamera.viewMatrix
     self.uniforms.projectionMatrix = self.world.mainCamera.projectionMatrix
+      // NOTE: model matrices are updated where you'd expect: in the individual model renderer
+    
     self.parameters.lightCount = UInt32(self.world.lighting.lights.count)
     self.parameters.cameraPosition = self.world.mainCamera.position
       // Q: querying lightCount each time is inefficient?

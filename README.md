@@ -4,3 +4,11 @@
 - Design a centralised way to reconfigure lights/meshes in a smart way: that is, only reconfigure objects that need to be configured. Also, rename "configure" to what it is really is, which is creating MTLBuffers (at least for lights).
 - Make the terms `Uniforms` and `Parameters` more specific.
 - Rename `Common.h` to something more helpful 
+
+# Pipelines and buffers
+- Steps
+    - Create `MTLBuffer`s with `MTLDevice`. Need to specify:
+        - bytes
+        - MemoryLayout
+    - 
+    

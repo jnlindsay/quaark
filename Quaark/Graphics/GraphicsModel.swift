@@ -7,18 +7,21 @@
 
 import MetalKit
 
-class GraphicsModel : Transformable {
+class GraphicsModel {
   
   let name: String
   var colour: simd_float4
-  public var transform: Transform
+  public var transforms: [Transform]
+    // there can be multiple transforms because any model may have multiple instances
   private let assetURL: URL
   var meshes: [GraphicsMesh]
   
-  init(name: String) {
+  var instancesBuffer: MTLBuffer?
+  
+  init(name: String, numInstances: Int = 1) {
     self.name = name
-    self.transform = Transform()
-    self.colour = simd_float4(0.0, 0.0, 0.0, 1.0)
+    self.transforms = [Transform()]
+    self.colour = simd_float4(0, 0, 0, 1)
     
     guard let newAssetURL = Bundle.main.url(
       forResource: name,
@@ -82,7 +85,24 @@ class GraphicsModel : Transformable {
       GraphicsMesh(mdlMesh: $0.0, mtkMesh: $0.1)
     }
     
+    self.instancesBuffer = self.createInstancesBuffer(device: device)
+    
     print("Mesh configuration complete.")
+  }
+  
+  func createInstancesBuffer(
+    device: MTLDevice
+  ) -> MTLBuffer {
+    let bufferSize = MemoryLayout<matrix_float4x4>.stride * transforms.count
+    let instancesBuffer = device.makeBuffer(
+      length: bufferSize,
+      options: []
+    )!
+    
+    let modelMatrices = self.transforms.map { $0.modelMatrix }
+    memcpy(instancesBuffer.contents(), modelMatrices, bufferSize)
+    
+    return instancesBuffer
   }
   
   func setColour(colour: simd_float4) {
@@ -100,7 +120,7 @@ extension GraphicsModel : Renderable {
     commandEncoder.pushDebugGroup(self.name)
     
     var uniforms = vertex
-    uniforms.modelMatrix = self.transform.modelMatrix
+    uniforms.modelMatrix = self.transforms[0].modelMatrix
     uniforms.normalMatrix = upperLeft(matrix: uniforms.modelMatrix)
     
     var parameters = fragment
@@ -123,6 +143,12 @@ extension GraphicsModel : Renderable {
       index: ParametersBuffer.index
     )
     
+    commandEncoder.setVertexBuffer(
+      instancesBuffer,
+      offset: 0,
+      index: InstancesBuffer.index
+    )
+    
     for mesh in self.meshes {
       for (index, vertexBuffer) in mesh.vertexBuffers.enumerated() {
         commandEncoder.setVertexBuffer(
@@ -140,7 +166,8 @@ extension GraphicsModel : Renderable {
           indexCount: submesh.indexCount,
           indexType: submesh.indexType,
           indexBuffer: submesh.indexBuffer,
-          indexBufferOffset: submesh.indexBufferOffset
+          indexBufferOffset: submesh.indexBufferOffset,
+          instanceCount: self.transforms.count
         )
       }
     }

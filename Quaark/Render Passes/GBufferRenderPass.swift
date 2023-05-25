@@ -8,6 +8,7 @@
 import MetalKit
 
 struct GBufferRenderPass : RenderPass {
+
   let label: String
   weak var renderer: Renderer?
   var renderPassDescriptor: MTLRenderPassDescriptor?

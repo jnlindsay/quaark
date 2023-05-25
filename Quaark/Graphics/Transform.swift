@@ -13,10 +13,14 @@ struct Transform {
   var rotation: simd_float3
   var scale: Float
   
-  init() {
-    self.position = [0.0, 0.0, 0.0]
-    self.rotation = [0.0, 0.0, 0.0]
-    self.scale    = 1.0
+  init(
+    position: simd_float3 = [0, 0, 0],
+    rotation: simd_float3 = [0, 0, 0],
+    scale: Float = 1
+  ) {
+    self.position = position
+    self.rotation = rotation
+    self.scale    = scale
   }
   
   var modelMatrix: simd_float4x4 {
