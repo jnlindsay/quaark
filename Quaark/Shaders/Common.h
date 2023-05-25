@@ -22,7 +22,6 @@ typedef struct {
   simd_float4x4 modelMatrix;      // object space -> world space
   simd_float4x4 viewMatrix;       //  world space -> camera space
   simd_float4x4 projectionMatrix; // camera space -> clip space
-  simd_float3x3 normalMatrix;
 } Uniforms;
 
 typedef struct {
@@ -32,6 +31,7 @@ typedef struct {
 
 typedef struct {
   simd_float4x4 modelMatrix;
+  simd_float3x3 normalMatrix;
 } InstancesData;
 
 typedef enum {

@@ -25,8 +25,8 @@ class GraphicsWorld : NSEventListener {
     self.mainCamera.transform.position = [0.0, 0.0, -3.0]
     
     let monkeyModel = GraphicsModel(name: "monkey-left-handed.obj")
-    monkeyModel.transforms.append(Transform(position: [0, 1, 0]))
-    monkeyModel.transforms.append(Transform(position: [0, -1, 0]))
+    monkeyModel.transforms.append(Transform(position: [-1, -1, 0]))
+    monkeyModel.transforms.append(Transform(position: [1, 1, 0]))
     self.models = [monkeyModel]
   
     
@@ -54,7 +54,9 @@ class GraphicsWorld : NSEventListener {
     self.lighting.pointLights[1].attenuation.y = settings.lightIntensity2
     self.lighting.pointLights[1].attenuation.z = settings.lightIntensity3
     for model in self.models {
-      model.transforms[0].rotation.y += 0.02
+      model.transforms[0].rotation.y -= 0.01
+      model.transforms[1].rotation.y += 0.04
+      model.transforms[2].rotation.y += 0.02
     }
   }
   

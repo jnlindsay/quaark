@@ -93,14 +93,22 @@ class GraphicsModel {
   func createInstancesBuffer(
     device: MTLDevice
   ) -> MTLBuffer {
-    let bufferSize = MemoryLayout<matrix_float4x4>.stride * transforms.count
+    let bufferSize = MemoryLayout<InstancesData>.stride * transforms.count
     let instancesBuffer = device.makeBuffer(
       length: bufferSize,
       options: []
     )!
     
-    let modelMatrices = self.transforms.map { $0.modelMatrix }
-    memcpy(instancesBuffer.contents(), modelMatrices, bufferSize)
+    var instancesData: [InstancesData] = []
+    for transform in self.transforms {
+      let instanceData = InstancesData(
+        modelMatrix: transform.modelMatrix,
+        normalMatrix: upperLeft(matrix: transform.modelMatrix)
+      )
+      instancesData.append(instanceData)
+    }
+        
+    memcpy(instancesBuffer.contents(), instancesData, bufferSize)
     
     return instancesBuffer
   }
@@ -120,8 +128,8 @@ extension GraphicsModel : Renderable {
     commandEncoder.pushDebugGroup(self.name)
     
     var uniforms = vertex
-    uniforms.modelMatrix = self.transforms[0].modelMatrix
-    uniforms.normalMatrix = upperLeft(matrix: uniforms.modelMatrix)
+//    uniforms.modelMatrix = self.transforms[2].modelMatrix
+//    uniforms.normalMatrix = upperLeft(matrix: uniforms.modelMatrix)
     
     var parameters = fragment
     
@@ -154,7 +162,8 @@ extension GraphicsModel : Renderable {
         commandEncoder.setVertexBuffer(
           vertexBuffer,
           offset: 0,
-          index: index)
+          index: index
+        )
       }
       
       for submesh in mesh.submeshes {
