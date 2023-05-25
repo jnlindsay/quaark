@@ -129,11 +129,13 @@ struct LightingRenderPass : RenderPass {
     commandEncoder.setFragmentBuffer(
       world.lighting.sunLightsBuffer,
       offset: 0,
-      index: LightBuffer.index)
+      index: LightBuffer.index
+    )
     commandEncoder.drawPrimitives(
       type: .triangle,
       vertexStart: 0,
-      vertexCount: 6)
+      vertexCount: 6
+    )
     
     commandEncoder.popDebugGroup()
   }
@@ -164,32 +166,11 @@ struct LightingRenderPass : RenderPass {
       offset: 0,
       index: LightBuffer.index
     )
-
-    guard let mesh = self.icosphere.meshes.first
-    else {
-      print("MESH NOT OBTAINED")
-      return
-    }
-    guard let submesh = mesh.submeshes.first
-    else {
-      print("SUBMESH NOT OBTAINED")
-      return
-    }
-
-    for (index, vertexBuffer) in mesh.vertexBuffers.enumerated() {
-      commandEncoder.setVertexBuffer(
-        vertexBuffer,
-        offset: 0,
-        index: index
-      )
-    }
-
-    commandEncoder.drawIndexedPrimitives(
+    
+    commandEncoder.drawPrimitives(
       type: .triangle,
-      indexCount: submesh.indexCount,
-      indexType: submesh.indexType,
-      indexBuffer: submesh.indexBuffer,
-      indexBufferOffset: submesh.indexBufferOffset,
+      vertexStart: 0,
+      vertexCount: 6,
       instanceCount: world.lighting.pointLights.count
     )
     

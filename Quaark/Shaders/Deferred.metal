@@ -18,8 +18,6 @@ struct GBufferOut {
 
 fragment GBufferOut fragment_gBuffer (
   VertexOut in [[stage_in]]
-//  depth2d<float> shadowTexture [[texture(ShadowTexture)]]
-//  constant Material &material [[buffer(MaterialBuffer)]]
 ) {
   GBufferOut out;
   out.albedo = float4(0, 0, 0, 1);
@@ -37,10 +35,10 @@ constant float3 vertices[6] = {
   float3( 1, -1,  0)
 };
 
-vertex VertexOut vertex_quad(uint vertexID [[vertex_id]])
+vertex VertexOut vertex_quad(uint vertexId [[vertex_id]])
 {
   VertexOut out {
-    .position = float4(vertices[vertexID], 1)
+    .position = float4(vertices[vertexId], 1)
   };
   return out;
 }
@@ -78,21 +76,10 @@ struct PointLightOut {
 };
 
 vertex PointLightOut vertex_pointLight(
-  PointLightIn in [[stage_in]],
-  constant Uniforms &uniforms [[buffer(UniformsBuffer)]],
-  constant Light *lights [[buffer(LightBuffer)]],
-  uint instanceId [[instance_id]]
+  uint instanceId [[instance_id]],
+  uint vertexId [[vertex_id]]
 ) {
-  float4 lightPosition = float4(lights[instanceId].position, 0);
-  float4 position =
-    uniforms.projectionMatrix *
-    uniforms.viewMatrix *
-    uniforms.modelMatrix *
-    in.position +
-    uniforms.projectionMatrix *
-    uniforms.viewMatrix *
-    lightPosition;
-      // The reason this formula is needed is because the lights are generated as instances.
+  float4 position = float4(vertices[vertexId], 1);
   PointLightOut out {
     .position = position,
     .instanceId = instanceId
@@ -112,10 +99,9 @@ fragment float4 fragment_pointLight(
   float3 position = positionTexture.read(coords).xyz;
   
   // ! TODO: THIS COLOUR SHOULD NOT BE SET HERE!!!
-  vector_float3 baseColour = float3(0.2, 0.1, 0.4);
+  vector_float3 baseColour = float3(1, 1, 1);
   
   float3 lighting =
     calculatePointLight(light, position, normal, baseColour);
-  lighting *= 0.5;
   return float4(lighting, 1);
 }

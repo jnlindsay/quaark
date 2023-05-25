@@ -53,7 +53,7 @@ enum PipelineStates {
     pipelineDescriptor.setGBufferPixelFormats()
     pipelineDescriptor.depthAttachmentPixelFormat = .depth32Float
     pipelineDescriptor.vertexDescriptor =
-    MTLVertexDescriptor.defaultLayout
+      MTLVertexDescriptor.defaultLayout
     return createPipelineState(
       device: renderer.device,
       pipelineDescriptor: pipelineDescriptor
@@ -88,8 +88,8 @@ enum PipelineStates {
     pipelineDescriptor.fragmentFunction = fragmentFunction
     pipelineDescriptor.colorAttachments[0].pixelFormat = colourPixelFormat
     pipelineDescriptor.depthAttachmentPixelFormat = .depth32Float
-    pipelineDescriptor.vertexDescriptor =
-      MTLVertexDescriptor.defaultLayout
+//    pipelineDescriptor.vertexDescriptor =
+//      MTLVertexDescriptor.defaultLayout
     let attachment = pipelineDescriptor.colorAttachments[0]
     attachment?.isBlendingEnabled = true
     attachment?.rgbBlendOperation = .add

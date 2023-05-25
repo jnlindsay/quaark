@@ -27,8 +27,8 @@ struct GraphicsLighting {
   init(settings: Settings) {
     self.settings = settings
     
-//    self.sunLights = [self.sunLight, self.ambientLight]
-    self.sunLights = [self.ambientLight]
+    self.sunLights = [self.sunLight, self.ambientLight]
+//    self.sunLights = [self.ambientLight]
     self.lights = self.sunLights
     self.pointLights = []
     self.lights += self.pointLights

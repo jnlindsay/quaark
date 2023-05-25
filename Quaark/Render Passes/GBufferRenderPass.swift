@@ -81,7 +81,7 @@ struct GBufferRenderPass : RenderPass {
       attachment?.loadAction = .clear
       attachment?.storeAction = .store
       attachment?.clearColor =
-        MTLClearColor(red: 0.73, green: 0.92, blue: 1, alpha: 1)
+        MTLClearColor(red: 0, green: 0, blue: 0, alpha: 1)
     }
     self.renderPassDescriptor?.depthAttachment.texture = self.depthTexture
     self.renderPassDescriptor?.depthAttachment.storeAction = .dontCare
