@@ -117,6 +117,7 @@ struct GBufferRenderPass : RenderPass {
     // render models
     for model in world.models {
       model.render(
+        device: self.renderer!.device,
         commandEncoder: commandEncoder,
         uniforms: uniforms,
         parameters: parameters

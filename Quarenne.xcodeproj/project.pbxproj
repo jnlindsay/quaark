@@ -9,7 +9,6 @@
 /* Begin PBXBuildFile section */
 		1914238B2A1C907D00FC3332 /* Bloom.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1914238A2A1C907D00FC3332 /* Bloom.swift */; };
 		1914238E2A1C913900FC3332 /* TextureController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1914238D2A1C913900FC3332 /* TextureController.swift */; };
-		191423912A1CAF2600FC3332 /* ForwardRenderPass.swift in Sources */ = {isa = PBXBuildFile; fileRef = 191423902A1CAF2600FC3332 /* ForwardRenderPass.swift */; };
 		191423932A1CAFA200FC3332 /* PipelineStates.swift in Sources */ = {isa = PBXBuildFile; fileRef = 191423922A1CAFA200FC3332 /* PipelineStates.swift */; };
 		191423952A1CBDDF00FC3332 /* README.md in Resources */ = {isa = PBXBuildFile; fileRef = 191423942A1CBDB600FC3332 /* README.md */; };
 		191423972A1CDB0700FC3332 /* GBufferRenderPass.swift in Sources */ = {isa = PBXBuildFile; fileRef = 191423962A1CDB0700FC3332 /* GBufferRenderPass.swift */; };
@@ -51,7 +50,6 @@
 /* Begin PBXFileReference section */
 		1914238A2A1C907D00FC3332 /* Bloom.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Bloom.swift; sourceTree = "<group>"; };
 		1914238D2A1C913900FC3332 /* TextureController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TextureController.swift; sourceTree = "<group>"; };
-		191423902A1CAF2600FC3332 /* ForwardRenderPass.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ForwardRenderPass.swift; sourceTree = "<group>"; };
 		191423922A1CAFA200FC3332 /* PipelineStates.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PipelineStates.swift; sourceTree = "<group>"; };
 		191423942A1CBDB600FC3332 /* README.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = "<group>"; };
 		191423962A1CDB0700FC3332 /* GBufferRenderPass.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GBufferRenderPass.swift; sourceTree = "<group>"; };
@@ -129,7 +127,6 @@
 			isa = PBXGroup;
 			children = (
 				191423982A1CDB3400FC3332 /* RenderPass.swift */,
-				191423902A1CAF2600FC3332 /* ForwardRenderPass.swift */,
 				191423962A1CDB0700FC3332 /* GBufferRenderPass.swift */,
 				1914239D2A1CEDB400FC3332 /* LightingRenderPass.swift */,
 				191423922A1CAFA200FC3332 /* PipelineStates.swift */,
@@ -348,7 +345,6 @@
 			files = (
 				194B428B2A11EDF2005FE25C /* Shaders.metal in Sources */,
 				19D46D9C2A0FA59D009F6E2F /* GraphicsModel.swift in Sources */,
-				191423912A1CAF2600FC3332 /* ForwardRenderPass.swift in Sources */,
 				191423992A1CDB3400FC3332 /* RenderPass.swift in Sources */,
 				19E2CC7B294DDC1F00DFE7F9 /* CoreMIDIConnection.swift in Sources */,
 				1914238E2A1C913900FC3332 /* TextureController.swift in Sources */,

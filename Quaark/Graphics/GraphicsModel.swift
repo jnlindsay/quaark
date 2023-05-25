@@ -119,18 +119,19 @@ class GraphicsModel {
   
 }
 
-extension GraphicsModel : Renderable {
+extension GraphicsModel {
   func render(
+    device: MTLDevice,
+      // device is required for creating instances buffer. TODO: find a better method?
     commandEncoder: MTLRenderCommandEncoder,
     uniforms vertex: Uniforms,
     parameters fragment: Parameters
   ) {
     commandEncoder.pushDebugGroup(self.name)
     
-    var uniforms = vertex
-//    uniforms.modelMatrix = self.transforms[2].modelMatrix
-//    uniforms.normalMatrix = upperLeft(matrix: uniforms.modelMatrix)
+    self.instancesBuffer = self.createInstancesBuffer(device: device)
     
+    var uniforms = vertex
     var parameters = fragment
     
     commandEncoder.setVertexBytes(

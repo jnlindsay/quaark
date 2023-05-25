@@ -21,7 +21,6 @@ class Renderer : NSObject {
   var prevTime: Double
   
   // ! TODO: FIND A WAY TO MAKE RENDER PASSES MANDATORY
-  var forwardRenderPass: ForwardRenderPass?
   var gBufferRenderPass: GBufferRenderPass?
   var lightingRenderPass: LightingRenderPass?
   
@@ -74,10 +73,6 @@ class Renderer : NSObject {
     super.init()
     
     // render passes
-    self.forwardRenderPass = ForwardRenderPass(
-      renderer: self,
-      metalView: metalView
-    )
     self.gBufferRenderPass = GBufferRenderPass(
       renderer: self,
       metalView: metalView
@@ -115,7 +110,6 @@ extension Renderer : MTKViewDelegate {
     drawableSizeWillChange size: CGSize
   ) {
     self.world.update(windowSize: size)
-    self.forwardRenderPass?.resize(metalView: mtkView, size: size)
     self.gBufferRenderPass?.resize(metalView: mtkView, size: size)
     self.lightingRenderPass?.resize(metalView: mtkView, size: size)
     self.bloom.resize(view: mtkView, size: size)
@@ -144,43 +138,29 @@ extension Renderer : MTKViewDelegate {
     // update uniforms and parameters
     self.updateUniformsAndParameters(world: self.world)
     
-    if (true) {
-      // set G-buffer render pass
-      self.gBufferRenderPass?.draw(
-        commandBuffer: commandBuffer,
-        world: self.world,
-        uniforms: self.uniforms,
-        parameters: self.parameters
-      )
-      
-      // ! TODO: THESE SHOULD NOT BE CALLED EVERY FRAME!!!
-      // furthermore, the reconfiguration of lights should only reconfigure those lights that have been affected
-      self.world.lighting.configureLights(device: self.device)
-      for model in self.world.models {
-        model.configureMeshes(device: self.device)
-      }
-      
-      // set lighting render pass
-      self.lightingRenderPass?.albedoTexture = gBufferRenderPass?.albedoTexture
-      self.lightingRenderPass?.normalTexture = gBufferRenderPass?.normalTexture
-      self.lightingRenderPass?.positionTexture = gBufferRenderPass?.positionTexture
-      self.lightingRenderPass?.renderPassDescriptor = renderPassDescriptor
-      self.lightingRenderPass?.draw(
-        commandBuffer: commandBuffer,
-        world: world,
-        uniforms: uniforms,
-        parameters: parameters
-      )
-    } else {
-      // set forward render pass
-      self.forwardRenderPass?.renderPassDescriptor = renderPassDescriptor
-      self.forwardRenderPass?.draw(
-        commandBuffer: commandBuffer,
-        world: self.world,
-        uniforms: self.uniforms,
-        parameters: self.parameters
-      )
-    }
+    // set G-buffer render pass
+    self.gBufferRenderPass?.draw(
+      commandBuffer: commandBuffer,
+      world: self.world,
+      uniforms: self.uniforms,
+      parameters: self.parameters
+    )
+    
+    // ! TODO: THESE SHOULD NOT BE CALLED EVERY FRAME!!!
+    // furthermore, the reconfiguration of lights should only reconfigure those lights that have been affected
+    self.world.lighting.configureLights(device: self.device)
+    
+    // set lighting render pass
+    self.lightingRenderPass?.albedoTexture = gBufferRenderPass?.albedoTexture
+    self.lightingRenderPass?.normalTexture = gBufferRenderPass?.normalTexture
+    self.lightingRenderPass?.positionTexture = gBufferRenderPass?.positionTexture
+    self.lightingRenderPass?.renderPassDescriptor = renderPassDescriptor
+    self.lightingRenderPass?.draw(
+      commandBuffer: commandBuffer,
+      world: world,
+      uniforms: uniforms,
+      parameters: parameters
+    )
     
     // bloom effect
 //    self.bloom.postProcess(view: metalView, commandBuffer: commandBuffer)
@@ -204,12 +184,4 @@ extension Renderer : MTKViewDelegate {
     self.parameters.cameraPosition = self.world.mainCamera.position
       // Q: querying lightCount each time is inefficient?
   }
-}
-
-protocol Renderable {
-  func render(
-    commandEncoder: MTLRenderCommandEncoder,
-    uniforms: Uniforms,
-    parameters: Parameters
-  )
 }
