@@ -28,24 +28,25 @@ class GraphicsWorld : NSEventListener {
     monkeyModel.transforms.append(Transform(position: [-1, -1, 0]))
     monkeyModel.transforms.append(Transform(position: [1, 1, 0]))
     self.models = [monkeyModel]
-  
+    
+    let sphereModel = GraphicsModel(name: "sphere.obj")
+    self.models.append(sphereModel)
     
     self.lighting = GraphicsLighting(settings: settings)
     
-    self.keyboardModels = []
-      
     let position1 = simd_float3(-1, 1, -1)
     let colour1   = simd_float4(1, 0, 0, 1)
     self.lighting.addPointLight(position: position1, colour: colour1.xyz)
-    self.addSphere(position: position1, colour: colour1)
   
     let position2 = simd_float3(1, -1, -1)
     let colour2   = simd_float4(0, 0, 1, 1)
     self.lighting.addPointLight(position: position2, colour: colour2.xyz)
-    self.addSphere(position: position2, colour: colour2)
+    
+    self.keyboardModels = []
+    
   }
   
-  func update(deltaTime: Float) {   
+  func update(deltaTime: Float) { 
     self.mainCamera.update(deltaTime: deltaTime)
     self.lighting.pointLights[0].attenuation.x = settings.lightIntensity1
     self.lighting.pointLights[0].attenuation.y = settings.lightIntensity2
@@ -54,9 +55,10 @@ class GraphicsWorld : NSEventListener {
     self.lighting.pointLights[1].attenuation.y = settings.lightIntensity2
     self.lighting.pointLights[1].attenuation.z = settings.lightIntensity3
     for model in self.models {
-      model.transforms[0].rotation.y -= 0.01
-      model.transforms[1].rotation.y += 0.04
-      model.transforms[2].rotation.y += 0.02
+      let numInstances = model.transforms.count
+      for i in 0..<numInstances {
+        model.transforms[i].rotation.y += 0.01
+      }
     }
   }
   
@@ -78,17 +80,6 @@ class GraphicsWorld : NSEventListener {
       renderer.configureMeshes()
     }
   }
-  
-  func addSphere(position: simd_float3, colour: simd_float4) {
-    // ! WARNING: inefficient. The array should be a fixed size n, and n should be sent to the vertex (?) buffer. Difficulty: the shader must somehow know when to ignore `nil` models if models are optional. USE GPU INSTANCING?
-    
-    let newSphere = GraphicsModel(name: "sphere.obj")
-    newSphere.transforms[0].position = position
-    newSphere.transforms[0].scale = 0.2
-    newSphere.colour = colour
-    
-//    self.models.append(newSphere)
-  }
 
 }
 
@@ -108,8 +99,11 @@ extension GraphicsWorld : KeyboardListener {
         1
       )
 
-//      self.lighting.addPointLight(position: newPosition, colour: newColour.xyz)
-      self.addSphere(position: newPosition, colour: newColour)
+      // ! TODO: make the sure max # of models/point lights is the same
+      self.lighting.addPointLight(position: newPosition, colour: newColour.xyz)
+      self.models[1].addInstance(transform: Transform(
+        position: newPosition
+      ))
       self.reconfigureMeshes()
     }
   }

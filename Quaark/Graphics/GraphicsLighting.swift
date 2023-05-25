@@ -34,7 +34,7 @@ struct GraphicsLighting {
     self.lights += self.pointLights
     
     self.lightIndex = 0
-    self.maxLights = 10
+    self.maxLights = 5
   }
   
   mutating func configureLights(device: MTLDevice) {

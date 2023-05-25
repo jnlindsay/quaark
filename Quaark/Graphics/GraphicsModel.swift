@@ -16,12 +16,17 @@ class GraphicsModel {
   private let assetURL: URL
   var meshes: [GraphicsMesh]
   
+  let maxInstances: Int
+  var currModuloInstance: Int
   var instancesBuffer: MTLBuffer?
   
   init(name: String, numInstances: Int = 1) {
     self.name = name
     self.transforms = [Transform()]
     self.colour = simd_float4(0, 0, 0, 1)
+    
+    self.maxInstances = 5
+    self.currModuloInstance = 0
     
     guard let newAssetURL = Bundle.main.url(
       forResource: name,
@@ -88,6 +93,18 @@ class GraphicsModel {
     self.instancesBuffer = self.createInstancesBuffer(device: device)
     
     print("Mesh configuration complete.")
+  }
+  
+  func addInstance(transform: Transform = Transform()) {
+    if self.transforms.count < self.maxInstances {
+      self.transforms.append(transform)
+    } else {
+      if self.currModuloInstance >= self.maxInstances {
+        self.currModuloInstance = 0
+      }
+      self.transforms[self.currModuloInstance] = transform
+      self.currModuloInstance += 1
+    }
   }
   
   func createInstancesBuffer(
@@ -168,9 +185,6 @@ extension GraphicsModel {
       }
       
       for submesh in mesh.submeshes {
-        
-        // FRAGMENT TEXTURE CONFIGURATION OMITTED
-      
         commandEncoder.drawIndexedPrimitives(
           type: .triangle,
           indexCount: submesh.indexCount,
