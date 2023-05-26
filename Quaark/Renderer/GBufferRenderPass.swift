@@ -8,13 +8,15 @@
 import MetalKit
 
 struct GBufferRenderPass : RenderPass {
-
   let label: String
-  weak var renderer: Renderer?
-  var renderPassDescriptor: MTLRenderPassDescriptor?
   
-  var pipelineState: MTLRenderPipelineState
-  let depthStencilState: MTLDepthStencilState?
+  weak var renderer: Renderer?
+  private let metalView: MTKView
+  
+  var nonViewRenderPassDescriptor: MTLRenderPassDescriptor?
+  
+  var pipelineState: MTLRenderPipelineState?
+  var depthStencilState: MTLDepthStencilState?
   
   var defaultTexture: MTLTexture?
   var albedoTexture: MTLTexture?
@@ -23,15 +25,25 @@ struct GBufferRenderPass : RenderPass {
   var depthTexture: MTLTexture?
   var bloomTexture: MTLTexture?
   
-  init(renderer: Renderer, metalView: MTKView) {
+  init(
+    metalView: MTKView,
+    renderPassDescriptorFromView: Bool
+  ) {
     self.label = "G-Buffer Render Pass"
+    self.metalView = metalView
+    self.nonViewRenderPassDescriptor = renderPassDescriptorFromView ?
+      nil : MTLRenderPassDescriptor()
+  }
+  
+  mutating func initLate(
+    renderer: Renderer
+  ) {
     self.renderer = renderer
     self.pipelineState = PipelineStates.createGBufferPipelineState(
       renderer: renderer,
-      colourPixelFormat: metalView.colorPixelFormat
+      colourPixelFormat: self.metalView.colorPixelFormat
     )
     self.depthStencilState = Self.buildDepthStencilState(device: renderer.device)
-//    self.renderPassDescriptor = MTLRenderPassDescriptor()
   }
   
   mutating func resize(metalView: MTKView, size: CGSize) {
@@ -75,35 +87,30 @@ struct GBufferRenderPass : RenderPass {
   
   func draw(
     commandBuffer: MTLCommandBuffer,
+    metalViewRenderPassDescriptor: MTLRenderPassDescriptor?,
     world: GraphicsWorld,
     uniforms: Uniforms,
     parameters: Parameters
   ) {
+    
     // render pass descriptor
-    guard
-      let renderPassDescriptor = self.renderPassDescriptor
-    else {
+    var renderPassDescriptor: MTLRenderPassDescriptor
+    if let temp = self.nonViewRenderPassDescriptor {
+      renderPassDescriptor = temp
+    } else if let temp = metalViewRenderPassDescriptor {
+      renderPassDescriptor = temp
+    } else {
       fatalError("Render pass descriptor could not be obtained.")
     }
-    
-    // render command encoder
-    guard
-      let commandEncoder = commandBuffer.makeRenderCommandEncoder(
-          descriptor: renderPassDescriptor
-        )
-    else {
-      fatalError("Command encoder could not be created.")
-    }
-    
-    let textures = [
-      self.defaultTexture,
+
+    let textures: [MTLTexture?] = [
       self.albedoTexture,
       self.normalTexture,
       self.positionTexture,
       self.bloomTexture
     ]
+    
     let textureIndices = [
-      RenderTargetDefault,
       RenderTargetAlbedo,
       RenderTargetNormal,
       RenderTargetPosition,
@@ -122,9 +129,23 @@ struct GBufferRenderPass : RenderPass {
     renderPassDescriptor.depthAttachment.texture = self.depthTexture
     renderPassDescriptor.depthAttachment.storeAction = .dontCare
     
+    // render command encoder
+    guard
+      let commandEncoder = commandBuffer.makeRenderCommandEncoder(
+          descriptor: renderPassDescriptor
+        )
+    else {
+      fatalError("Command encoder could not be created.")
+    }
+    
     commandEncoder.label = self.label
     commandEncoder.setDepthStencilState(self.depthStencilState)
-    commandEncoder.setRenderPipelineState(self.pipelineState)
+    if let pipelineState = self.pipelineState {
+      commandEncoder.setRenderPipelineState(pipelineState)
+    } else {
+      fatalError("Pipeline state not set for GBufferRenderPass.")
+    }
+    
     
     // lighting
     var lights = world.lighting.lights

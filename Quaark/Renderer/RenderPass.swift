@@ -7,15 +7,24 @@
 
 import MetalKit
 
+// ! TODO: This protocol requires `renderer` because the pipeline states need access to the library. Find a way to decouple?
 protocol RenderPass {
   var label: String { get }
   var renderer: Renderer? { get set }
-  var renderPassDescriptor: MTLRenderPassDescriptor? { get set }
   
+  var nonViewRenderPassDescriptor: MTLRenderPassDescriptor? { get set }
+  
+  init(
+    metalView: MTKView,
+    renderPassDescriptorFromView: Bool
+  )
+  
+  mutating func initLate(renderer: Renderer)
   mutating func resize(metalView: MTKView, size: CGSize)
   
   func draw(
     commandBuffer: MTLCommandBuffer,
+    metalViewRenderPassDescriptor: MTLRenderPassDescriptor?,
     world: GraphicsWorld,
     uniforms: Uniforms,
     parameters: Parameters

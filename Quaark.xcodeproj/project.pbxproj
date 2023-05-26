@@ -123,15 +123,16 @@
 			path = Textures;
 			sourceTree = "<group>";
 		};
-		1914238F2A1CAEE400FC3332 /* Render Passes */ = {
+		1914238F2A1CAEE400FC3332 /* Renderer */ = {
 			isa = PBXGroup;
 			children = (
+				19F12BF629A1BB380064B3E7 /* Renderer.swift */,
 				191423982A1CDB3400FC3332 /* RenderPass.swift */,
 				191423962A1CDB0700FC3332 /* GBufferRenderPass.swift */,
 				1914239D2A1CEDB400FC3332 /* LightingRenderPass.swift */,
 				191423922A1CAFA200FC3332 /* PipelineStates.swift */,
 			);
-			path = "Render Passes";
+			path = Renderer;
 			sourceTree = "<group>";
 		};
 		196311802A0CD5D900DED30D /* Shaders */ = {
@@ -145,15 +146,6 @@
 				196311812A0CD5F400DED30D /* Shaders.metal */,
 			);
 			path = Shaders;
-			sourceTree = "<group>";
-		};
-		197CCB4829A0CCC6005BFEC0 /* Metal */ = {
-			isa = PBXGroup;
-			children = (
-				19F12BF629A1BB380064B3E7 /* Renderer.swift */,
-				19EA6F382A1065BB00F3070E /* VertexDescriptor.swift */,
-			);
-			path = Metal;
 			sourceTree = "<group>";
 		};
 		197CCB4A29A0D28C005BFEC0 /* Views */ = {
@@ -176,6 +168,7 @@
 				19D46D9F2A0FA929009F6E2F /* GraphicsSubmesh.swift */,
 				19D46D952A0DE2AB009F6E2F /* GraphicsWorld.swift */,
 				19E428E52A15EA3E0061D610 /* Transform.swift */,
+				19EA6F382A1065BB00F3070E /* VertexDescriptor.swift */,
 			);
 			path = Graphics;
 			sourceTree = "<group>";
@@ -238,10 +231,9 @@
 				19E2CC6A294DD13200DFE7F9 /* Models */,
 				197CCB4A29A0D28C005BFEC0 /* Views */,
 				19D8E2B1298E2E7B0003B5EC /* Libraries */,
-				197CCB4829A0CCC6005BFEC0 /* Metal */,
 				191423892A1C906800FC3332 /* Post Processing */,
 				19E2CC64294DCAF000DFE7F9 /* Realtime */,
-				1914238F2A1CAEE400FC3332 /* Render Passes */,
+				1914238F2A1CAEE400FC3332 /* Renderer */,
 				196311802A0CD5D900DED30D /* Shaders */,
 				1914238C2A1C911B00FC3332 /* Textures */,
 				19E456D629494AC00037DF4B /* Quaark.entitlements */,

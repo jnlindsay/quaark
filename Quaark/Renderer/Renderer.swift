@@ -20,9 +20,8 @@ class Renderer : NSObject {
   private var parameters: Parameters
   var prevTime: Double
   
-  // ! TODO: FIND A WAY TO MAKE RENDER PASSES MANDATORY
-  var gBufferRenderPass: GBufferRenderPass?
-  var lightingRenderPass: LightingRenderPass?
+  var gBufferRenderPass: GBufferRenderPass
+  var lightingRenderPass: LightingRenderPass
   
   var bloom: Bloom
   
@@ -69,23 +68,29 @@ class Renderer : NSObject {
     // settings
     self.settings = settings
     
-    // must be called after all variables have been initialised
-    super.init()
-    
     // render passes
     self.gBufferRenderPass = GBufferRenderPass(
-      renderer: self,
-      metalView: metalView
+      metalView: metalView,
+      renderPassDescriptorFromView: false
     )
     self.lightingRenderPass = LightingRenderPass(
-      renderer: self,
-      metalView: metalView
+      metalView: metalView,
+      renderPassDescriptorFromView: true
     )
+    
+    // ------------------------------------
+    // ------------------------------------
+    
+    // must be called after all variables have been initialised
+    super.init()
     
     // configure world and lighting
     self.configureMeshes()
     self.world.lighting.configureLights(device: self.device)
     self.world.renderer = self
+    
+    // late-initialise render passes
+    self.initLateRenderPasses(metalView: metalView)
     
     mtkView(
       metalView,
@@ -101,6 +106,11 @@ class Renderer : NSObject {
       model.configureMeshes(device: self.device)
     }
   }
+  
+  func initLateRenderPasses(metalView: MTKView) {
+    gBufferRenderPass.initLate(renderer: self)
+    lightingRenderPass.initLate(renderer: self)
+  }
     
 }
 
@@ -110,8 +120,8 @@ extension Renderer : MTKViewDelegate {
     drawableSizeWillChange size: CGSize
   ) {
     self.world.update(windowSize: size)
-    self.gBufferRenderPass?.resize(metalView: mtkView, size: size)
-    self.lightingRenderPass?.resize(metalView: mtkView, size: size)
+    self.gBufferRenderPass.resize(metalView: mtkView, size: size)
+    self.lightingRenderPass.resize(metalView: mtkView, size: size)
     self.bloom.resize(metalView: mtkView, size: size)
   }
   
@@ -124,7 +134,7 @@ extension Renderer : MTKViewDelegate {
     }
     
     guard
-      let renderPassDescriptor = metalView.currentRenderPassDescriptor
+      let metalViewRenderPassDescriptor = metalView.currentRenderPassDescriptor
     else {
       fatalError("Render pass descriptor could not be obtained.")
     }
@@ -134,36 +144,14 @@ extension Renderer : MTKViewDelegate {
     let deltaTime = Float(currentTime - self.prevTime)
     self.prevTime = currentTime
     self.world.update(deltaTime: deltaTime)
+    // -----------
     
-    // update uniforms and parameters
     self.updateUniformsAndParameters(world: self.world)
     
-    // set G-buffer render pass
-//    self.gBufferRenderPass?.renderPassDescriptor = renderPassDescriptor
-    self.gBufferRenderPass?.draw(
+    drawRenderPasses(
       commandBuffer: commandBuffer,
-      world: self.world,
-      uniforms: self.uniforms,
-      parameters: self.parameters
-    )
-    
-    // ! TODO: THESE SHOULD NOT BE CALLED EVERY FRAME!!!
-    // furthermore, the reconfiguration of lights should only reconfigure those lights that have been affected
-    self.world.lighting.configureLights(device: self.device)
-    
-//    self.bloom.postProcess(
-//      inputTexture: metalView.currentDrawable!.texture,
-//      commandBuffer: commandBuffer
-//    )
-    
-    // set lighting render pass
-    self.lightingRenderPass?.albedoTexture = gBufferRenderPass?.albedoTexture
-    self.lightingRenderPass?.normalTexture = gBufferRenderPass?.normalTexture
-    self.lightingRenderPass?.positionTexture = gBufferRenderPass?.positionTexture
-    self.lightingRenderPass?.bloomTexture = gBufferRenderPass?.bloomTexture
-    self.lightingRenderPass?.renderPassDescriptor = renderPassDescriptor
-    self.lightingRenderPass?.draw(
-      commandBuffer: commandBuffer,
+      metalViewRenderPassDescriptor: metalViewRenderPassDescriptor,
+        // any render pass that is drawn to the screen MUST be sent the metalView renderPassDescriptor
       world: world,
       uniforms: uniforms,
       parameters: parameters
@@ -177,6 +165,45 @@ extension Renderer : MTKViewDelegate {
     commandBuffer.present(drawable)
     commandBuffer.commit()
       
+  }
+  
+  func drawRenderPasses(
+    commandBuffer: MTLCommandBuffer,
+    metalViewRenderPassDescriptor: MTLRenderPassDescriptor,
+    world: GraphicsWorld,
+    uniforms: Uniforms,
+    parameters: Parameters
+  ) {
+    // set G-buffer render pass
+//    self.gBufferRenderPass?.renderPassDescriptor = renderPassDescriptor
+    self.gBufferRenderPass.draw(
+      commandBuffer: commandBuffer,
+      metalViewRenderPassDescriptor: nil,
+      world: self.world,
+      uniforms: self.uniforms,
+      parameters: self.parameters
+    )
+    
+    // ! TODO: THESE SHOULD NOT BE CALLED EVERY FRAME!!! Furthermore, the reconfiguration of lights should only reconfigure those lights that have been affected
+    self.world.lighting.configureLights(device: self.device)
+    
+    // set lighting render pass
+    self.lightingRenderPass.albedoTexture = gBufferRenderPass.albedoTexture
+    self.lightingRenderPass.normalTexture = gBufferRenderPass.normalTexture
+    self.lightingRenderPass.positionTexture = gBufferRenderPass.positionTexture
+    self.lightingRenderPass.bloomTexture = gBufferRenderPass.bloomTexture
+    self.lightingRenderPass.draw(
+      commandBuffer: commandBuffer,
+      metalViewRenderPassDescriptor: metalViewRenderPassDescriptor,
+      world: world,
+      uniforms: uniforms,
+      parameters: parameters
+    )
+    
+//    self.bloom.postProcess(
+//      inputTexture: metalView.currentDrawable!.texture,
+//      commandBuffer: commandBuffer
+//    )
   }
   
   func updateUniformsAndParameters(world: GraphicsWorld) {

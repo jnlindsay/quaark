@@ -9,29 +9,45 @@ import MetalKit
 
 struct LightingRenderPass : RenderPass {
   let label: String
-  weak var renderer: Renderer?
-  var renderPassDescriptor: MTLRenderPassDescriptor?
   
-  var sunLightPipelineState: MTLRenderPipelineState
-  var pointLightPipelineState: MTLRenderPipelineState
-  let depthStencilState: MTLDepthStencilState?
+  weak var renderer: Renderer?
+  private let metalView: MTKView
+  
+  var nonViewRenderPassDescriptor: MTLRenderPassDescriptor?
+  
+  var sunLightPipelineState: MTLRenderPipelineState?
+  var pointLightPipelineState: MTLRenderPipelineState?
+  var depthStencilState: MTLDepthStencilState?
   
   weak var albedoTexture: MTLTexture?
   weak var normalTexture: MTLTexture?
   weak var positionTexture: MTLTexture?
   weak var bloomTexture: MTLTexture?
   
-  init(renderer: Renderer, metalView: MTKView) {
+  init(
+    metalView: MTKView,
+    renderPassDescriptorFromView: Bool
+  ) {
     self.label = "Lighting Render Pass"
+    self.metalView = metalView
+    self.nonViewRenderPassDescriptor = renderPassDescriptorFromView ?
+      nil : MTLRenderPassDescriptor()
+  }
+  
+  mutating func initLate(
+    renderer: Renderer
+  ) {
     self.renderer = renderer
+    
     self.sunLightPipelineState = PipelineStates.createSunLightPipelineState(
       renderer: renderer,
-      colourPixelFormat: metalView.colorPixelFormat
+      colourPixelFormat: self.metalView.colorPixelFormat
     )
     self.pointLightPipelineState = PipelineStates.createPointLightPipelineState(
       renderer: renderer,
-      colourPixelFormat: metalView.colorPixelFormat
+      colourPixelFormat: self.metalView.colorPixelFormat
     )
+    
     self.depthStencilState = Self.buildDepthStencilState(device: renderer.device)
   }
   
@@ -48,23 +64,26 @@ struct LightingRenderPass : RenderPass {
   
   func draw(
     commandBuffer: MTLCommandBuffer,
+    metalViewRenderPassDescriptor: MTLRenderPassDescriptor?,
     world: GraphicsWorld,
     uniforms: Uniforms,
     parameters: Parameters
   ) {
+    
     // render pass descriptor
-    guard
-      let renderPassDescriptor = self.renderPassDescriptor
-    else {
+    var renderPassDescriptor: MTLRenderPassDescriptor
+    if let temp = self.nonViewRenderPassDescriptor {
+      renderPassDescriptor = temp
+    } else if let temp = metalViewRenderPassDescriptor {
+      renderPassDescriptor = temp
+    } else {
       fatalError("Render pass descriptor could not be obtained.")
     }
     
     // render command encoder
-    guard
-      let commandEncoder = commandBuffer.makeRenderCommandEncoder(
-          descriptor: renderPassDescriptor
-        )
-    else {
+    guard let commandEncoder = commandBuffer.makeRenderCommandEncoder(
+      descriptor: renderPassDescriptor
+    ) else {
       fatalError("Command encoder could not be created.")
     }
     commandEncoder.label = self.label
@@ -111,7 +130,11 @@ struct LightingRenderPass : RenderPass {
     parameters: Parameters
   ) {
     commandEncoder.pushDebugGroup("Sun Light")
-    commandEncoder.setRenderPipelineState(self.sunLightPipelineState)
+    if let sunLightPipelineState = self.sunLightPipelineState {
+      commandEncoder.setRenderPipelineState(sunLightPipelineState)
+    } else {
+      fatalError("Pipeline state not set for sun light in LightingRenderPass.")
+    }
     
     var parameters = parameters
     parameters.lightCount = UInt32(world.lighting.sunLights.count)
@@ -146,7 +169,11 @@ struct LightingRenderPass : RenderPass {
     
     var uniforms = vertex
     
-    commandEncoder.setRenderPipelineState(self.pointLightPipelineState)
+    if let pointLightPipelineState = self.pointLightPipelineState {
+      commandEncoder.setRenderPipelineState(pointLightPipelineState)
+    } else {
+      fatalError("Pipeline state not set for point light in LightingRenderPass.")
+    }
     commandEncoder.setVertexBytes(
       &uniforms,
       length: MemoryLayout<Uniforms>.stride,
