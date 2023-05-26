@@ -34,11 +34,11 @@ enum PipelineStates {
     pipelineDescriptor.vertexFunction = vertexFunction
     pipelineDescriptor.fragmentFunction = fragmentFunction
                     // attachments
-    pipelineDescriptor.colorAttachments[RenderTargetDefault.index].pixelFormat = .invalid
-    pipelineDescriptor.colorAttachments[RenderTargetAlbedo.index].pixelFormat = .bgra8Unorm
-    pipelineDescriptor.colorAttachments[RenderTargetNormal.index].pixelFormat = .rgba16Float
-    pipelineDescriptor.colorAttachments[RenderTargetPosition.index].pixelFormat = .rgba16Float
-    pipelineDescriptor.colorAttachments[RenderTargetBloom.index].pixelFormat = .bgra8Unorm
+    pipelineDescriptor.colorAttachments[RenderTargetDefault.index].pixelFormat = colourPixelFormat
+//    pipelineDescriptor.colorAttachments[RenderTargetAlbedo.index].pixelFormat = .bgra8Unorm
+//    pipelineDescriptor.colorAttachments[RenderTargetNormal.index].pixelFormat = .rgba16Float
+//    pipelineDescriptor.colorAttachments[RenderTargetPosition.index].pixelFormat = .rgba16Float
+//    pipelineDescriptor.colorAttachments[RenderTargetBloom.index].pixelFormat = .bgra8Unorm
     pipelineDescriptor.depthAttachmentPixelFormat = .depth32Float
     pipelineDescriptor.vertexDescriptor =
       MTLVertexDescriptor.defaultLayout

@@ -15,6 +15,8 @@ struct GBufferRenderPass : RenderPass {
   
   var pipelineState: MTLRenderPipelineState
   let depthStencilState: MTLDepthStencilState?
+  
+  var defaultTexture: MTLTexture?
   var albedoTexture: MTLTexture?
   var normalTexture: MTLTexture?
   var positionTexture: MTLTexture?
@@ -29,10 +31,16 @@ struct GBufferRenderPass : RenderPass {
       colourPixelFormat: metalView.colorPixelFormat
     )
     self.depthStencilState = Self.buildDepthStencilState(device: renderer.device)
-    self.renderPassDescriptor = MTLRenderPassDescriptor()
+//    self.renderPassDescriptor = MTLRenderPassDescriptor()
   }
   
   mutating func resize(metalView: MTKView, size: CGSize) {
+    defaultTexture = Self.makeTexture(
+      label: "Default Texture",
+      size: size,
+      device: self.renderer!.device,
+      pixelFormat: .bgra8Unorm
+    )
     albedoTexture = Self.makeTexture(
       label: "Albedo Texture",
       size: size,
@@ -71,31 +79,6 @@ struct GBufferRenderPass : RenderPass {
     uniforms: Uniforms,
     parameters: Parameters
   ) {
-    let textures = [
-      self.albedoTexture,
-      self.normalTexture,
-      self.positionTexture,
-      self.bloomTexture
-    ]
-    let textureIndices = [
-      RenderTargetAlbedo,
-      RenderTargetNormal,
-      RenderTargetPosition,
-      RenderTargetBloom
-    ]
-    
-    for (index, texture) in textures.enumerated() {
-      let attachment =
-        self.renderPassDescriptor?.colorAttachments[textureIndices[index].index]
-      attachment?.texture = texture
-      attachment?.loadAction = .clear
-      attachment?.storeAction = .store
-      attachment?.clearColor =
-        MTLClearColor(red: 0, green: 0, blue: 0, alpha: 1)
-    }
-    self.renderPassDescriptor?.depthAttachment.texture = self.depthTexture
-    self.renderPassDescriptor?.depthAttachment.storeAction = .dontCare
-    
     // render pass descriptor
     guard
       let renderPassDescriptor = self.renderPassDescriptor
@@ -111,6 +94,34 @@ struct GBufferRenderPass : RenderPass {
     else {
       fatalError("Command encoder could not be created.")
     }
+    
+    let textures = [
+      self.defaultTexture,
+      self.albedoTexture,
+      self.normalTexture,
+      self.positionTexture,
+      self.bloomTexture
+    ]
+    let textureIndices = [
+      RenderTargetDefault,
+      RenderTargetAlbedo,
+      RenderTargetNormal,
+      RenderTargetPosition,
+      RenderTargetBloom
+    ]
+    
+    for (index, texture) in textures.enumerated() {
+      let attachment =
+        renderPassDescriptor.colorAttachments[textureIndices[index].index]
+      attachment?.texture = texture
+      attachment?.loadAction = .clear
+      attachment?.storeAction = .store
+      attachment?.clearColor =
+        MTLClearColor(red: 0, green: 0, blue: 0, alpha: 1)
+    }
+    renderPassDescriptor.depthAttachment.texture = self.depthTexture
+    renderPassDescriptor.depthAttachment.storeAction = .dontCare
+    
     commandEncoder.label = self.label
     commandEncoder.setDepthStencilState(self.depthStencilState)
     commandEncoder.setRenderPipelineState(self.pipelineState)

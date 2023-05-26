@@ -11,6 +11,7 @@ using namespace metal;
 #import "Lighting.h"
 
 struct GBufferOut {
+  float4 colour [[color(RenderTargetDefault)]];
   float4 albedo [[color(RenderTargetAlbedo)]];
   float4 normal [[color(RenderTargetNormal)]];
   float4 position [[color(RenderTargetPosition)]];
@@ -21,6 +22,7 @@ fragment GBufferOut fragment_gBuffer (
   VertexOut in [[stage_in]]
 ) {
   GBufferOut out;
+  out.colour = float4(0.2, 0.3, 0.5, 1);
   out.albedo = float4(0.5, 0, 0.5, 1);
   out.normal = float4(normalize(in.worldNormal), 1.0);
   out.position = float4(in.worldPosition, 1.0);

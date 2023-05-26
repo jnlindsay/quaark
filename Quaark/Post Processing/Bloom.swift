@@ -25,8 +25,7 @@ struct Bloom {
       size: size,
       pixelFormat: metalView.colorPixelFormat,
       label: "Final Texture",
-//      usage: [.shaderRead, .shaderWrite]
-      usage: [.shaderRead, .shaderWrite, .renderTarget]
+      usage: [.shaderRead, .shaderWrite]
     )
   }
 
