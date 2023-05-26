@@ -36,7 +36,7 @@ struct Bloom {
     // Brightness
     let brightness = MPSImageThresholdToZero(
       device: self.device,
-      thresholdValue: 0.1,
+      thresholdValue: 0,
       linearGrayColorTransform: nil
     )
     brightness.label = "MPS brightness"

@@ -26,6 +26,7 @@
 		197CCB4C29A0D2A8005BFEC0 /* MetalView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 197CCB4B29A0D2A8005BFEC0 /* MetalView.swift */; };
 		1982433C29BC9692001B7B0D /* KeyboardModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1982433B29BC9692001B7B0D /* KeyboardModel.swift */; };
 		1982433E29BEE562001B7B0D /* DissonanceMeasure.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1982433D29BEE562001B7B0D /* DissonanceMeasure.swift */; };
+		19C4E1BA2A20E9660032A611 /* EmissiveRenderPass.swift in Sources */ = {isa = PBXBuildFile; fileRef = 19C4E1B92A20E9660032A611 /* EmissiveRenderPass.swift */; };
 		19D46D962A0DE2AB009F6E2F /* GraphicsWorld.swift in Sources */ = {isa = PBXBuildFile; fileRef = 19D46D952A0DE2AB009F6E2F /* GraphicsWorld.swift */; };
 		19D46D9C2A0FA59D009F6E2F /* GraphicsModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 19D46D9B2A0FA59D009F6E2F /* GraphicsModel.swift */; };
 		19D46D9E2A0FA627009F6E2F /* GraphicsMesh.swift in Sources */ = {isa = PBXBuildFile; fileRef = 19D46D9D2A0FA627009F6E2F /* GraphicsMesh.swift */; };
@@ -69,6 +70,7 @@
 		197CCB4B29A0D2A8005BFEC0 /* MetalView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MetalView.swift; sourceTree = "<group>"; };
 		1982433B29BC9692001B7B0D /* KeyboardModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KeyboardModel.swift; sourceTree = "<group>"; };
 		1982433D29BEE562001B7B0D /* DissonanceMeasure.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DissonanceMeasure.swift; sourceTree = "<group>"; };
+		19C4E1B92A20E9660032A611 /* EmissiveRenderPass.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EmissiveRenderPass.swift; sourceTree = "<group>"; };
 		19D46D952A0DE2AB009F6E2F /* GraphicsWorld.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GraphicsWorld.swift; sourceTree = "<group>"; };
 		19D46D9B2A0FA59D009F6E2F /* GraphicsModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GraphicsModel.swift; sourceTree = "<group>"; };
 		19D46D9D2A0FA627009F6E2F /* GraphicsMesh.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GraphicsMesh.swift; sourceTree = "<group>"; };
@@ -131,6 +133,7 @@
 				191423962A1CDB0700FC3332 /* GBufferRenderPass.swift */,
 				1914239D2A1CEDB400FC3332 /* LightingRenderPass.swift */,
 				191423922A1CAFA200FC3332 /* PipelineStates.swift */,
+				19C4E1B92A20E9660032A611 /* EmissiveRenderPass.swift */,
 			);
 			path = Renderer;
 			sourceTree = "<group>";
@@ -350,6 +353,7 @@
 				1914238B2A1C907D00FC3332 /* Bloom.swift in Sources */,
 				19E456C929494ABF0037DF4B /* Quaark.swift in Sources */,
 				19EA6F392A1065BB00F3070E /* VertexDescriptor.swift in Sources */,
+				19C4E1BA2A20E9660032A611 /* EmissiveRenderPass.swift in Sources */,
 				197CCB4C29A0D2A8005BFEC0 /* MetalView.swift in Sources */,
 				19D46DA02A0FA929009F6E2F /* GraphicsSubmesh.swift in Sources */,
 				1982433C29BC9692001B7B0D /* KeyboardModel.swift in Sources */,

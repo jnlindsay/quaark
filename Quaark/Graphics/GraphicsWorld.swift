@@ -27,6 +27,7 @@ class GraphicsWorld : NSEventListener {
     let monkeyModel = GraphicsModel(name: "monkey-left-handed.obj")
     monkeyModel.transforms.append(Transform(position: [-1, -1, 0]))
     monkeyModel.transforms.append(Transform(position: [1, 1, 0]))
+    monkeyModel.colour = simd_float4(0.5, 0, 0.5, 1)
     self.models = [monkeyModel]
     
     let sphereModel = GraphicsModel(name: "sphere.obj")
@@ -35,11 +36,13 @@ class GraphicsWorld : NSEventListener {
     self.lighting = GraphicsLighting(settings: settings)
     
     let position1 = simd_float3(-1, 1, -1)
-    let colour1   = simd_float4(1, 0, 0, 1)
+//    let colour1   = simd_float4(1, 1, 1, 1)
+    let colour1   = simd_float4(0, 0, 1, 1)
     self.lighting.addPointLight(position: position1, colour: colour1.xyz)
   
     let position2 = simd_float3(1, -1, -1)
-    let colour2   = simd_float4(0, 0, 1, 1)
+    let colour2   = simd_float4(1, 0, 0, 1)
+//    let colour2   = simd_float4(0, 0, 0, 1)
     self.lighting.addPointLight(position: position2, colour: colour2.xyz)
     
     self.keyboardModels = []
@@ -56,8 +59,10 @@ class GraphicsWorld : NSEventListener {
     self.lighting.pointLights[1].attenuation.z = settings.lightIntensity3
     for model in self.models {
       let numInstances = model.transforms.count
+      let strength = settings.emissiveStrength
       for i in 0..<numInstances {
         model.transforms[i].rotation.y += 0.01
+        model.colour = simd_float4(strength, strength, strength, 1)
       }
     }
   }

@@ -117,6 +117,14 @@ struct LightIntensitySlider : View {
         .frame(width: 200)
         Text("\(settings.lightIntensity3)")
       }
+      HStack {
+        Slider(
+          value: $settings.emissiveStrength,
+          in: 0...1
+        )
+        .frame(width: 200)
+        Text("\(settings.emissiveStrength)")
+      }
     }
   }
 }
