@@ -199,19 +199,19 @@ extension Renderer : MTKViewDelegate {
     self.world.lighting.configureLights(device: self.device)
     
     // set lighting render pass
-    self.lightingRenderPass.setTextures(
-      albedoTexture:   gBufferRenderPass.albedoTexture!,
-      normalTexture:   gBufferRenderPass.normalTexture!,
-      positionTexture: gBufferRenderPass.positionTexture!,
-      bloomTexture:    gBufferRenderPass.bloomTexture!
-    )
-    self.lightingRenderPass.draw(
-      commandBuffer: commandBuffer,
-      metalViewRenderPassDescriptor: metalViewRenderPassDescriptor,
-      world: world,
-      uniforms: uniforms,
-      parameters: parameters
-    )
+//    self.lightingRenderPass.setTextures(
+//      albedoTexture:   gBufferRenderPass.albedoTexture!,
+//      normalTexture:   gBufferRenderPass.normalTexture!,
+//      positionTexture: gBufferRenderPass.positionTexture!,
+//      bloomTexture:    gBufferRenderPass.bloomTexture!
+//    )
+//    self.lightingRenderPass.draw(
+//      commandBuffer: commandBuffer,
+//      metalViewRenderPassDescriptor: metalViewRenderPassDescriptor,
+//      world: world,
+//      uniforms: uniforms,
+//      parameters: parameters
+//    )
   }
   
   func updateUniformsAndParameters(world: GraphicsWorld) {

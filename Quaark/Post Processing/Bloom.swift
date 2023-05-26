@@ -49,7 +49,7 @@ struct Bloom {
     // Gaussian Blur
     let blur = MPSImageGaussianBlur(
       device: self.device,
-      sigma: 20.0
+      sigma: 100.0
     )
     blur.label = "MPS blur"
     blur.encode(

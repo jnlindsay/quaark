@@ -34,7 +34,6 @@ enum PipelineStates {
     pipelineDescriptor.vertexFunction = vertexFunction
     pipelineDescriptor.fragmentFunction = fragmentFunction
                     // attachments
-//    pipelineDescriptor.colorAttachments[RenderTargetDefault.index].pixelFormat = colourPixelFormat
     pipelineDescriptor.colorAttachments[RenderTargetDefault.index].pixelFormat = .invalid
     pipelineDescriptor.colorAttachments[RenderTargetAlbedo.index].pixelFormat = .bgra8Unorm
     pipelineDescriptor.colorAttachments[RenderTargetNormal.index].pixelFormat = .rgba16Float
@@ -59,7 +58,7 @@ enum PipelineStates {
     let pipelineDescriptor = MTLRenderPipelineDescriptor()
     pipelineDescriptor.vertexFunction = vertexFunction
     pipelineDescriptor.fragmentFunction = fragmentFunction
-    pipelineDescriptor.colorAttachments[RenderTargetDefault.index].pixelFormat = colourPixelFormat
+    pipelineDescriptor.colorAttachments[RenderTargetDefault.index].pixelFormat = colourPixelFormat    
     pipelineDescriptor.depthAttachmentPixelFormat = .depth32Float
     return createPipelineState(
       device: renderer.device,
@@ -87,10 +86,8 @@ enum PipelineStates {
     attachment?.alphaBlendOperation = .add
     attachment?.sourceRGBBlendFactor = .one
     attachment?.sourceAlphaBlendFactor = .one
-    attachment?.destinationRGBBlendFactor = .one
+    attachment?.destinationRGBBlendFactor = .one // crucial setting
     attachment?.destinationAlphaBlendFactor = .zero
-    attachment?.sourceRGBBlendFactor = .one
-    attachment?.sourceAlphaBlendFactor = .one
     
     return createPipelineState(
       device: renderer.device,
