@@ -139,7 +139,7 @@ extension Renderer : MTKViewDelegate {
     self.updateUniformsAndParameters(world: self.world)
     
     // set G-buffer render pass
-    self.gBufferRenderPass?.renderPassDescriptor = renderPassDescriptor
+//    self.gBufferRenderPass?.renderPassDescriptor = renderPassDescriptor
     self.gBufferRenderPass?.draw(
       commandBuffer: commandBuffer,
       world: self.world,
@@ -149,25 +149,25 @@ extension Renderer : MTKViewDelegate {
     
     // ! TODO: THESE SHOULD NOT BE CALLED EVERY FRAME!!!
     // furthermore, the reconfiguration of lights should only reconfigure those lights that have been affected
-//    self.world.lighting.configureLights(device: self.device)
-    
-    // set lighting render pass
-//    self.lightingRenderPass?.albedoTexture = gBufferRenderPass?.albedoTexture
-//    self.lightingRenderPass?.normalTexture = gBufferRenderPass?.normalTexture
-//    self.lightingRenderPass?.positionTexture = gBufferRenderPass?.positionTexture
-//    self.lightingRenderPass?.bloomTexture = gBufferRenderPass?.bloomTexture
-//    self.lightingRenderPass?.renderPassDescriptor = renderPassDescriptor
-//    self.lightingRenderPass?.draw(
-//      commandBuffer: commandBuffer,
-//      world: world,
-//      uniforms: uniforms,
-//      parameters: parameters
-//    )
+    self.world.lighting.configureLights(device: self.device)
     
 //    self.bloom.postProcess(
 //      inputTexture: metalView.currentDrawable!.texture,
 //      commandBuffer: commandBuffer
 //    )
+    
+    // set lighting render pass
+    self.lightingRenderPass?.albedoTexture = gBufferRenderPass?.albedoTexture
+    self.lightingRenderPass?.normalTexture = gBufferRenderPass?.normalTexture
+    self.lightingRenderPass?.positionTexture = gBufferRenderPass?.positionTexture
+    self.lightingRenderPass?.bloomTexture = gBufferRenderPass?.bloomTexture
+    self.lightingRenderPass?.renderPassDescriptor = renderPassDescriptor
+    self.lightingRenderPass?.draw(
+      commandBuffer: commandBuffer,
+      world: world,
+      uniforms: uniforms,
+      parameters: parameters
+    )
     
     guard let drawable = metalView.currentDrawable else {
       print("Renderer.swift: drawable not obtained.")
