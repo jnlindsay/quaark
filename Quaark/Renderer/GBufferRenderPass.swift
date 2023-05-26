@@ -17,8 +17,7 @@ struct GBufferRenderPass : RenderPass {
   
   var pipelineState: MTLRenderPipelineState?
   var depthStencilState: MTLDepthStencilState?
-  
-  var defaultTexture: MTLTexture?
+
   var albedoTexture: MTLTexture?
   var normalTexture: MTLTexture?
   var positionTexture: MTLTexture?
@@ -47,12 +46,6 @@ struct GBufferRenderPass : RenderPass {
   }
   
   mutating func resize(metalView: MTKView, size: CGSize) {
-    defaultTexture = Self.makeTexture(
-      label: "Default Texture",
-      size: size,
-      device: self.renderer!.device,
-      pixelFormat: .bgra8Unorm
-    )
     albedoTexture = Self.makeTexture(
       label: "Albedo Texture",
       size: size,
