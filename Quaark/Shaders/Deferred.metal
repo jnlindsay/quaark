@@ -22,7 +22,8 @@ fragment GBufferOut fragment_gBuffer (
 ) {
   GBufferOut out;
 //  out.albedo = float4(0.5, 0, 0.5, 1);
-  out.albedo = float4(1, 1, 1, 1);
+  out.albedo = float4(0.2, 0.2, 0.2, 1);
+//  out.albedo = float4(1, 1, 1, 1);
   out.normal = float4(normalize(in.worldNormal), 1.0);
   out.position = float4(in.worldPosition, 1.0);
   out.bloom = float4(0, 1, 0, 1);

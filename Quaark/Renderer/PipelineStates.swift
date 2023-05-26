@@ -87,7 +87,7 @@ enum PipelineStates {
     attachment?.sourceRGBBlendFactor = .one
     attachment?.sourceAlphaBlendFactor = .one
     attachment?.destinationRGBBlendFactor = .one // crucial setting
-    attachment?.destinationAlphaBlendFactor = .zero
+    attachment?.destinationAlphaBlendFactor = .one
     
     return createPipelineState(
       device: renderer.device,
