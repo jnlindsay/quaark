@@ -19,10 +19,10 @@ struct LightingRenderPass : RenderPass {
   var pointLightPipelineState: MTLRenderPipelineState?
   var depthStencilState: MTLDepthStencilState?
   
-  weak var albedoTexture: MTLTexture?
-  weak var normalTexture: MTLTexture?
-  weak var positionTexture: MTLTexture?
-  weak var bloomTexture: MTLTexture?
+  weak private var albedoTexture: MTLTexture?
+  weak private var normalTexture: MTLTexture?
+  weak private var positionTexture: MTLTexture?
+  weak private var bloomTexture: MTLTexture?
   
   init(
     metalView: MTKView,
@@ -58,6 +58,18 @@ struct LightingRenderPass : RenderPass {
     stencilDescriptor.isDepthWriteEnabled = false
       // CRUCIAL: setting `.isDepthWriteEnabled` to `false` is what makes this stencil different from the 'usual' stencil state builder
     return device.makeDepthStencilState(descriptor: stencilDescriptor)
+  }
+  
+  mutating func setTextures(
+    albedoTexture:   MTLTexture,
+    normalTexture:   MTLTexture,
+    positionTexture: MTLTexture,
+    bloomTexture:    MTLTexture
+  ) {
+    self.albedoTexture   = albedoTexture
+    self.normalTexture   = normalTexture
+    self.positionTexture = positionTexture
+    self.bloomTexture    = bloomTexture
   }
   
   func resize(metalView: MTKView, size: CGSize) { }

@@ -151,7 +151,6 @@ extension Renderer : MTKViewDelegate {
     drawRenderPasses(
       commandBuffer: commandBuffer,
       metalViewRenderPassDescriptor: metalViewRenderPassDescriptor,
-        // any render pass that is drawn to the screen MUST be sent the metalView renderPassDescriptor
       world: world,
       uniforms: uniforms,
       parameters: parameters
@@ -188,10 +187,12 @@ extension Renderer : MTKViewDelegate {
     self.world.lighting.configureLights(device: self.device)
     
     // set lighting render pass
-    self.lightingRenderPass.albedoTexture = gBufferRenderPass.albedoTexture
-    self.lightingRenderPass.normalTexture = gBufferRenderPass.normalTexture
-    self.lightingRenderPass.positionTexture = gBufferRenderPass.positionTexture
-    self.lightingRenderPass.bloomTexture = gBufferRenderPass.bloomTexture
+    self.lightingRenderPass.setTextures(
+      albedoTexture:   gBufferRenderPass.albedoTexture!,
+      normalTexture:   gBufferRenderPass.normalTexture!,
+      positionTexture: gBufferRenderPass.positionTexture!,
+      bloomTexture:    gBufferRenderPass.bloomTexture!
+    )
     self.lightingRenderPass.draw(
       commandBuffer: commandBuffer,
       metalViewRenderPassDescriptor: metalViewRenderPassDescriptor,
