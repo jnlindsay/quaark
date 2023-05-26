@@ -22,38 +22,27 @@ enum PipelineStates {
     return pipelineState
   }
   
-  static func createForwardPipelineState(
-    renderer: Renderer,
-    colourPixelFormat: MTLPixelFormat
-  ) -> MTLRenderPipelineState {
-    let vertexFunction = renderer.library.makeFunction(name: "vertex_main")
-    let fragmentFunction = renderer.library.makeFunction(name: "fragment_main")
-    let pipelineDescriptor = MTLRenderPipelineDescriptor()
-    pipelineDescriptor.vertexFunction = vertexFunction
-    pipelineDescriptor.fragmentFunction = fragmentFunction
-    pipelineDescriptor.colorAttachments[0].pixelFormat = colourPixelFormat
-    pipelineDescriptor.depthAttachmentPixelFormat = .depth32Float
-    pipelineDescriptor.vertexDescriptor = MTLVertexDescriptor.defaultLayout
-    return createPipelineState(
-      device: renderer.device,
-      pipelineDescriptor: pipelineDescriptor
-    )
-  }
-  
   static func createGBufferPipelineState(
     renderer: Renderer,
     colourPixelFormat: MTLPixelFormat
   ) -> MTLRenderPipelineState {
     let vertexFunction = renderer.library.makeFunction(name: "vertex_main")
     let fragmentFunction = renderer.library.makeFunction(name: "fragment_gBuffer")
+    
+    // pipeline descriptor
     let pipelineDescriptor = MTLRenderPipelineDescriptor()
     pipelineDescriptor.vertexFunction = vertexFunction
     pipelineDescriptor.fragmentFunction = fragmentFunction
-    pipelineDescriptor.colorAttachments[0].pixelFormat = .invalid
-    pipelineDescriptor.setGBufferPixelFormats()
+                    // attachments
+    pipelineDescriptor.colorAttachments[RenderTargetDefault.index].pixelFormat = .invalid
+    pipelineDescriptor.colorAttachments[RenderTargetAlbedo.index].pixelFormat = .bgra8Unorm
+    pipelineDescriptor.colorAttachments[RenderTargetNormal.index].pixelFormat = .rgba16Float
+    pipelineDescriptor.colorAttachments[RenderTargetPosition.index].pixelFormat = .rgba16Float
+    pipelineDescriptor.colorAttachments[RenderTargetBloom.index].pixelFormat = .bgra8Unorm
     pipelineDescriptor.depthAttachmentPixelFormat = .depth32Float
     pipelineDescriptor.vertexDescriptor =
       MTLVertexDescriptor.defaultLayout
+    
     return createPipelineState(
       device: renderer.device,
       pipelineDescriptor: pipelineDescriptor
@@ -69,7 +58,7 @@ enum PipelineStates {
     let pipelineDescriptor = MTLRenderPipelineDescriptor()
     pipelineDescriptor.vertexFunction = vertexFunction
     pipelineDescriptor.fragmentFunction = fragmentFunction
-    pipelineDescriptor.colorAttachments[0].pixelFormat = colourPixelFormat
+    pipelineDescriptor.colorAttachments[RenderTargetDefault.index].pixelFormat = colourPixelFormat
     pipelineDescriptor.depthAttachmentPixelFormat = .depth32Float
     return createPipelineState(
       device: renderer.device,
@@ -83,14 +72,15 @@ enum PipelineStates {
   ) -> MTLRenderPipelineState {
     let vertexFunction = renderer.library.makeFunction(name: "vertex_pointLight")
     let fragmentFunction = renderer.library.makeFunction(name: "fragment_pointLight")
+    
+    // pipeline descriptor
     let pipelineDescriptor = MTLRenderPipelineDescriptor()
     pipelineDescriptor.vertexFunction = vertexFunction
     pipelineDescriptor.fragmentFunction = fragmentFunction
-    pipelineDescriptor.colorAttachments[0].pixelFormat = colourPixelFormat
     pipelineDescriptor.depthAttachmentPixelFormat = .depth32Float
-//    pipelineDescriptor.vertexDescriptor =
-//      MTLVertexDescriptor.defaultLayout
-    let attachment = pipelineDescriptor.colorAttachments[0]
+                     // attachments
+    let attachment = pipelineDescriptor.colorAttachments[RenderTargetDefault.index]
+    attachment?.pixelFormat = colourPixelFormat
     attachment?.isBlendingEnabled = true
     attachment?.rgbBlendOperation = .add
     attachment?.alphaBlendOperation = .add
@@ -100,17 +90,10 @@ enum PipelineStates {
     attachment?.destinationAlphaBlendFactor = .zero
     attachment?.sourceRGBBlendFactor = .one
     attachment?.sourceAlphaBlendFactor = .one
+    
     return createPipelineState(
       device: renderer.device,
       pipelineDescriptor: pipelineDescriptor
     )
-  }
-}
-
-extension MTLRenderPipelineDescriptor {
-  func setGBufferPixelFormats() {
-    colorAttachments[RenderTargetAlbedo.index].pixelFormat = .bgra8Unorm
-    colorAttachments[RenderTargetNormal.index].pixelFormat = .rgba16Float
-    colorAttachments[RenderTargetPosition.index].pixelFormat = .rgba16Float
   }
 }

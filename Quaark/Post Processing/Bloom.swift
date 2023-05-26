@@ -14,27 +14,26 @@ struct Bloom {
     TextureController.device = device
   }
 
-  mutating func resize(view: MTKView, size: CGSize) {
+  mutating func resize(metalView: MTKView, size: CGSize) {
     outputTexture = TextureController.makeTexture(
       size: size,
-      pixelFormat: view.colorPixelFormat,
+      pixelFormat: metalView.colorPixelFormat,
       label: "Output Texture",
-      usage: [.shaderRead, .shaderWrite])
+      usage: [.shaderRead, .shaderWrite]
+    )
     finalTexture = TextureController.makeTexture(
       size: size,
-      pixelFormat: view.colorPixelFormat,
+      pixelFormat: metalView.colorPixelFormat,
       label: "Final Texture",
-      usage: [.shaderRead, .shaderWrite])
+//      usage: [.shaderRead, .shaderWrite]
+      usage: [.shaderRead, .shaderWrite, .renderTarget]
+    )
   }
 
   mutating func postProcess(
-    view: MTKView,
+    inputTexture: MTLTexture,
     commandBuffer: MTLCommandBuffer
   ) {
-    guard
-      let drawableTexture =
-        view.currentDrawable?.texture else { return }
-
     // Brightness
     let brightness = MPSImageThresholdToZero(
       device: self.device,
@@ -43,8 +42,8 @@ struct Bloom {
     brightness.label = "MPS brightness"
     brightness.encode(
       commandBuffer: commandBuffer,
-      sourceTexture: drawableTexture,
-      destinationTexture: outputTexture
+      sourceTexture: inputTexture,
+      destinationTexture: self.outputTexture
     )
 
     // Gaussian Blur
@@ -54,34 +53,38 @@ struct Bloom {
     blur.label = "MPS blur"
     blur.encode(
       commandBuffer: commandBuffer,
-      inPlaceTexture: &outputTexture,
-      fallbackCopyAllocator: nil)
+      inPlaceTexture: &self.outputTexture,
+      fallbackCopyAllocator: nil
+    )
     let add = MPSImageAdd(device: self.device)
 
     // Combine original render and filtered render
     add.encode(
       commandBuffer: commandBuffer,
-      primaryTexture: drawableTexture,
+      primaryTexture: inputTexture,
       secondaryTexture: outputTexture,
-      destinationTexture: finalTexture)
+      destinationTexture: finalTexture
+    )
 
     guard let blitEncoder = commandBuffer.makeBlitCommandEncoder()
       else { return }
     let origin = MTLOrigin(x: 0, y: 0, z: 0)
     let size = MTLSize(
-      width: drawableTexture.width,
-      height: drawableTexture.height,
-      depth: 1)
+      width: inputTexture.width,
+      height: inputTexture.height,
+      depth: 1
+    )
     blitEncoder.copy(
       from: finalTexture,
       sourceSlice: 0,
       sourceLevel: 0,
       sourceOrigin: origin,
       sourceSize: size,
-      to: drawableTexture,
+      to: inputTexture,
       destinationSlice: 0,
       destinationLevel: 0,
-      destinationOrigin: origin)
+      destinationOrigin: origin
+    )
     blitEncoder.endEncoding()
   }
 }

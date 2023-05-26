@@ -56,16 +56,19 @@ typedef enum {
   BaseColourTexture = 0,
   NormalTexture = 1,
   PositionTexture = 2,
-  RoughnessTexture = 3,
-  MetallicnessTexture = 4,
-  AmbientOcclusionTexture = 5,
-  ShadowTexture = 6
+  BloomTexture = 3
+//  RoughnessTexture = 3,
+//  MetallicnessTexture = 4,
+//  AmbientOcclusionTexture = 5,
+//  ShadowTexture = 6
 } TextureIndices;
 
 typedef enum {
+  RenderTargetDefault = 0,
   RenderTargetAlbedo = 1,
   RenderTargetNormal = 2,
-  RenderTargetPosition = 3
+  RenderTargetPosition = 3,
+  RenderTargetBloom = 4
 } RenderTargetIndices;
 
 // LIGHTING

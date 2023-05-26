@@ -301,7 +301,7 @@
 					};
 				};
 			};
-			buildConfigurationList = 19E456C029494ABF0037DF4B /* Build configuration list for PBXProject "Quarenne" */;
+			buildConfigurationList = 19E456C029494ABF0037DF4B /* Build configuration list for PBXProject "Quaark" */;
 			compatibilityVersion = "Xcode 14.0";
 			developmentRegion = en;
 			hasScannedForEncodings = 0;
@@ -531,7 +531,7 @@
 				);
 				MACOSX_DEPLOYMENT_TARGET = 13.0;
 				MARKETING_VERSION = 0.1;
-				PRODUCT_BUNDLE_IDENTIFIER = com.jeremylindsay.Quarenne;
+				PRODUCT_BUNDLE_IDENTIFIER = com.jeremylindsay.Quaark;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_OBJC_BRIDGING_HEADER = "Quaark/Quaark-Bridging-Header.h";
@@ -569,7 +569,7 @@
 				);
 				MACOSX_DEPLOYMENT_TARGET = 13.0;
 				MARKETING_VERSION = 0.1;
-				PRODUCT_BUNDLE_IDENTIFIER = com.jeremylindsay.Quarenne;
+				PRODUCT_BUNDLE_IDENTIFIER = com.jeremylindsay.Quaark;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_OBJC_BRIDGING_HEADER = "Quaark/Quaark-Bridging-Header.h";
@@ -581,7 +581,7 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
-		19E456C029494ABF0037DF4B /* Build configuration list for PBXProject "Quarenne" */ = {
+		19E456C029494ABF0037DF4B /* Build configuration list for PBXProject "Quaark" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				19E456D729494AC00037DF4B /* Debug */,

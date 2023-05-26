@@ -112,7 +112,7 @@ extension Renderer : MTKViewDelegate {
     self.world.update(windowSize: size)
     self.gBufferRenderPass?.resize(metalView: mtkView, size: size)
     self.lightingRenderPass?.resize(metalView: mtkView, size: size)
-    self.bloom.resize(view: mtkView, size: size)
+    self.bloom.resize(metalView: mtkView, size: size)
   }
   
   func draw(in metalView: MTKView) {
@@ -154,6 +154,7 @@ extension Renderer : MTKViewDelegate {
     self.lightingRenderPass?.albedoTexture = gBufferRenderPass?.albedoTexture
     self.lightingRenderPass?.normalTexture = gBufferRenderPass?.normalTexture
     self.lightingRenderPass?.positionTexture = gBufferRenderPass?.positionTexture
+    self.lightingRenderPass?.bloomTexture = gBufferRenderPass?.bloomTexture
     self.lightingRenderPass?.renderPassDescriptor = renderPassDescriptor
     self.lightingRenderPass?.draw(
       commandBuffer: commandBuffer,
@@ -162,8 +163,10 @@ extension Renderer : MTKViewDelegate {
       parameters: parameters
     )
     
-    // bloom effect
-//    self.bloom.postProcess(view: metalView, commandBuffer: commandBuffer)
+    self.bloom.postProcess(
+      inputTexture: metalView.currentDrawable!.texture,
+      commandBuffer: commandBuffer
+    )
     
     guard let drawable = metalView.currentDrawable else {
       print("Renderer.swift: drawable not obtained.")

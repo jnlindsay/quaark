@@ -14,15 +14,17 @@ struct GBufferOut {
   float4 albedo [[color(RenderTargetAlbedo)]];
   float4 normal [[color(RenderTargetNormal)]];
   float4 position [[color(RenderTargetPosition)]];
+  float4 bloom [[color(RenderTargetBloom)]];
 };
 
 fragment GBufferOut fragment_gBuffer (
   VertexOut in [[stage_in]]
 ) {
   GBufferOut out;
-  out.albedo = float4(0, 0, 0, 1);
+  out.albedo = float4(0.5, 0, 0.5, 1);
   out.normal = float4(normalize(in.worldNormal), 1.0);
   out.position = float4(in.worldPosition, 1.0);
+  out.bloom = float4(0, 1, 0, 1);
   return out;
 }
 
@@ -91,6 +93,7 @@ fragment float4 fragment_pointLight(
   PointLightOut in [[stage_in]],
   texture2d<float> normalTexture [[texture(NormalTexture)]],
   texture2d<float> positionTexture [[texture(PositionTexture)]],
+  texture2d<float> bloomTexture [[texture(BloomTexture)]],
   constant Light *lights [[buffer(LightBuffer)]]
 ) {
   Light light = lights[in.instanceId];

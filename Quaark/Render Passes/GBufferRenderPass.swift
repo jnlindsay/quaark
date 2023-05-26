@@ -19,6 +19,7 @@ struct GBufferRenderPass : RenderPass {
   var normalTexture: MTLTexture?
   var positionTexture: MTLTexture?
   var depthTexture: MTLTexture?
+  var bloomTexture: MTLTexture?
   
   init(renderer: Renderer, metalView: MTKView) {
     self.label = "G-Buffer Render Pass"
@@ -56,6 +57,12 @@ struct GBufferRenderPass : RenderPass {
       device: self.renderer!.device,
       pixelFormat: .depth32Float
     )
+    bloomTexture = Self.makeTexture(
+      label: "Bloom Texture",
+      size: size,
+      device: self.renderer!.device,
+      pixelFormat: .bgra8Unorm
+    )
   }
   
   func draw(
@@ -67,12 +74,14 @@ struct GBufferRenderPass : RenderPass {
     let textures = [
       self.albedoTexture,
       self.normalTexture,
-      self.positionTexture
+      self.positionTexture,
+      self.bloomTexture
     ]
     let textureIndices = [
       RenderTargetAlbedo,
       RenderTargetNormal,
-      RenderTargetPosition
+      RenderTargetPosition,
+      RenderTargetBloom
     ]
     
     for (index, texture) in textures.enumerated() {

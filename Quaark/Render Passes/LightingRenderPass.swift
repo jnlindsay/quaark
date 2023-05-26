@@ -19,6 +19,7 @@ struct LightingRenderPass : RenderPass {
   weak var albedoTexture: MTLTexture?
   weak var normalTexture: MTLTexture?
   weak var positionTexture: MTLTexture?
+  weak var bloomTexture: MTLTexture?
   
   init(renderer: Renderer, metalView: MTKView) {
     self.label = "Lighting Render Pass"
@@ -161,7 +162,6 @@ struct LightingRenderPass : RenderPass {
       offset: 0,
       index: LightBuffer.index
     )
-    
     commandEncoder.drawPrimitives(
       type: .triangle,
       vertexStart: 0,
