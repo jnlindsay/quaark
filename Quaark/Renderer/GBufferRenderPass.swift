@@ -46,31 +46,31 @@ struct GBufferRenderPass : RenderPass {
   }
   
   mutating func resize(metalView: MTKView, size: CGSize) {
-    albedoTexture = Self.makeTexture(
+    self.albedoTexture = Self.makeTexture(
       label: "Albedo Texture",
       size: size,
       device: self.renderer!.device,
       pixelFormat: .bgra8Unorm
     )
-    normalTexture = Self.makeTexture(
+    self.normalTexture = Self.makeTexture(
       label: "Normal Texture",
       size: size,
       device: self.renderer!.device,
       pixelFormat: .rgba16Float
     )
-    positionTexture = Self.makeTexture(
+    self.positionTexture = Self.makeTexture(
       label: "Position Texture",
       size: size,
       device: self.renderer!.device,
       pixelFormat: .rgba16Float
     )
-    depthTexture = Self.makeTexture(
+    self.depthTexture = Self.makeTexture(
       label: "Depth Texture",
       size: size,
       device: self.renderer!.device,
       pixelFormat: .depth32Float
     )
-    bloomTexture = Self.makeTexture(
+    self.bloomTexture = Self.makeTexture(
       label: "Bloom Texture",
       size: size,
       device: self.renderer!.device,
@@ -80,6 +80,7 @@ struct GBufferRenderPass : RenderPass {
   
   func draw(
     commandBuffer: MTLCommandBuffer,
+    metalView: MTKView,
     metalViewRenderPassDescriptor: MTLRenderPassDescriptor?,
     world: GraphicsWorld,
     uniforms: Uniforms,
@@ -138,8 +139,7 @@ struct GBufferRenderPass : RenderPass {
     } else {
       fatalError("Pipeline state not set for GBufferRenderPass.")
     }
-    
-    
+
     // lighting
     var lights = world.lighting.lights
     commandEncoder.setFragmentBytes(
@@ -159,6 +159,36 @@ struct GBufferRenderPass : RenderPass {
     }
     
     commandEncoder.endEncoding()
+    
+    // BLIT
+    
+    guard
+      self.albedoTexture!.width == metalView.currentDrawable!.texture.width,
+      self.albedoTexture!.height == metalView.currentDrawable!.texture.height
+    else {
+      return
+    }
+    
+    guard let blitEncoder = commandBuffer.makeBlitCommandEncoder()
+      else { return }
+    let origin = MTLOrigin(x: 0, y: 0, z: 0)
+    let size = MTLSize(
+      width: self.albedoTexture!.width,
+      height: self.albedoTexture!.height,
+      depth: 1
+    )
+    blitEncoder.copy(
+      from: self.albedoTexture!,
+      sourceSlice: 0,
+      sourceLevel: 0,
+      sourceOrigin: origin,
+      sourceSize: size,
+      to: metalView.currentDrawable!.texture,
+      destinationSlice: 0,
+      destinationLevel: 0,
+      destinationOrigin: origin
+    )
+    blitEncoder.endEncoding()
   }
   
 }

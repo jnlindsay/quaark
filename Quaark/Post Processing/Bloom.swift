@@ -37,7 +37,8 @@ struct Bloom {
     let brightness = MPSImageThresholdToZero(
       device: self.device,
       thresholdValue: 0.1,
-      linearGrayColorTransform: nil)
+      linearGrayColorTransform: nil
+    )
     brightness.label = "MPS brightness"
     brightness.encode(
       commandBuffer: commandBuffer,
@@ -48,7 +49,8 @@ struct Bloom {
     // Gaussian Blur
     let blur = MPSImageGaussianBlur(
       device: self.device,
-      sigma: 20.0)
+      sigma: 20.0
+    )
     blur.label = "MPS blur"
     blur.encode(
       commandBuffer: commandBuffer,

@@ -150,11 +150,17 @@ extension Renderer : MTKViewDelegate {
     
     drawRenderPasses(
       commandBuffer: commandBuffer,
+      metalView: metalView,
       metalViewRenderPassDescriptor: metalViewRenderPassDescriptor,
       world: world,
       uniforms: uniforms,
       parameters: parameters
     )
+    
+//    self.bloom.postProcess(
+//      inputTexture: metalView.currentDrawable!.texture,
+//      commandBuffer: commandBuffer
+//    )
     
     guard let drawable = metalView.currentDrawable else {
       print("Renderer.swift: drawable not obtained.")
@@ -168,19 +174,25 @@ extension Renderer : MTKViewDelegate {
   
   func drawRenderPasses(
     commandBuffer: MTLCommandBuffer,
+    metalView: MTKView,
     metalViewRenderPassDescriptor: MTLRenderPassDescriptor,
     world: GraphicsWorld,
     uniforms: Uniforms,
     parameters: Parameters
   ) {
     // set G-buffer render pass
-//    self.gBufferRenderPass?.renderPassDescriptor = renderPassDescriptor
     self.gBufferRenderPass.draw(
       commandBuffer: commandBuffer,
+      metalView: metalView,
       metalViewRenderPassDescriptor: nil,
       world: self.world,
       uniforms: self.uniforms,
       parameters: self.parameters
+    )
+    
+    self.bloom.postProcess(
+      inputTexture: metalView.currentDrawable!.texture,
+      commandBuffer: commandBuffer
     )
     
     // ! TODO: THESE SHOULD NOT BE CALLED EVERY FRAME!!! Furthermore, the reconfiguration of lights should only reconfigure those lights that have been affected
@@ -200,11 +212,6 @@ extension Renderer : MTKViewDelegate {
       uniforms: uniforms,
       parameters: parameters
     )
-    
-//    self.bloom.postProcess(
-//      inputTexture: metalView.currentDrawable!.texture,
-//      commandBuffer: commandBuffer
-//    )
   }
   
   func updateUniformsAndParameters(world: GraphicsWorld) {

@@ -22,13 +22,13 @@ protocol RenderPass {
   mutating func initLate(renderer: Renderer)
   mutating func resize(metalView: MTKView, size: CGSize)
   
-  func draw(
-    commandBuffer: MTLCommandBuffer,
-    metalViewRenderPassDescriptor: MTLRenderPassDescriptor?,
-    world: GraphicsWorld,
-    uniforms: Uniforms,
-    parameters: Parameters
-  )
+//  func draw(
+//    commandBuffer: MTLCommandBuffer,
+//    metalViewRenderPassDescriptor: MTLRenderPassDescriptor?,
+//    world: GraphicsWorld,
+//    uniforms: Uniforms,
+//    parameters: Parameters
+//  )
 }
 
 extension RenderPass {
