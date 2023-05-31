@@ -23,7 +23,8 @@ class GraphicsModel {
   init(name: String, numInstances: Int = 1) {
     self.name = name
     self.transforms = [Transform()]
-    self.colour = simd_float4(1, 1, 1, 1)
+//    self.colour = simd_float4(1, 1, 1, 1)
+    self.colour = simd_float4(0, 0, 0, 1)
     
     self.maxInstances = 5
     self.currModuloInstance = 0

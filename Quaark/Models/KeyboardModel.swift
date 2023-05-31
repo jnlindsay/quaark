@@ -59,7 +59,7 @@ public class KeyboardModel : ObservableObject {
     updateChord()
     updateDissonance()
     updateAllNotesOff()
-    broadcastEvent()
+    broadcastEvent(note)
   }
 
   private func updateNotesOnOffAndChord(_ note: Note) {
@@ -70,12 +70,18 @@ public class KeyboardModel : ObservableObject {
               read from it afterwards.
      */
     
-    if (note.status == 0x90 || note.status == 0x80) {
-      // 0x90 is on, 0x80 is off
-      self.notesOnOff[Int(note.note) - 1] = (note.status == 0x90)
-    }
+//    if (note.status == 0x90 || note.status == 0x80) {
+//      // 0x90 is on, 0x80 is off
+//      self.notesOnOff[Int(note.note) - 1] = (note.status == 0x90)
+//    }
+//
+//    if (note.velocity == 0x00) {
+//      self.notesOnOff[Int(note.note) - 1] = false
+//    }
     
-    if (note.velocity == 0x00) {
+    if (note.onStatus) {
+      self.notesOnOff[Int(note.note) - 1] = true
+    } else if (note.offStatus) {
       self.notesOnOff[Int(note.note) - 1] = false
     }
   }
@@ -116,9 +122,11 @@ public class KeyboardModel : ObservableObject {
     self.listeners.append(listener)
   }
   
-  private func broadcastEvent() {
-    for listener in listeners {
-      listener.handleKeyboardEvent(keyboardModel: self)
+  private func broadcastEvent(_ note: Note) {
+    if (note.onStatus) {
+      for listener in listeners {
+        listener.handleKeyboardEvent(keyboardModel: self)
+      }
     }
   }
     

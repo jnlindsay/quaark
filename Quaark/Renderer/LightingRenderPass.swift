@@ -120,11 +120,11 @@ struct LightingRenderPass : RenderPass {
       index: PositionTexture.index
     )
     
-//    drawSunLight(
-//      commandEncoder: commandEncoder,
-//      world: world,
-//      parameters: parameters
-//    )
+    drawSunLight(
+      commandEncoder: commandEncoder,
+      world: world,
+      parameters: parameters
+    )
     
     drawPointLight(
       commandEncoder: commandEncoder,

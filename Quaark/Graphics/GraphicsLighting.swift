@@ -29,6 +29,7 @@ struct GraphicsLighting {
     
     self.sunLights = [self.sunLight, self.ambientLight]
 //    self.sunLights = [self.ambientLight]
+//    self.sunLights = [self.sunLight]
     self.lights = self.sunLights
     self.pointLights = []
     self.lights += self.pointLights

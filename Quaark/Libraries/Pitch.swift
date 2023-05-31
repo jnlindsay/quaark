@@ -137,6 +137,24 @@ struct Note {
     var note:     UInt8
     var channel:  UInt8
     var status:   UInt8
+  
+  var onStatus: Bool {
+    // NOTE: value `false` does not imply noteOff
+    
+    if (self.status == 0x90) {
+      return true
+    }
+    return false
+  }
+  
+  var offStatus: Bool {
+    // NOTE: value `false` does not imply noteOn
+    
+    if (self.status == 0x80 || self.velocity == 0x00) {
+      return true
+    }
+    return false
+  }
 }
 
 //          10000001 01001101 00000000

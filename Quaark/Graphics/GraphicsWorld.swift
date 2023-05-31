@@ -25,9 +25,10 @@ class GraphicsWorld : NSEventListener {
     self.mainCamera.transform.position = [0.0, 0.0, -3.0]
     
     let monkeyModel = GraphicsModel(name: "monkey-left-handed.obj")
-    monkeyModel.transforms.append(Transform(position: [-1, -1, 0]))
-    monkeyModel.transforms.append(Transform(position: [1, 1, 0]))
-    monkeyModel.colour = simd_float4(0.5, 0, 0.5, 1)
+//    monkeyModel.transforms.append(Transform(position: [-1, -1, 0]))
+//    monkeyModel.transforms.append(Transform(position: [1, 1, 0]))
+//    monkeyModel.colour = simd_float4(0.5, 0, 0.5, 1)
+    monkeyModel.colour = simd_float4(0, 0, 0, 0)
     self.models = [monkeyModel]
     
     let sphereModel = GraphicsModel(name: "sphere.obj")
@@ -107,7 +108,8 @@ extension GraphicsWorld : KeyboardListener {
       // ! TODO: make the sure max # of models/point lights is the same
       self.lighting.addPointLight(position: newPosition, colour: newColour.xyz)
       self.models[1].addInstance(transform: Transform(
-        position: newPosition
+        position: newPosition,
+        scale: 0.5
       ))
       self.reconfigureMeshes()
     }

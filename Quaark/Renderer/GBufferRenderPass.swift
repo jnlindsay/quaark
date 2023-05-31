@@ -162,33 +162,33 @@ struct GBufferRenderPass : RenderPass {
     
     // BLIT
     
-    guard
-      self.albedoTexture!.width == metalView.currentDrawable!.texture.width,
-      self.albedoTexture!.height == metalView.currentDrawable!.texture.height
-    else {
-      return
-    }
-    
-    guard let blitEncoder = commandBuffer.makeBlitCommandEncoder()
-      else { return }
-    let origin = MTLOrigin(x: 0, y: 0, z: 0)
-    let size = MTLSize(
-      width: self.albedoTexture!.width,
-      height: self.albedoTexture!.height,
-      depth: 1
-    )
-    blitEncoder.copy(
-      from: self.albedoTexture!,
-      sourceSlice: 0,
-      sourceLevel: 0,
-      sourceOrigin: origin,
-      sourceSize: size,
-      to: metalView.currentDrawable!.texture,
-      destinationSlice: 0,
-      destinationLevel: 0,
-      destinationOrigin: origin
-    )
-    blitEncoder.endEncoding()
+//    guard
+//      self.albedoTexture!.width == metalView.currentDrawable!.texture.width,
+//      self.albedoTexture!.height == metalView.currentDrawable!.texture.height
+//    else {
+//      return
+//    }
+//    
+//    guard let blitEncoder = commandBuffer.makeBlitCommandEncoder()
+//      else { return }
+//    let origin = MTLOrigin(x: 0, y: 0, z: 0)
+//    let size = MTLSize(
+//      width: self.albedoTexture!.width,
+//      height: self.albedoTexture!.height,
+//      depth: 1
+//    )
+//    blitEncoder.copy(
+//      from: self.albedoTexture!,
+//      sourceSlice: 0,
+//      sourceLevel: 0,
+//      sourceOrigin: origin,
+//      sourceSize: size,
+//      to: metalView.currentDrawable!.texture,
+//      destinationSlice: 0,
+//      destinationLevel: 0,
+//      destinationOrigin: origin
+//    )
+//    blitEncoder.endEncoding()
   }
   
 }
