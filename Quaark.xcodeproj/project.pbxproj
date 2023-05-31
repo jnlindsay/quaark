@@ -20,7 +20,7 @@
 		193E1AE72A1AD1D600D7BA0D /* torus.obj in Resources */ = {isa = PBXBuildFile; fileRef = 193E1AE62A1AD1D600D7BA0D /* torus.obj */; };
 		193E1AF32A1B25A600D7BA0D /* sphere.obj in Resources */ = {isa = PBXBuildFile; fileRef = 193E1AF22A1B25A600D7BA0D /* sphere.obj */; };
 		194B428B2A11EDF2005FE25C /* Shaders.metal in Sources */ = {isa = PBXBuildFile; fileRef = 196311812A0CD5F400DED30D /* Shaders.metal */; };
-		194B42922A12600C005FE25C /* GraphicsMathematics.swift in Sources */ = {isa = PBXBuildFile; fileRef = 194B42912A12600C005FE25C /* GraphicsMathematics.swift */; };
+		194B42922A12600C005FE25C /* Mathematics.swift in Sources */ = {isa = PBXBuildFile; fileRef = 194B42912A12600C005FE25C /* Mathematics.swift */; };
 		196830882983D26F002232A7 /* ChordRecogniser.swift in Sources */ = {isa = PBXBuildFile; fileRef = 196830872983D26F002232A7 /* ChordRecogniser.swift */; };
 		1968308B2983E6CA002232A7 /* DequeModule in Frameworks */ = {isa = PBXBuildFile; productRef = 1968308A2983E6CA002232A7 /* DequeModule */; };
 		197CCB4C29A0D2A8005BFEC0 /* MetalView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 197CCB4B29A0D2A8005BFEC0 /* MetalView.swift */; };
@@ -64,7 +64,7 @@
 		193E1AE62A1AD1D600D7BA0D /* torus.obj */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = torus.obj; sourceTree = "<group>"; };
 		193E1AF22A1B25A600D7BA0D /* sphere.obj */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = sphere.obj; sourceTree = "<group>"; };
 		194B42902A125852005FE25C /* Common.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Common.h; sourceTree = "<group>"; };
-		194B42912A12600C005FE25C /* GraphicsMathematics.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GraphicsMathematics.swift; sourceTree = "<group>"; };
+		194B42912A12600C005FE25C /* Mathematics.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Mathematics.swift; sourceTree = "<group>"; };
 		196311812A0CD5F400DED30D /* Shaders.metal */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.metal; path = Shaders.metal; sourceTree = "<group>"; };
 		196830872983D26F002232A7 /* ChordRecogniser.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChordRecogniser.swift; sourceTree = "<group>"; };
 		197CCB4B29A0D2A8005BFEC0 /* MetalView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MetalView.swift; sourceTree = "<group>"; };
@@ -165,7 +165,6 @@
 			children = (
 				19E428E72A15F0690061D610 /* Camera.swift */,
 				19E428E92A1612E70061D610 /* GraphicsLighting.swift */,
-				194B42912A12600C005FE25C /* GraphicsMathematics.swift */,
 				19D46D9D2A0FA627009F6E2F /* GraphicsMesh.swift */,
 				19D46D9B2A0FA59D009F6E2F /* GraphicsModel.swift */,
 				19D46D9F2A0FA929009F6E2F /* GraphicsSubmesh.swift */,
@@ -182,6 +181,7 @@
 				196830872983D26F002232A7 /* ChordRecogniser.swift */,
 				19E2CC7A294DDC1F00DFE7F9 /* CoreMIDIConnection.swift */,
 				1982433D29BEE562001B7B0D /* DissonanceMeasure.swift */,
+				194B42912A12600C005FE25C /* Mathematics.swift */,
 				19D8E2A2298605880003B5EC /* Miscellaneous.swift */,
 				19E428F62A175C410061D610 /* NSEventBroadcaster.swift */,
 				19E2CC62294AB74400DFE7F9 /* Pitch.swift */,
@@ -358,7 +358,7 @@
 				19D46DA02A0FA929009F6E2F /* GraphicsSubmesh.swift in Sources */,
 				1982433C29BC9692001B7B0D /* KeyboardModel.swift in Sources */,
 				19D8E2A3298605880003B5EC /* Miscellaneous.swift in Sources */,
-				194B42922A12600C005FE25C /* GraphicsMathematics.swift in Sources */,
+				194B42922A12600C005FE25C /* Mathematics.swift in Sources */,
 				191423972A1CDB0700FC3332 /* GBufferRenderPass.swift in Sources */,
 				19E428F12A1653930061D610 /* Lighting.metal in Sources */,
 				1982433E29BEE562001B7B0D /* DissonanceMeasure.swift in Sources */,

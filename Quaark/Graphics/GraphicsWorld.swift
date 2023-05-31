@@ -37,13 +37,11 @@ class GraphicsWorld : NSEventListener {
     self.lighting = GraphicsLighting(settings: settings)
     
     let position1 = simd_float3(-1, 1, -1)
-//    let colour1   = simd_float4(1, 1, 1, 1)
     let colour1   = simd_float4(0, 0, 1, 1)
     self.lighting.addPointLight(position: position1, colour: colour1.xyz)
   
     let position2 = simd_float3(1, -1, -1)
     let colour2   = simd_float4(1, 0, 0, 1)
-//    let colour2   = simd_float4(0, 0, 0, 1)
     self.lighting.addPointLight(position: position2, colour: colour2.xyz)
     
     self.keyboardModels = []
@@ -90,13 +88,22 @@ class GraphicsWorld : NSEventListener {
 }
 
 extension GraphicsWorld : KeyboardListener {
-  func handleKeyboardEvent(keyboardModel: KeyboardModel) {
+  func handleKeyboardEvent(
+    keyboardModel: KeyboardModel,
+    note: Note
+  ) {
     
     if (!keyboardModel.allNotesOff) {
       let newPosition = simd_float3(
-        Float.random(in: -5 ... 5),
-        Float.random(in: -5 ... 5),
-        Float.random(in: -5 ... 5)
+        Float.random(in: -1 ... 1),
+        rangeNormalise(
+          in: note.note,
+          inMin: 0,
+          inMax: 127,
+          outMin: -20,
+          outMax: 20
+        ),
+        Float.random(in: -1 ... 1)
       )
       let newColour = simd_float4(
         Float.random(in: 0 ... 1),

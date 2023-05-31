@@ -70,15 +70,6 @@ public class KeyboardModel : ObservableObject {
               read from it afterwards.
      */
     
-//    if (note.status == 0x90 || note.status == 0x80) {
-//      // 0x90 is on, 0x80 is off
-//      self.notesOnOff[Int(note.note) - 1] = (note.status == 0x90)
-//    }
-//
-//    if (note.velocity == 0x00) {
-//      self.notesOnOff[Int(note.note) - 1] = false
-//    }
-    
     if (note.onStatus) {
       self.notesOnOff[Int(note.note) - 1] = true
     } else if (note.offStatus) {
@@ -125,7 +116,10 @@ public class KeyboardModel : ObservableObject {
   private func broadcastEvent(_ note: Note) {
     if (note.onStatus) {
       for listener in listeners {
-        listener.handleKeyboardEvent(keyboardModel: self)
+        listener.handleKeyboardEvent(
+          keyboardModel: self,
+          note: note
+        )
       }
     }
   }
@@ -133,5 +127,8 @@ public class KeyboardModel : ObservableObject {
 }
 
 protocol KeyboardListener {
-  func handleKeyboardEvent(keyboardModel: KeyboardModel)
+  func handleKeyboardEvent(
+    keyboardModel: KeyboardModel,
+    note: Note
+  )
 }

@@ -147,3 +147,13 @@ func createLookAtMatrix(
     [  0,   0,   0,            1]
   ])
 }
+
+func rangeNormalise(
+  in     x: UInt8, // as a hack
+  inMin  a: Float,
+  inMax  b: Float,
+  outMin c: Float,
+  outMax d: Float) -> Float {
+    
+  return (Float(x) - a) / (b - a) * (d - c) + c
+}
