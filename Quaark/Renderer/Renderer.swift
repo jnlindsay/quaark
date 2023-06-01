@@ -198,6 +198,7 @@ extension Renderer : MTKViewDelegate {
     // ! TODO: THESE SHOULD NOT BE CALLED EVERY FRAME!!! Furthermore, the reconfiguration of lights should only reconfigure those lights that have been affected
     self.world.lighting.configureLights(device: self.device)
     
+    // loads the current view instead of discarding/overwriting
     metalViewRenderPassDescriptor.colorAttachments[0].loadAction = .load
     
     // set lighting render pass

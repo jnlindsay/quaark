@@ -191,22 +191,22 @@ struct LightingRenderPass : RenderPass {
       length: MemoryLayout<Uniforms>.stride,
       index: UniformsBuffer.index
     )
-    commandEncoder.setVertexBuffer(
-      world.lighting.pointLightsBuffer,
-      offset: 0,
-      index: LightBuffer.index
-    )
-    commandEncoder.setFragmentBuffer(
-      world.lighting.pointLightsBuffer,
-      offset: 0,
-      index: LightBuffer.index
-    )
-    commandEncoder.drawPrimitives(
-      type: .triangle,
-      vertexStart: 0,
-      vertexCount: 6,
-      instanceCount: world.lighting.pointLights.count
-    )
+//    commandEncoder.setVertexBuffer(
+//      world.lighting.pointLightsBuffer,
+//      offset: 0,
+//      index: LightBuffer.index
+//    )
+//    commandEncoder.setFragmentBuffer(
+//      world.lighting.pointLightsBuffer,
+//      offset: 0,
+//      index: LightBuffer.index
+//    )
+//    commandEncoder.drawPrimitives(
+//      type: .triangle,
+//      vertexStart: 0,
+//      vertexCount: 6,
+//      instanceCount: world.lighting.pointLights.count
+//    )
     
     commandEncoder.popDebugGroup()
   }
