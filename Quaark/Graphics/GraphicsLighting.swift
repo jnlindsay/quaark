@@ -19,7 +19,7 @@ struct GraphicsLighting {
   
   var lightsBuffer: MTLBuffer?
   var sunLightsBuffer: MTLBuffer?
-//  var pointLightsBuffer: MTLBuffer?
+  var pointLightsBuffer: MTLBuffer?
   
   private var lightIndex: Int
   private let maxLights: Int // ! TODO: be careful about default lights; they might get overwritten
@@ -45,10 +45,10 @@ struct GraphicsLighting {
       device: device,
       lights: self.sunLights
     )
-//    self.pointLightsBuffer = Self.createBuffer(
-//      device: device,
-//      lights: self.pointLights
-//    )
+    self.pointLightsBuffer = Self.createBuffer(
+      device: device,
+      lights: self.pointLights
+    )
     self.lightsBuffer = Self.createBuffer(
       device: device,
       lights: self.lights

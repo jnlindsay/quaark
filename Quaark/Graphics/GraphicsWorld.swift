@@ -36,13 +36,9 @@ class GraphicsWorld : NSEventListener {
     
     self.lighting = GraphicsLighting(settings: settings)
     
-//    let position1 = simd_float3(-1, 1, -1)
-//    let colour1   = simd_float4(0, 0, 1, 1)
-//    self.lighting.addPointLight(position: position1, colour: colour1.xyz)
-//
-//    let position2 = simd_float3(1, -1, -1)
-//    let colour2   = simd_float4(1, 0, 0, 1)
-//    self.lighting.addPointLight(position: position2, colour: colour2.xyz)
+    let position1 = simd_float3(0, 0, 0)
+    let colour1   = simd_float4(0, 0, 0, 1)
+    self.lighting.addPointLight(position: position1, colour: colour1.xyz)
     
     self.keyboardModels = []
     
@@ -50,12 +46,11 @@ class GraphicsWorld : NSEventListener {
   
   func update(deltaTime: Float) { 
     self.mainCamera.update(deltaTime: deltaTime)
-//    self.lighting.pointLights[0].attenuation.x = settings.lightIntensity1
-//    self.lighting.pointLights[0].attenuation.y = settings.lightIntensity2
-//    self.lighting.pointLights[0].attenuation.z = settings.lightIntensity3
-//    self.lighting.pointLights[1].attenuation.x = settings.lightIntensity1
-//    self.lighting.pointLights[1].attenuation.y = settings.lightIntensity2
-//    self.lighting.pointLights[1].attenuation.z = settings.lightIntensity3
+    
+    // TODO: UPDATE ALL POINT LIGHTS
+    self.lighting.pointLights[0].attenuation.x = settings.lightIntensity1
+    self.lighting.pointLights[0].attenuation.y = settings.lightIntensity2
+    self.lighting.pointLights[0].attenuation.z = settings.lightIntensity3
     for model in self.models {
       let numInstances = model.instances.count
       let strength = settings.emissiveStrength
@@ -116,7 +111,7 @@ extension GraphicsWorld : KeyboardListener {
       self.models[1].addInstance(
         transform: Transform(
           position: newPosition,
-          scale: 0.5
+          scale: 0.4
         ),
         albedo: newColour
       )

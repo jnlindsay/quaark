@@ -29,7 +29,7 @@ class GraphicsModel {
     )]
     self.colour = simd_float4(0, 0, 0, 1)
     
-    self.maxInstances = 5
+    self.maxInstances = 10
     self.currModuloInstance = 0
     
     guard let newAssetURL = Bundle.main.url(
