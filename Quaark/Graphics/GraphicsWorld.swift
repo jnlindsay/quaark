@@ -57,10 +57,10 @@ class GraphicsWorld : NSEventListener {
 //    self.lighting.pointLights[1].attenuation.y = settings.lightIntensity2
 //    self.lighting.pointLights[1].attenuation.z = settings.lightIntensity3
     for model in self.models {
-      let numInstances = model.transforms.count
+      let numInstances = model.instances.count
       let strength = settings.emissiveStrength
       for i in 0..<numInstances {
-        model.transforms[i].rotation.y += 0.01
+        model.instances[i].transform.rotation.y += 0.01
       }
     }
   }
@@ -113,10 +113,13 @@ extension GraphicsWorld : KeyboardListener {
 
       // ! TODO: make the sure max # of models/point lights is the same
       self.lighting.addPointLight(position: newPosition, colour: newColour.xyz)
-      self.models[1].addInstance(transform: Transform(
-        position: newPosition,
-        scale: 0.5
-      ))
+      self.models[1].addInstance(
+        transform: Transform(
+          position: newPosition,
+          scale: 0.5
+        ),
+        albedo: newColour
+      )
       self.reconfigureMeshes()
     }
   }

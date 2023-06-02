@@ -17,7 +17,7 @@ struct VertexIn {
 struct VertexOut {
   float4 position [[position]];
   float3 normal [[attribute(Normal)]];
-  float4 colour;
+  float4 albedo;
   float3 worldPosition;
   float3 worldNormal;
 };

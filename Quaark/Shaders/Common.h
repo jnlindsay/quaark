@@ -32,6 +32,7 @@ typedef struct {
 typedef struct {
   simd_float4x4 modelMatrix;
   simd_float3x3 normalMatrix;
+  simd_float4 albedo;
 } InstancesData;
 
 typedef enum {

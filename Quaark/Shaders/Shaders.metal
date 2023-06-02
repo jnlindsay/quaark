@@ -26,7 +26,7 @@ vertex VertexOut vertex_main(
   VertexOut out {
     .position = position,
     .normal = normal,
-    .colour = colour,
+    .albedo = instancesData[instanceId].albedo,
     .worldPosition = (instancesData[instanceId].modelMatrix * in.position).xyz,
     .worldNormal = instancesData[instanceId].normalMatrix * in.normal
   };

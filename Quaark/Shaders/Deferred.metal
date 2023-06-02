@@ -21,7 +21,7 @@ fragment GBufferOut fragment_gBuffer (
   VertexOut in [[stage_in]]
 ) {
   GBufferOut out;
-  out.albedo = in.colour;
+  out.albedo = in.albedo;
   out.normal = float4(normalize(in.worldNormal), 1.0);
   out.position = float4(in.worldPosition, 1.0);
   return out;

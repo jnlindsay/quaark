@@ -11,7 +11,8 @@ class GraphicsModel {
   
   let name: String
   var colour: simd_float4
-  public var transforms: [Transform]
+//  public var transforms: [Transform]
+  var instances: [ModelInstance]
     // there can be multiple transforms because any model may have multiple instances
   private let assetURL: URL
   var meshes: [GraphicsMesh]
@@ -22,7 +23,10 @@ class GraphicsModel {
   
   init(name: String, numInstances: Int = 1) {
     self.name = name
-    self.transforms = [Transform()]
+    self.instances = [ModelInstance(
+      transform: Transform(),
+      albedo: simd_float4(1, 1, 1, 1)
+    )]
     self.colour = simd_float4(0, 0, 0, 1)
     
     self.maxInstances = 5
@@ -95,14 +99,23 @@ class GraphicsModel {
     print("Mesh configuration complete.")
   }
   
-  func addInstance(transform: Transform = Transform()) {
-    if self.transforms.count < self.maxInstances {
-      self.transforms.append(transform)
+  func addInstance(
+    transform: Transform = Transform(),
+    albedo: simd_float4 = simd_float4(1, 0.3, 1, 1)
+  ) {
+    if self.instances.count < self.maxInstances {
+      self.instances.append(ModelInstance(
+        transform: transform,
+        albedo: albedo
+      ))
     } else {
       if self.currModuloInstance >= self.maxInstances {
         self.currModuloInstance = 0
       }
-      self.transforms[self.currModuloInstance] = transform
+      self.instances[self.currModuloInstance] = ModelInstance(
+        transform: transform,
+        albedo: albedo
+      )
       self.currModuloInstance += 1
     }
   }
@@ -110,17 +123,18 @@ class GraphicsModel {
   func createInstancesBuffer(
     device: MTLDevice
   ) -> MTLBuffer {
-    let bufferSize = MemoryLayout<InstancesData>.stride * transforms.count
+    let bufferSize = MemoryLayout<InstancesData>.stride * self.instances.count
     let instancesBuffer = device.makeBuffer(
       length: bufferSize,
       options: []
     )!
     
     var instancesData: [InstancesData] = []
-    for transform in self.transforms {
+    for instance in self.instances {
       let instanceData = InstancesData(
-        modelMatrix: transform.modelMatrix,
-        normalMatrix: upperLeft(matrix: transform.modelMatrix)
+        modelMatrix: instance.transform.modelMatrix,
+        normalMatrix: upperLeft(matrix: instance.transform.modelMatrix),
+        albedo: instance.albedo
       )
       instancesData.append(instanceData)
     }
@@ -187,11 +201,24 @@ extension GraphicsModel {
           indexType: submesh.indexType,
           indexBuffer: submesh.indexBuffer,
           indexBufferOffset: submesh.indexBufferOffset,
-          instanceCount: self.transforms.count
+          instanceCount: self.instances.count
         )
       }
     }
     
     commandEncoder.popDebugGroup()
+  }
+}
+
+struct ModelInstance {
+  var transform: Transform
+  var albedo: simd_float4
+  
+  init(
+    transform: Transform,
+    albedo: simd_float4
+  ) {
+    self.transform = transform
+    self.albedo = albedo
   }
 }
