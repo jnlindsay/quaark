@@ -1,6 +1,6 @@
 //
 //  Vertex.h
-//  Quarenne
+//  Quaark
 //
 //  Created by Jeremy Lindsay on 23/5/2023.
 //
