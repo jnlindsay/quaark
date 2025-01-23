@@ -27,6 +27,8 @@
 		1982433C29BC9692001B7B0D /* KeyboardModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1982433B29BC9692001B7B0D /* KeyboardModel.swift */; };
 		1982433E29BEE562001B7B0D /* DissonanceMeasure.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1982433D29BEE562001B7B0D /* DissonanceMeasure.swift */; };
 		19C4E1BA2A20E9660032A611 /* EmissiveRenderPass.swift in Sources */ = {isa = PBXBuildFile; fileRef = 19C4E1B92A20E9660032A611 /* EmissiveRenderPass.swift */; };
+		19CA4B7B2D42780400A9F616 /* keyboard-view.png in Resources */ = {isa = PBXBuildFile; fileRef = 19CA4B792D42780400A9F616 /* keyboard-view.png */; };
+		19CA4B7E2D4278ED00A9F616 /* metal-view.png in Resources */ = {isa = PBXBuildFile; fileRef = 19CA4B7D2D4278ED00A9F616 /* metal-view.png */; };
 		19D46D962A0DE2AB009F6E2F /* GraphicsWorld.swift in Sources */ = {isa = PBXBuildFile; fileRef = 19D46D952A0DE2AB009F6E2F /* GraphicsWorld.swift */; };
 		19D46D9C2A0FA59D009F6E2F /* GraphicsModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 19D46D9B2A0FA59D009F6E2F /* GraphicsModel.swift */; };
 		19D46D9E2A0FA627009F6E2F /* GraphicsMesh.swift in Sources */ = {isa = PBXBuildFile; fileRef = 19D46D9D2A0FA627009F6E2F /* GraphicsMesh.swift */; };
@@ -71,6 +73,8 @@
 		1982433B29BC9692001B7B0D /* KeyboardModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KeyboardModel.swift; sourceTree = "<group>"; };
 		1982433D29BEE562001B7B0D /* DissonanceMeasure.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DissonanceMeasure.swift; sourceTree = "<group>"; };
 		19C4E1B92A20E9660032A611 /* EmissiveRenderPass.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EmissiveRenderPass.swift; sourceTree = "<group>"; };
+		19CA4B792D42780400A9F616 /* keyboard-view.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "keyboard-view.png"; sourceTree = "<group>"; };
+		19CA4B7D2D4278ED00A9F616 /* metal-view.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "metal-view.png"; sourceTree = "<group>"; };
 		19D46D952A0DE2AB009F6E2F /* GraphicsWorld.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GraphicsWorld.swift; sourceTree = "<group>"; };
 		19D46D9B2A0FA59D009F6E2F /* GraphicsModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GraphicsModel.swift; sourceTree = "<group>"; };
 		19D46D9D2A0FA627009F6E2F /* GraphicsMesh.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GraphicsMesh.swift; sourceTree = "<group>"; };
@@ -160,6 +164,15 @@
 			path = Views;
 			sourceTree = "<group>";
 		};
+		19CA4B782D4277EB00A9F616 /* img */ = {
+			isa = PBXGroup;
+			children = (
+				19CA4B792D42780400A9F616 /* keyboard-view.png */,
+				19CA4B7D2D4278ED00A9F616 /* metal-view.png */,
+			);
+			path = img;
+			sourceTree = "<group>";
+		};
 		19D46D942A0DE29F009F6E2F /* Graphics */ = {
 			isa = PBXGroup;
 			children = (
@@ -210,6 +223,7 @@
 		19E456BC29494ABF0037DF4B = {
 			isa = PBXGroup;
 			children = (
+				19CA4B782D4277EB00A9F616 /* img */,
 				191423942A1CBDB600FC3332 /* README.md */,
 				19E456C729494ABF0037DF4B /* Quaark */,
 				19E456C629494ABF0037DF4B /* Products */,
@@ -325,9 +339,11 @@
 				191423A02A1D2E7200FC3332 /* icosphere.obj in Resources */,
 				19E428EE2A163D3B0061D610 /* monkey-right-handed.obj in Resources */,
 				19E428FA2A189F1B0061D610 /* monkey-left-handed.obj in Resources */,
+				19CA4B7B2D42780400A9F616 /* keyboard-view.png in Resources */,
 				191423952A1CBDDF00FC3332 /* README.md in Resources */,
 				193E1AF32A1B25A600D7BA0D /* sphere.obj in Resources */,
 				193E1AE72A1AD1D600D7BA0D /* torus.obj in Resources */,
+				19CA4B7E2D4278ED00A9F616 /* metal-view.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

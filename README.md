@@ -1,4 +1,10 @@
-# TODO
+# Quaark
+
+![MetalView](img/metal-view.png)
+
+![KeyboardView](img/keyboard-view.png)
+
+## TODO
 
 - Get rid of icospheres. They don't help.
 - Design a centralised way to reconfigure lights/meshes in a smart way: that is, only reconfigure objects that need to be configured. Also, rename "configure" to what it is really is, which is creating MTLBuffers (at least for lights).
@@ -9,4 +15,5 @@
 - Go through every single `attachment` and make it painfully clear if it's a `colorAttachment` to a render pass descriptor or to a pipeline descriptor. Annoying!
 
 ## Warnings
+
 - 27 May, 2023: when the sunlight is on, Gaussian blur doesn't work. My guess is the black quad overwrites the view drawable.
